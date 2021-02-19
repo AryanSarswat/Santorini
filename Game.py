@@ -2,12 +2,22 @@ import numpy as np
 import sys
 
 def get_neighbours(coord):
+    '''
+    Returns a list of all neighbour location from a given state
+    '''
     neighbour_locations = [[coord[0]+1,coord[1]],[coord[0],coord[1]+1],[coord[0]+1,coord[1]+1],[coord[0]-1,coord[1]],[coord[0],coord[1]-1],[coord[0]-1,coord[1]-1],[coord[0]+1,coord[1]-1],[coord[0]-1,coord[1]+1]]
     #Only keep coordinates within the board
     neighbour_locations = list(filter(lambda element: (element[0] >= 0 and element[0] < 5) and (element[1] >= 0 and element[1] < 5),neighbour_locations))
     return neighbour_locations
 
 class Worker():
+    '''
+    Worker Class containing the 
+    1) Name of Worker
+    2) Current Location
+    3) Previous Location
+    4) Building Level of Worker
+    '''
     def __init__(self,Worker_Loc,Name):
         self.name = Name
         self.current_location = Worker_Loc
@@ -15,14 +25,22 @@ class Worker():
         self.building_level = 0
 
 class Square():
+    """
+    Element used to represent the a square on the board
+    1) Contain the index of the row and column of the board
+    2) Contains the building level
+    3) Contains the worker if a worker is present else it contains None
+    """
     def __init__(self,row,col):
         self.row = row
         self.col = col
         self.building_level = 0
         self.worker = None
 
-    #Add a building
     def add_building(self):
+        '''
+        Adds a building to the element
+        '''
         #Check if Dome is there or not
         if self.building_level < 4 :
             self.building_level+=1
@@ -38,6 +56,13 @@ class Square():
 
 
 class Board():
+    '''
+    Board class contains
+    1) The entire board which is a list of Squares
+    2) List of all workers for both players
+    3) A list of all of Player 1's workers
+    3) A list of all of Player 2's workers
+    '''
     def __init__(self):
         self.board = []
         self.workers = []
@@ -49,9 +74,12 @@ class Board():
                 temp_board.append(Square(i,j))
             self.board.append(temp_board) 
     
-    #Intializes the workers in the board
-    #Player_n_Location is a list of coordinates [[row,col],[row,col]]    
+    
     def intialize_workers(self,Player_1_Worker_Locations,Player_2_Worker_Locations):
+        '''
+        Intializes the workers in the board
+        Player_n_Location is a list of coordinates [[row,col],[row,col]] where the workers are placed
+        '''
         #Ensure all locations are unique
         all_locations = Player_1_Worker_Locations + Player_2_Worker_Locations
         if len(np.unique(all_locations,axis=0)) != len(all_locations):
@@ -74,8 +102,10 @@ class Board():
             self.board[row][col].update_worker(worker)
   
     
-    #Printing the Board
     def print_board(self):
+        '''
+        Prints the board into a readable format
+        '''
         for row in self.board:
             temp_list = []
             for square in row:
@@ -87,8 +117,10 @@ class Board():
             print("\n")
 
             
-    #Returns all the possible building options at certain location
     def valid_building_options(self,location):
+        '''
+        Returns all the possible building options at certain location
+        '''
         neighbour_locations = get_neighbours(location)
         possible_options = []
         for row,col in neighbour_locations:
@@ -96,8 +128,10 @@ class Board():
                     possible_options.append([row,col])
         return possible_options
     
-    #Updates the board on where the worker is and also updates the Workers list on the location of the worker
     def update_worker_location(self,previous_location,new_location):
+        '''
+        Updates the board on where the worker is and also updates the Workers list on the location of the worker
+        '''
         #Get Worker
         worker = self.board[previous_location[0]][previous_location[1]].worker
         #Update Worker
@@ -111,12 +145,18 @@ class Board():
     
     #Build a building
     def update_building_level(self,coord):
+        '''
+        Functionality to add a building level
+        '''
         self.board[coord[0]][coord[1]].add_building()
         pass
 
 
-    #Returns all the possible movements for workers, for a worker
+    
     def possible_worker_movements(self,Worker_loc):
+        '''
+        Returns all list of the possible movements for a worker
+        '''
         possible_movements = []
         neighbour_locations = get_neighbours(Worker_loc)
         #Get Building level of the Worker's current postion before moving
@@ -138,8 +178,10 @@ class Board():
         possible_movements  = list(filter(lambda element: self.board[element[0]][element[1]].worker == None , possible_movements))
         return possible_movements
     
-    #Checks if a player's workers have reached level 3
     def end_turn_check_win(self,Player):
+        '''
+        Checks if a player's workers have reached level 3
+        '''
         if Player == 1:
             for worker in self.Player_1_Workers:
                 coord = worker.current_location
@@ -156,8 +198,10 @@ class Board():
                     continue
         return None
     
-    #Check at the start of the turn to see if other player has won due to no possible worker movements
     def start_turn_check_win(self,Player,board):
+        '''
+        Check at the start of the turn to see if other player has won due to no possible worker movements
+        '''
         if Player == 1:
             pos_moves = []
             for worker in self.Player_1_Workers:
