@@ -6,7 +6,7 @@ board = Board()
 board.intialize_workers([[1,1],[1,3]],[[3,1],[3,3]])
 Player = 1
 while win == None:
-    win = board.start_turn_check_win(Player)
+    win = board.start_turn_check_win(Player,board)
     if win != None:
         break
     else:
