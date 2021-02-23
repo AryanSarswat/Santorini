@@ -224,7 +224,7 @@ class Board():
                     continue
         return None
     
-    def start_turn_check_win(self,Player,board):
+    def start_turn_check_win(self,Player):
         '''
         Check at the start of the turn to see if other player has won due to no possible worker movements
         '''
