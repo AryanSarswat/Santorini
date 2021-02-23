@@ -1,6 +1,32 @@
 import numpy as np
 import sys
 
+
+mappings = {
+    (0,None) : 0,
+    (1,None) : 1,
+    (2,None) : 2,
+    (3,None) : 3,
+    (4,None) : 4,
+    (0,'W11') : 5,
+    (1,'W11') : 6,
+    (2,'W11') : 7,
+    (3,'W11') : 8,
+    (0,'W12') : 9,
+    (1,'W12') : 10,
+    (2,'W12') : 11,
+    (3,'W12') : 12,
+    (0,'W21') : 13,
+    (1,'W21') : 14,
+    (2,'W21') : 15,
+    (3,'W21') : 16,
+    (0,'W22') : 17,
+    (1,'W22') : 18,
+    (2,'W22') : 19,
+    (3,'W22') : 20,
+}
+
+
 def get_neighbours(coord):
     '''
     Returns a list of all neighbour location from a given state
