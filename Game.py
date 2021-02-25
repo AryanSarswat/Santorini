@@ -50,6 +50,13 @@ class Worker():
         self.previous_location = Worker_Loc
         self.building_level = 0
 
+    def update_location(self, newLocation):
+        self.previous_location = self.current_location
+        self.current_location = newLocation    
+    
+    def update_building_level(self, newLevel):
+        self.building_level = newLevel
+
 class Square():
     """
     Element used to represent the a square on the board
@@ -69,16 +76,90 @@ class Square():
         '''
         #Check if Dome is there or not
         if self.building_level < 4 :
-            self.building_level+=1
+            self.building_level += 1
         else:
             raise Exception("Max Building Error Reached")
     
-    def update_worker(self,Worker):
+    def update_worker(self, worker):
         #Update Square if worker moves on the square
         if self.worker == None:
-            self.worker = Worker
+            self.worker = worker
         else:
             raise Exception("Worker Already Present in this Square")
+        
+    def remove_worker(self):
+        # Removes worker from square
+        self.worker = None
+class Player():
+    '''
+    Player class contains
+    1) 2 distinguishable Worker pieces
+    '''
+    def __init__(self, name):
+        self.name = name        
+        self.workers = [Worker([], str(name)+"1"), Worker([], str(name)+"2")]
+
+    
+    def place_workers(self, board):
+        """
+        Method to place a player's worker on the board
+        """
+        place_count = 0
+        while place_count < 2:
+            try:
+                #Input worker to move coordinates and format into list
+                worker_to_place_coord = input(f"Player {self.name}, please enter the coordinates of the worker to place: ")
+                worker_coord = list(map(lambda x: int(x),worker_to_place_coord.split(",")))
+                # Updates worker and square
+                self.workers[place_count].update_location(worker_coord)
+                board.board[worker_coord[0]][worker_coord[1]].update_worker(self.workers[place_count])
+                place_count += 1
+            except Exception:
+                print("Input error! Please enter coordinates of an empty square.")
+                continue
+        return board
+    
+    def action(self, board):
+        """
+        Method to select and place a worker, afterwards, place a building
+        """
+        # Selects worker to be moved
+        worker_selection = input(f"Player {self.name}, please select the worker to be moved (1 or 2): ")
+        while not ((worker_selection == "1" or worker_selection == "2") and len(worker_selection) == 1):
+            print("Please enter a valid worker number")
+            worker_selection = input(f"Player {self.name}, please select the worker to be moved (1 or 2): ")
+        selected_worker = self.workers[int(worker_selection)-1]
+        # Input the coordinates to move the selected worker
+        new_coord = input(f"Player {self.name}, please enter the coordinates where worker {selected_worker.name} is to be placed: ")
+        new_coord = list(map(lambda x: int(x),new_coord.split(",")))
+        # Error handling for new_coordinates for the selected worker
+        while new_coord not in board.possible_worker_movements(selected_worker.current_location):
+            print("That is not a valid move location")
+            new_coord = input(f"Player {self.name}, please the coordinates where worker {selected_worker.name} is to be placed: ")
+            new_coord = list(map(lambda x: int(x),new_coord.split(",")))
+        print("\n")
+        # Updates worker and square
+        old_coord_row, old_coord_column = selected_worker.current_location[0], selected_worker.current_location[1]
+        board.board[old_coord_row][old_coord_column].remove_worker()
+        selected_worker.update_location(new_coord)
+        board.board[new_coord[0]][new_coord[1]].update_worker(selected_worker)
+        selected_worker.update_building_level(board.board[new_coord[0]][new_coord[1]].building_level)
+        board.print_board()
+        print("----------------------------------------------------------------\n")
+        # Check if the previous move was a winning move (bypasses building stage)
+        if board.end_turn_check_win(self) != None:
+            return board
+        # Input the coordinates to build a building
+        build_coord = input(f"Player {self.name}, Please enter coordinates of where you would like to build: ")
+        build_coord = list(map(lambda x: int(x),build_coord.split(",")))
+        # Error handling for the building coordinates
+        while build_coord not in board.valid_building_options(selected_worker.current_location):
+            print("That is not valid build location \n")
+            build_coord = input(f"Player {self.name}, Please enter coordinates of where you would like to build: ")
+            build_coord = list(map(lambda x: int(x),build_coord.split(",")))  
+        print("----------------------------------------------------------------\n")
+        board.update_building_level(build_coord)
+        return board
 
 
 class Board():
@@ -87,13 +168,13 @@ class Board():
     1) The entire board which is a list of Squares
     2) List of all workers for both players
     3) A list of all of Player 1's workers
-    3) A list of all of Player 2's workers
+    4) A list of all of Player 2's workers
     '''
     def __init__(self):
         self.board = []
         self.workers = []
-        self.Player_1_Workers = []
-        self.Player_2_Workers = []
+        self.PlayerA = Player("A")
+        self.PlayerB = Player("B")
         for i in range(5):
             temp_board = []
             for j in range(5):
@@ -101,11 +182,11 @@ class Board():
             self.board.append(temp_board) 
     
     
-    def intialize_workers(self,Player_1_Worker_Locations,Player_2_Worker_Locations):
-        '''
+    '''def intialize_workers(self,Player_1_Worker_Locations,Player_2_Worker_Locations):
+        
         Intializes the workers in the board
         Player_n_Location is a list of coordinates [[row,col],[row,col]] where the workers are placed
-        '''
+        
         #Ensure all locations are unique
         all_locations = Player_1_Worker_Locations + Player_2_Worker_Locations
         if len(np.unique(all_locations,axis=0)) != len(all_locations):
@@ -125,7 +206,7 @@ class Board():
         #Intialize Workers into the board
         for worker in self.workers:
             row,col = worker.current_location
-            self.board[row][col].update_worker(worker)
+            self.board[row][col].update_worker(worker)'''
   
     
     def print_board(self):
@@ -135,10 +216,10 @@ class Board():
         for row in self.board:
             temp_list = []
             for square in row:
-                if square.worker != None :
-                    temp_list.append((square.building_level,square.worker.name))
-                else:
+                if square.worker == None:
                     temp_list.append((square.building_level,square.worker))
+                else:
+                    temp_list.append((square.building_level,square.worker.name))
             print(temp_list)
             print("\n")
 
@@ -209,17 +290,15 @@ class Board():
         Checks if a player's workers have reached level 3
         '''
         if Player == 1:
-            for worker in self.Player_1_Workers:
-                coord = worker.current_location
-                if self.board[coord[0]][coord[1]].building_level == 3:
-                    return "1"
+            for worker in self.PlayerA.workers:
+                if worker.building_level == 3:
+                    return "A wins!"
                 else:
                     continue
         else:
-            for worker in self.Player_2_Workers:
-                coord = worker.current_location
-                if self.board[coord[0]][coord[1]].building_level == 3:
-                    return "2"
+            for worker in self.PlayerB.workers:
+                if worker.building_level == 3:
+                    return "B wins!"
                 else:
                     continue
         return None
@@ -230,19 +309,19 @@ class Board():
         '''
         if Player == 1:
             pos_moves = []
-            for worker in self.Player_1_Workers:
+            for worker in self.PlayerA.workers:
                 location = worker.current_location
-                pos_moves.append(board.possible_worker_movements(location))
-            if pos_moves == []:
-                return "2"
+                pos_moves.append(self.possible_worker_movements(location))
+            if len(pos_moves) == 0:
+                return "B wins!"
             else:
                 return None
         else:
             pos_moves = []
-            for worker in self.Player_2_Workers:
+            for worker in self.PlayerB.workers:
                 location = worker.current_location
-                pos_moves.append(board.possible_worker_movements(location))
-            if pos_moves == []:
-                return "1"
+                pos_moves.append(self.possible_worker_movements(location))
+            if len(pos_moves) == 0:
+                return "A wins!"
             else:
                 return None
