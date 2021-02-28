@@ -7,20 +7,6 @@ def upper_confidence_bound(node):
     value = node.value()
     explore = 2*np.sqrt(np.log(node.parent.value())/node.visit_count)
     return value+explore
-class MCTS():
-    """
-    Class for containing the Monte Carlo Tree
-    """
-
-    def __init__(self,root):
-        self.root_state = root
-        self.node_count = 0
-        self.root_node = Node(self.root_state)
-
-    def search(self):
-        pass
-
-
 
 class Node():
     """
@@ -83,4 +69,17 @@ class Node():
         children = self.state.all_possible_next_states()
         for child in children:
             self.children[child] = Node(child,parent=self)
+        pass
+
+class MCTS():
+    """
+    Class for containing the Monte Carlo Tree
+    """
+
+    def __init__(self,root):
+        self.root_state = root
+        self.node_count = 0
+        self.root_node = Node(self.root_state)
+
+    def search(self):
         pass
