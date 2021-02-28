@@ -325,3 +325,40 @@ class Board():
                 return "A wins!"
             else:
                 return None
+    
+    def is_terminal(self):
+        """
+        Returns True if the game is over
+        Return False if game is not over
+        """
+        #Check if Player 1 Lost or Won
+        if (self.start_turn_check_win(2) != None) or (self.end_turn_check_win(1) != None):
+            PlayerAWin = True
+        else:
+            PlayerAWin = False
+        #Check if Player 2 lost or won
+        if (self.start_turn_check_win(1) != None) or (self.end_turn_check_win(2) != None):
+            PlayerBWin = True
+        else:
+            PlayerBWin = False
+        
+        #Return False if both False
+        if PlayerAWin == PlayerBWin:
+            return False
+        #Return True if somebody won
+        else:
+            return PlayerAWin if PlayerAWin else PlayerBWin
+ 
+    def reward(self):
+        """
+        Return 1 if PlayerA won
+        Returns -1 if PlayerB won
+        Return 0 if game is not over
+        """
+        if self.is_terminal():
+            if (self.start_turn_check_win(2) != None) or (self.end_turn_check_win(1) != None):
+                return 1
+            else:
+                return -1
+        else:
+            return 0
