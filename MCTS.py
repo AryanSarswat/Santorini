@@ -76,10 +76,40 @@ class MCTS():
     Class for containing the Monte Carlo Tree
     """
 
-    def __init__(self,root):
-        self.root_state = root
-        self.node_count = 0
-        self.root_node = Node(self.root_state)
+    def __init__(self,game,model,args):
+        self.game = game
+        self.model = model
+        self.args = args
 
-    def search(self):
-        pass
+    def run(self,model,state,to_play):
+        root = Node(state)
+        root.expand()
+
+        for _ in range(args["Num_Simulations"]):
+            node = root
+            search_path = [node]
+            #Select
+            while node.is_expanded():
+                node = node.select_child()
+                search_path.append(node)
+            
+            parent = search_path[-2]
+            state = parent.state
+            next_state = node
+            value = next_state.state.reward()
+
+            if value == 0:
+                #Game has not ended thus expand the node
+                node.expand()
+            
+            self.backpropagate(search_path,value,next_state.state.Player_turn())
+        
+        return root
+
+    def backpropagate(self,search_path,value,to_play):
+        """
+        Backpropagate the value of state
+        """
+        for node in reversed(search_path):
+            node.value_sum += 1 if node.to_play == to_play else -1
+            node.visit_count+=1
