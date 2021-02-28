@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+from copy import deepcopy
 
 
 mappings = {
@@ -287,6 +288,56 @@ class Board():
         possible_movements  = list(filter(lambda element: self.board[element[0]][element[1]].worker == None , possible_movements))
         return possible_movements
     
+    def all_possible_next_states(self):
+        """
+        Return a copy of all the possible next states after a worker movement and a bulding placement
+        """
+        if self.to_play == 1:
+        #Movements for the workers of Player 1
+            worker_1_loc = self.PlayerA.workers[0].current_location
+            worker_2_loc = self.PlayerA.workers[1].current_location
+            possible_worker_1_movements = self.possible_worker_movements(worker_1_loc)
+            possible_worker_2_movements = self.possible_worker_movements(worker_2_loc)
+            possible_next_state_1 = []
+            possible_next_state_2 = []
+            #Make the move and return a deepcopy of the new state
+            for action in possible_worker_1_movements:
+                possible_next_state_1.append(deepcopy(self).update_worker_location(worker_1_loc,action))
+            for action in possible_worker_2_movements:
+                possible_next_state_2.append(deepcopy(self).update_worker_location(worker_2_loc,action))
+            #Return the possible build options
+            possible_builds_1 = [state.valid_building_options(state.PlayerA.workers[0].current_location) for state in possible_next_state_1]
+            possible_builds_2 = [state.valid_building_options(state.PlayerA.workers[1].current_location) for state in possible_next_state_2]
+            next_states = []
+            #Apply build and return a deepcopy of the new state
+            for build,state in possible_builds_1,possible_builds_1:
+                next_states.append(deepcopy(state).update_building_level(build))
+            for build,state in possible_builds_2,possible_builds_2:
+                next_states.append(deepcopy(state).update_building_level(build))
+        else:
+            #Movements for the workers of Player 2
+            worker_1_loc = self.PlayerB.workers[0].current_location
+            worker_2_loc = self.PlayerB.workers[1].current_location
+            possible_worker_1_movements = self.possible_worker_movements(worker_1_loc)
+            possible_worker_2_movements = self.possible_worker_movements(worker_2_loc)
+            possible_next_state_1 = []
+            possible_next_state_2 = []
+            #Make the move and return a deepcopy of the new state
+            for action in possible_worker_1_movements:
+                possible_next_state_1.append(deepcopy(self).update_worker_location(worker_1_loc,action))
+            for action in possible_worker_2_movements:
+                possible_next_state_2.append(deepcopy(self).update_worker_location(worker_2_loc,action))
+            #List of the possible build options
+            possible_builds_1 = [state.valid_building_options(state.PlayerB.workers[0].current_location) for state in possible_next_state_1]
+            possible_builds_2 = [state.valid_building_options(state.PlayerB.workers[1].current_location) for state in possible_next_state_2]
+            next_states = []
+            #Apply build and return a deepcopy of the new state
+            for build,state in possible_builds_1,possible_builds_1:
+                next_states.append(deepcopy(state).update_building_level(build))
+            for build,state in possible_builds_2,possible_builds_2:
+                next_states.append(deepcopy(state).update_building_level(build))
+        return next_states
+
     def end_turn_check_win(self,Player):
         '''
         Checks if a player's workers have reached level 3
@@ -368,6 +419,9 @@ class Board():
     def Player_turn(self):
         """
         Return 1 if it is Player A's turn
-        Return 2 if it is Player B's Turn
+        Return -1 if it is Player B's Turn
         """
-        return (self.total_building_count%2) + 1
+        if (self.total_building_count%2) == 0:
+            return 1
+        else:
+            return -1
