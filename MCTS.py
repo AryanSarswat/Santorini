@@ -80,4 +80,7 @@ class Node():
         """
         Expand Node
         """
+        children = self.state.all_possible_next_states()
+        for child in children:
+            self.children[child] = Node(child,parent=self)
         pass
