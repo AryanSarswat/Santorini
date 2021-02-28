@@ -175,6 +175,7 @@ class Board():
         self.workers = []
         self.PlayerA = Player("A")
         self.PlayerB = Player("B")
+        self.total_building_count = 0
         for i in range(5):
             temp_board = []
             for j in range(5):
@@ -256,6 +257,7 @@ class Board():
         Functionality to add a building level
         '''
         self.board[coord[0]][coord[1]].add_building()
+        self.total_building_count+=1
         pass
 
 
@@ -362,3 +364,10 @@ class Board():
                 return -1
         else:
             return 0
+    
+    def Player_turn(self):
+        """
+        Return 1 if it is Player A's turn
+        Return 2 if it is Player B's Turn
+        """
+        return (self.total_building_count%2) + 1
