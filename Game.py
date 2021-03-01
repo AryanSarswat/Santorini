@@ -2,7 +2,7 @@ import numpy as np
 import sys
 from copy import deepcopy
 
-
+#dictionary containing board state codes. first number is player, second number is worker number
 mappings = {
     (0,None) : 0,
     (1,None) : 1,
@@ -30,7 +30,7 @@ mappings = {
 
 def get_neighbours(coord):
     '''
-    Returns a list of all neighbour location from a given state
+    Returns a list of all neighbour location from a given state. Assumes 5x5 board.
     '''
     neighbour_locations = [[coord[0]+1,coord[1]],[coord[0],coord[1]+1],[coord[0]+1,coord[1]+1],[coord[0]-1,coord[1]],[coord[0],coord[1]-1],[coord[0]-1,coord[1]-1],[coord[0]+1,coord[1]-1],[coord[0]-1,coord[1]+1]]
     #Only keep coordinates within the board
@@ -60,7 +60,7 @@ class Worker():
 
 class Square():
     """
-    Element used to represent the a square on the board
+    Element used to represent a square on the board
     1) Contain the index of the row and column of the board
     2) Contains the building level
     3) Contains the worker if a worker is present else it contains None
@@ -91,6 +91,7 @@ class Square():
     def remove_worker(self):
         # Removes worker from square
         self.worker = None
+
 class Player():
     '''
     Player class contains
@@ -173,16 +174,18 @@ class Board():
     '''
     def __init__(self):
         self.board = []
-        self.workers = []
-        self.PlayerA = Player("A")
-        self.PlayerB = Player("B")
-        self.total_building_count = 0
         for i in range(5):
             temp_board = []
             for j in range(5):
                 temp_board.append(Square(i,j))
             self.board.append(temp_board) 
     
+        self.workers = []
+        self.PlayerA = Player("A")
+        self.PlayerB = Player("B")
+        self.total_building_count = 0
+
+
     
     '''def intialize_workers(self,Player_1_Worker_Locations,Player_2_Worker_Locations):
         
