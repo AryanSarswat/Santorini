@@ -9,22 +9,14 @@ mappings = {
     (2,None) : 2,
     (3,None) : 3,
     (4,None) : 4,
-    (0,'W11') : 5,
-    (1,'W11') : 6,
-    (2,'W11') : 7,
-    (3,'W11') : 8,
-    (0,'W12') : 9,
-    (1,'W12') : 10,
-    (2,'W12') : 11,
-    (3,'W12') : 12,
-    (0,'W21') : 13,
-    (1,'W21') : 14,
-    (2,'W21') : 15,
-    (3,'W21') : 16,
-    (0,'W22') : 17,
-    (1,'W22') : 18,
-    (2,'W22') : 19,
-    (3,'W22') : 20,
+    (0,'A') : 5,
+    (1,'A') : 6,
+    (2,'A') : 7,
+    (3,'A') : 8,
+    (0,'B') : 9,
+    (1,'B') : 10,
+    (2,'B') : 11,
+    (3,'B') : 12,
 }
 
 
@@ -291,12 +283,12 @@ class Board():
         possible_movements  = list(filter(lambda element: self.board[element[0]][element[1]].worker == None , possible_movements))
         return possible_movements
     
-    def all_possible_next_states(self):
+    def all_possible_next_states(self, name):
         """
         Return a copy of all the possible next states after a worker movement and a bulding placement
         """
-        if self.to_play == 1:
-        #Movements for the workers of Player 1
+        if name == "A":
+        #Movements for the workers of Player A
             worker_1_loc = self.PlayerA.workers[0].current_location
             worker_2_loc = self.PlayerA.workers[1].current_location
             possible_worker_1_movements = self.possible_worker_movements(worker_1_loc)
@@ -318,7 +310,7 @@ class Board():
             for build,state in possible_builds_2,possible_builds_2:
                 next_states.append(deepcopy(state).update_building_level(build))
         else:
-            #Movements for the workers of Player 2
+            #Movements for the workers of Player B
             worker_1_loc = self.PlayerB.workers[0].current_location
             worker_2_loc = self.PlayerB.workers[1].current_location
             possible_worker_1_movements = self.possible_worker_movements(worker_1_loc)
