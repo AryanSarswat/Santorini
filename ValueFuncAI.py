@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from Game import *
+import random
 
 def state_mappings():
     mappings = {
@@ -49,6 +50,7 @@ class ValueFunc(nn.Module):
         self.loss = nn.MSELoss()
         self.device = T.device('cpu')
         self.to(self.device)
+        self.epsilon = 0.99
 
     def forward(self,x):
         x = T.Tensor(x).to(self.device)
@@ -65,17 +67,47 @@ class Agent():
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.values = []
     
-
     def action(self, board):
         states = board.all_possible_next_states(self.name)
         values = []
+        rand = np.random.uniform()
         for state in states:
             converted_state = convertTo1D(state, state_mappings())
             values.append(self.nn.forward(converted_state))
-        highest_value = np.argmax(values)
-        self.values.append(highest_value)
-        return states[highest_value]
+        if rand > self.nn.epsilon:
+            highest_value = np.argmax(values)
+            self.values.append(values[highest_value])
+            return states[highest_value]
+        else:
+            choice = random.choice(values)
+            index = values.index(choice)
+            self.values.append(choice)
+            return states[index]
+
+        
     
+    def place_workers(self, board):
+        """
+        Method to randomly place agent's workers on the board
+        """
+        place_count = 0
+        while place_count < 2:
+            try:
+                coords = [np.random.randint(0, 5), np.random.randint(0, 5)]
+                # Updates worker and square
+                self.workers[place_count].update_location(coords)
+                board.board[coords[0]][coords[1]].update_worker(self.workers[place_count])
+                place_count += 1
+            except Exception:
+                continue
+        return board
+
+    def reward(self, win):
+        if win == "A":
+            r = 1
+        else:
+            r = -1
+        return r
     
     
 

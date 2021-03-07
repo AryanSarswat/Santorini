@@ -176,6 +176,22 @@ class Board():
         self.PlayerA = Player("A")
         self.PlayerB = Player("B")
         self.total_building_count = 0
+    
+    def __init__(self, agent1, agent2):
+        """
+        Overloaded constructor for training with 2 agents
+        """
+        self.board = []
+        for i in range(5):
+            temp_board = []
+            for j in range(5):
+                temp_board.append(Square(i,j))
+            self.board.append(temp_board) 
+    
+        self.workers = []
+        self.PlayerA = agent1
+        self.PlayerB = agent2
+        self.total_building_count = 0
 
 
     

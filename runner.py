@@ -25,7 +25,11 @@ def main():
             currentPlayer = board.PlayerB
         else:
             currentPlayer = board.PlayerA
-    print(win)
+    return win
+
+
+
+
 
 if __name__=='__main__':
     main()
