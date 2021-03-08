@@ -24,7 +24,7 @@ class Santorni(nn.Module):
         value_logit = self.value_head(x)
 
         return torch.tanh(value_logit)
-
+ 
     def predict(self, board):
         """
         Predict the value of a state

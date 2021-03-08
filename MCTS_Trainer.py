@@ -23,8 +23,15 @@ class Trainer:
             self.mcts = MCTS(self.game,self.model,self.args)
             root = self.mcts.run(self.model,state,current_player)
 
+            train_examples.append((state,current_player))
+            
             state = root.select_child()
             current_player = state.get_current_player()
+            reward = state.reward()
+
+            if reward != 0 :
+                ret = []
+
 
         pass
 
