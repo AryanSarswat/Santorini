@@ -317,9 +317,9 @@ class Board():
             possible_next_state_2 = []
             #Make the move and return a deepcopy of the new state
             for action in possible_worker_1_movements:
-                possible_next_state_1.append(deepcopy(self).update_worker_location(worker_1_loc,action))
+                possible_next_state_1.append(self.update_worker_location(worker_1_loc,action))
             for action in possible_worker_2_movements:
-                possible_next_state_2.append(deepcopy(self).update_worker_location(worker_2_loc,action))
+                possible_next_state_2.append(self.update_worker_location(worker_2_loc,action))
             #Return the possible build options
             possible_builds_1 = [state.valid_building_options(state.PlayerA.workers[0].current_location) for state in possible_next_state_1]
             possible_builds_2 = [state.valid_building_options(state.PlayerA.workers[1].current_location) for state in possible_next_state_2]
@@ -339,9 +339,9 @@ class Board():
             possible_next_state_2 = []
             #Make the move and return a deepcopy of the new state
             for action in possible_worker_1_movements:
-                possible_next_state_1.append(deepcopy(self).update_worker_location(worker_1_loc,action))
+                possible_next_state_1.append(self.update_worker_location(worker_1_loc,action))
             for action in possible_worker_2_movements:
-                possible_next_state_2.append(deepcopy(self).update_worker_location(worker_2_loc,action))
+                possible_next_state_2.append(self.update_worker_location(worker_2_loc,action))
             #List of the possible build options
             possible_builds_1 = [state.valid_building_options(state.PlayerB.workers[0].current_location) for state in possible_next_state_1]
             possible_builds_2 = [state.valid_building_options(state.PlayerB.workers[1].current_location) for state in possible_next_state_2]
