@@ -152,7 +152,7 @@ class Player():
             build_coord = input(f"Player {self.name}, Please enter coordinates of where you would like to build: ")
             build_coord = list(map(lambda x: int(x),build_coord.split(",")))  
         print("----------------------------------------------------------------\n")
-        board.update_building_level(build_coord)
+        board = board.update_building_level(build_coord)
         return board
 
 
@@ -251,26 +251,30 @@ class Board():
     def update_worker_location(self,previous_location,new_location):
         '''
         Updates the board on where the worker is and also updates the Workers list on the location of the worker
+        Returns New State containing the Update
         '''
         #Get Worker
-        worker = self.board[previous_location[0]][previous_location[1]].worker
+        state = deepcopy(self)
+        worker = state.board[previous_location[0]][previous_location[1]].worker
         #Update Worker
         worker.current_location = new_location
         worker.previous_location = previous_location
-        worker.building_level = self.board[new_location[0]][new_location[1]].building_level
+        worker.building_level = state.board[new_location[0]][new_location[1]].building_level
         #Update Location
-        self.board[new_location[0]][new_location[1]].update_worker(worker)
-        self.board[worker.previous_location[0]][worker.previous_location[1]].worker = None
-        pass
+        state.board[new_location[0]][new_location[1]].update_worker(worker)
+        state.board[worker.previous_location[0]][worker.previous_location[1]].worker = None
+        return state
     
     #Build a building
     def update_building_level(self,coord):
         '''
         Functionality to add a building level
+        Returns a new state containing the updating building level
         '''
-        self.board[coord[0]][coord[1]].add_building()
-        self.total_building_count+=1
-        pass
+        state = deepcopy(self)
+        state.board[coord[0]][coord[1]].add_building()
+        state.total_building_count+=1
+        return state
 
 
     
