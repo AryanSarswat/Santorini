@@ -84,7 +84,7 @@ class Square():
         # Removes worker from square
         self.worker = None
 
-class Player():
+class HumanPlayer():
     '''
     Player class contains
     1) 2 distinguishable Worker pieces
@@ -164,18 +164,6 @@ class Board():
     3) A list of all of Player 1's workers
     4) A list of all of Player 2's workers
     '''
-    def __init__(self):
-        self.board = []
-        for i in range(5):
-            temp_board = []
-            for j in range(5):
-                temp_board.append(Square(i,j))
-            self.board.append(temp_board) 
-    
-        self.workers = []
-        self.PlayerA = Player("A")
-        self.PlayerB = Player("B")
-        self.total_building_count = 0
     
     def __init__(self, agent1, agent2):
         """

@@ -26,55 +26,61 @@ def state_mappings():
     }
     return mappings
 
-def convertTo1D(board, mappings):
-    data = []
-    for squares in board.board:
-        for square in squares:
-            if square.worker == None:
-                data.append(mappings.get((square.building_level, None)))
-            elif square.worker.name == "A1" or square.worker.name == "A2":
-                data.append(mappings.get((square.building_level, "A")))
-            else:
-                data.append(mappings.get((square.building_level, "B")))
-    return data
             
 
 class ValueFunc(nn.Module):
     def __init__(self):
         super(ValueFunc, self).__init__()
-        self.fc1 = nn.Linear(25,128)
-        self.fc2 = nn.Linear(128,64)
-        self.dropout = nn.Dropout(0.2)
-        self.fc3 = nn.Linear(64,1)
+        self.conv1 = nn.Conv2d(2, 16, 2)
+        self.conv2 = nn.Conv2d(16, 16, 2)
+
+        x = T.randn(2,5,5).view(-1,2,5,5)
+        self._to_linear = None
+        self.convs(x)
+
+        self.fc1 = nn.Linear(self._to_linear, 32)
+        self.fc2 = nn.Linear(32, 1)
         self.optimizer = optim.Adam(self.parameters(),lr=0.01)
         self.loss = nn.MSELoss()
         self.device = T.device('cpu')
         self.to(self.device)
         self.epsilon = 0.99
+        self.epsilon_min = 0.01
+        
+
+    def convs(self, x):
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+
+        if self._to_linear == None:
+            self._to_linear = x[0].shape[0] *x[0].shape[1] * x[0].shape[2]
+        return x
 
     def forward(self,x):
         x = T.Tensor(x).to(self.device)
+        x = self.convs(x)
+        x = x.view(-1, self._to_linear)
         x = F.relu(self.fc1(x))
-        x = self.dropout(x)
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
         return x
 
 class Agent():
-    def __init__(self):
+    def __init__(self, explore):
         self.nn = ValueFunc()
         self.name = "A"
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.values = []
+        self.explore = explore
+        self.loss_array = []
     
     def action(self, board):
         states = board.all_possible_next_states(self.name)
         values = []
         rand = np.random.uniform()
         for state in states:
-            converted_state = convertTo1D(state, state_mappings())
+            converted_state = self.convertTo2D(state)
             values.append(self.nn.forward(converted_state))
-        if rand > self.nn.epsilon:
+        if self.explore == True and rand > self.nn.epsilon:
             highest_value = np.argmax(values)
             self.values.append(values[highest_value])
             return states[highest_value]
@@ -84,6 +90,32 @@ class Agent():
             self.values.append(choice)
             return states[index]
 
+
+    def convertTo2D(self, board):
+        """
+        Takes in a board and converts it into 2D tensor form with shape (5, 5, 2)
+        """
+        data = []
+        buildings = []
+        players = []
+        for squares in board.board:
+            for square in squares:
+                temp_lst = []
+                temp_lst2 = []
+                if square.worker == None:
+                    temp_lst.append(square.building_level/4)
+                    temp_lst2.append(0)
+                elif square.worker.name == "A1" or square.worker.name == "A2":
+                    temp_lst.append(square.building_level/4)
+                    temp_lst2.append(1)
+                else:
+                    temp_lst.append(square.building_level/4)
+                    temp_lst2.append(-1)
+            buildings.append(temp_lst)
+            players.append(temp_lst2)
+        data.append(buildings)
+        data.append(players)
+        return T.as_tensor(data)
         
     
     def place_workers(self, board):
@@ -108,6 +140,13 @@ class Agent():
         else:
             r = -1
         return r
+
+    def plot_loss(self):
+        plt.plot(self.loss_array)
+        plt.title("Loss versus iteration")
+        plt.xlabel("Iteration")
+        plt.ylabel("Loss")
+        plt.show()
     
     
 

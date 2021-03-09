@@ -8,6 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from Game import *
+from RandomAgent import *
+
+PATH = "Value_Func_State_Dict_CNN.pt"
 
 def training_loop(agent1, agent2):
     win = None
@@ -20,12 +23,9 @@ def training_loop(agent1, agent2):
         if win != None:
             break
         else:
-            #board.print_board()
-            #print("----------------------------------------------------------------\n")
             board = currentPlayer.action(board)
             win = board.end_turn_check_win(currentPlayer)
             if win != None:
-                #board.print_board()
                 break
 
         if currentPlayer == board.PlayerA:
@@ -39,34 +39,35 @@ class ValueFuncTrainer():
         self.epochs = epochs
         self.batches = batches
         self.agent = agent
-
     
     def train(self):
-        for epoch in tqdm(self.epochs):
-            for batch in self.batches:
-                winner = training_loop(self.agent, RandomAgent())
+        for epoch in tqdm(range(self.epochs)):
+            for batch in range(self.batches):
+                winner = training_loop(self.agent, RandomAgent("B"))
                 while self.agent.values != []:
                     self.agent.nn.optimizer.zero_grad()
                     reward = self.agent.reward(winner)
                     loss = self.agent.nn.loss(self.agent.values.pop(-1), reward)
-                    loss.backwards()
+                    loss.backward()
+                    self.agent.loss_array.append(loss.item())
                     self.agent.nn.optimizer.step()
                     reward = reward * 0.98
-                self.agent.nn.epsilon = self.agent.nn.epsilon * 0.99
+                self.agent.nn.epsilon = self.agent.nn.epsilon * 0.99 if self.agent.nn.epsilon > self.agent.nn.epsilon_min else self.agent.nn.epsilon_min
 
 
-    def save_checkpoint(self,folder,filename):
-        """
-        Save the Neural Network
-        """
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-        
-        filepath = os.path.join(folder,filename)
-        T.save({
-            'state_dict' : self.agent.nn.state_dict(),
-        },filepath) 
+    
 
-trainer = ValueFuncTrainer(5, 5, Agent())
-#trainer.save_checkpoint("C:Santorini", "model1")  
+if os.path.isfile(PATH):
+    print("\n Loading Saved Model")
+    brain = Agent(False)
+    brain.nn.load_state_dict(T.load(PATH))
+    #trainer = ValueFuncTrainer(10, 10, brain)
+
+else:
+    print("\n Training..........")
+    brain = Agent(True)
+    trainer = ValueFuncTrainer(10, 10, brain)
+    trainer.train()
+    T.save(brain.nn.state_dict(),PATH)
+    brain.plot_loss()
              

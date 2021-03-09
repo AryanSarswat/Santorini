@@ -1,9 +1,9 @@
 from Game import *
 
 
-def main():
+def main(agent):
     win = None
-    board = Board()
+    board = Board(agent, HumanPlayer("B"))
     board = board.PlayerA.place_workers(board)
     board = board.PlayerB.place_workers(board)
     #board.intialize_workers([[1,1],[1,3]],[[3,1],[3,3]])
