@@ -313,10 +313,14 @@ class Board():
             possible_builds_2 = [state.valid_building_options(state.PlayerA.workers[1].current_location) for state in possible_next_state_2]
             next_states = []
             #Apply build and return a deepcopy of the new state
-            for build,state in possible_builds_1,possible_builds_1:
-                next_states.append(deepcopy(state).update_building_level(build))
-            for build,state in possible_builds_2,possible_builds_2:
-                next_states.append(deepcopy(state).update_building_level(build))
+            for n in range(len(possible_builds_1)):
+                builds = possible_builds_1[n]
+                for b in builds:
+                    next_states.append(possible_next_state_1[n].update_building_level(b))
+            for n in range(len(possible_builds_2)):
+                builds = possible_builds_2[n]
+                for b in builds:
+                    next_states.append(possible_next_state_2[n].update_building_level(b))
         else:
             #Movements for the workers of Player B
             worker_1_loc = self.PlayerB.workers[0].current_location
@@ -335,10 +339,14 @@ class Board():
             possible_builds_2 = [state.valid_building_options(state.PlayerB.workers[1].current_location) for state in possible_next_state_2]
             next_states = []
             #Apply build and return a deepcopy of the new state
-            for build,state in possible_builds_1,possible_builds_1:
-                next_states.append(deepcopy(state).update_building_level(build))
-            for build,state in possible_builds_2,possible_builds_2:
-                next_states.append(deepcopy(state).update_building_level(build))
+            for n in range(len(possible_builds_1)):
+                builds = possible_builds_1[n]
+                for b in builds:
+                    next_states.append(possible_next_state_1[n].update_building_level(b))
+            for n in range(len(possible_builds_2)):
+                builds = possible_builds_2[n]
+                for b in builds:
+                    next_states.append(possible_next_state_2[n].update_building_level(b))
         return next_states
 
     def end_turn_check_win(self,Player):
