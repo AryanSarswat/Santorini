@@ -59,7 +59,7 @@ class Node():
         """
         children_nodes = list(self.children.values())
         children = list(self.children.keys())
-        UCB_score = list(map(upper_confidence_bound,children))
+        UCB_score = list(map(upper_confidence_bound,children_nodes))
         return children[np.argmax(UCB_score)]
     
     def expand(self):
