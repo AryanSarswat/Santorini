@@ -1,35 +1,45 @@
 from Game import *
 
-
-def main():
+def run_santorini(agent1 = HumanPlayer("A"), agent2 = HumanPlayer("B")):
+    '''
+    should run a game of Santorini, allow choice of AI/human players
+    '''
+    board = Board(agent1, agent2)
     win = None
-    board = Board(HumanPlayer("A"), HumanPlayer("B"))
+    #initial worker placement
     board = board.PlayerA.place_workers(board)
     board = board.PlayerB.place_workers(board)
-    #board.intialize_workers([[1,1],[1,3]],[[3,1],[3,3]])
-    currentPlayer = board.PlayerA
+    current_player = 'player_a'
+    
+    def get_current_board_player(current_player):
+        if current_player == 'player_a':
+            return board.PlayerA
+        else:
+            return board.PlayerB
+
+    #game loop
     while win == None:
-        win = board.start_turn_check_win(currentPlayer)
+        board_player = get_current_board_player(current_player)
+        win = board.start_turn_check_win(board_player)
         if win != None:
             break
         else:
             board.print_board()
             print("----------------------------------------------------------------\n")
-            board = currentPlayer.action(board)
-            win = board.end_turn_check_win(currentPlayer)
+            board = board_player.action(board)
+            #because the board has been replaced, need to retrieve player obj again
+            board_player = get_current_board_player(current_player)
+            win = board.end_turn_check_win(board_player)
             if win != None:
                 board.print_board()
                 break
-
-        if currentPlayer == board.PlayerA:
-            currentPlayer = board.PlayerB
+        
+        #swap players
+        if current_player == 'player_a':
+            current_player = 'player_b'
         else:
-            currentPlayer = board.PlayerA
+            current_player = 'player_a'
+        
     return win
 
-
-
-
-
-if __name__=='__main__':
-    main()
+run_santorini()
