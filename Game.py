@@ -343,7 +343,7 @@ class Board(object):
             pos_moves = []
             for worker in self.PlayerA.workers:
                 location = worker.current_location
-                pos_moves.append(self.possible_worker_movements(location))
+                pos_moves+=self.possible_worker_movements(location)
             if len(pos_moves) == 0:
                 return "B"
             else:
@@ -352,7 +352,7 @@ class Board(object):
             pos_moves = []
             for worker in self.PlayerB.workers:
                 location = worker.current_location
-                pos_moves.append(self.possible_worker_movements(location))
+                pos_moves+=self.possible_worker_movements(location)
             if len(pos_moves) == 0:
                 return "A"
             else:
