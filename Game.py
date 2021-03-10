@@ -321,7 +321,7 @@ class Board(object):
         '''
         Checks if a player's workers have reached level 3
         '''
-        if Player == 1:
+        if Player.name == "A":
             for worker in self.PlayerA.workers:
                 if worker.building_level == 3:
                     return "A wins!"
@@ -339,7 +339,7 @@ class Board(object):
         '''
         Check at the start of the turn to see if other player has won due to no possible worker movements
         '''
-        if Player == 1:
+        if Player.name == "A":
             pos_moves = []
             for worker in self.PlayerA.workers:
                 location = worker.current_location
@@ -364,12 +364,12 @@ class Board(object):
         Return False if game is not over
         """
         #Check if Player 1 Lost or Won
-        if (self.start_turn_check_win(2) != None) or (self.end_turn_check_win(1) != None):
+        if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
             PlayerAWin = True
         else:
             PlayerAWin = False
         #Check if Player 2 lost or won
-        if (self.start_turn_check_win(1) != None) or (self.end_turn_check_win(2) != None):
+        if (self.start_turn_check_win(self.PlayerA) != None) or (self.end_turn_check_win(self.PlayerB) != None):
             PlayerBWin = True
         else:
             PlayerBWin = False

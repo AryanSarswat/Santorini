@@ -31,10 +31,11 @@ def state_mappings():
 class ValueFunc(nn.Module):
     def __init__(self):
         super(ValueFunc, self).__init__()
-        self.conv1 = nn.Conv2d(2, 16, 2)
-        self.conv2 = nn.Conv2d(16, 16, 2)
+        self.conv1 = nn.Conv2d(2, 16, (2,2), stride=1)
+        self.conv2 = nn.Conv2d(16, 16, (2,2), stride=1)
+        self.flat = nn.Flatten()
 
-        x = T.randn(2,5,5).view(-1,2,5,5)
+        x = T.randn(1,2,5,5)
         self._to_linear = None
         self.convs(x)
 
@@ -51,15 +52,16 @@ class ValueFunc(nn.Module):
     def convs(self, x):
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
+        x = self.flat(x)
 
         if self._to_linear == None:
-            self._to_linear = x[0].shape[0] *x[0].shape[1] * x[0].shape[2]
+           self._to_linear = x.shape[1]
         return x
 
     def forward(self,x):
+        x = x.reshape(1,2,5,5)
         x = T.Tensor(x).to(self.device)
         x = self.convs(x)
-        x = x.view(-1, self._to_linear)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
@@ -69,7 +71,7 @@ class Agent():
         self.nn = ValueFunc()
         self.name = "A"
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
-        self.values = []
+        self.state_values = []
         self.explore = explore
         self.loss_array = []
     
@@ -82,26 +84,29 @@ class Agent():
             values.append(self.nn.forward(converted_state))
         if self.explore == True and rand > self.nn.epsilon:
             highest_value = np.argmax(values)
-            self.values.append(values[highest_value])
+            self.state_values.append(values[highest_value])
             return states[highest_value]
         else:
+            if len(values) == 0:
+                board.print_board()
+            print(len(values))
             choice = random.choice(values)
             index = values.index(choice)
-            self.values.append(choice)
+            self.state_values.append(choice)
             return states[index]
 
 
     def convertTo2D(self, board):
         """
-        Takes in a board and converts it into 2D tensor form with shape (5, 5, 2)
+        Takes in a board and converts it into 2D tensor form with shape (2, 5, 5)
         """
         data = []
         buildings = []
         players = []
         for squares in board.board:
+            temp_lst = []
+            temp_lst2 = []
             for square in squares:
-                temp_lst = []
-                temp_lst2 = []
                 if square.worker == None:
                     temp_lst.append(square.building_level/4)
                     temp_lst2.append(0)
