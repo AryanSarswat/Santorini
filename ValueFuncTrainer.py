@@ -46,7 +46,6 @@ class ValueFuncTrainer():
             epoch_loss = 0
             for batch in range(self.batches):
                 winner = training_loop(self.agent, RandomAgent("B"))
-                val_list = len(self.agent.state_values)
                 while self.agent.state_values != []:
                     self.agent.nn.optimizer.zero_grad()
                     reward = self.agent.reward(winner)
@@ -66,6 +65,16 @@ if os.path.isfile(PATH):
     print("\n Loading Saved Model")
     brain = Agent(False)
     brain.nn.load_state_dict(T.load(PATH))
+    count = 0
+    total = 0
+    for i in range(5):
+        winner = training_loop(brain, RandomAgent("B"))
+        if winner == "A":
+            count += 1
+            total += 1
+        else:
+            total += 1
+    print(count/total)
     #trainer = ValueFuncTrainer(10, 10, brain)
 
 else:
