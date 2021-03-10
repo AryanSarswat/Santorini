@@ -46,7 +46,7 @@ class linearFnApproximator():
         '''
 
 ###Code for Running Game
-def run_santorini(agent1 = HumanPlayer("A"), agent2 = RandomAgent("B")):
+def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
     '''
     should run a game of Santorini, allow choice of AI/human players
     '''

@@ -24,7 +24,7 @@
 ---
 * **Week 7 (midterms  season)**
     * Create list of heuristics for V1 of linear fn approximator (optimally play a few more game of Santorini to do this)
-    * Create AI class that can interface with existing game code to play randomly
+    * ~~Create AI class that can interface with existing game code to play randomly~~
 
 * **Week 8**
     * Implement data structure for linear function approximator + means to calculate it given a certain board game state
@@ -71,3 +71,31 @@ Alternative: (simpler to implement but probably even weaker)
 - just keep making random decisions (but could get stuck I think this is a bad idea)
 
 ---
+### **Linear Value Fn Approximation Heuristics**
+---
+* There are 2 ways to lose: run out of moves, or opponent gets to level 3
+* for convenience, consider a move to be moving + building
+
+**Heuristics to Implement**:
+
+* Tier 1 Importance (initial implementation)
+    * options/mobility
+        * num of possible moves that opponent's w1 can make + w2
+        * num of potential moves your w1 can make, w2 can make
+        * 2nd order interactions?
+            * your possible num of moves - opponent num of moves
+        * number of immediate opportunities to go up one level (0->1, 1->2, 2->3)
+        * opportunities for opponent to go up one level
+    * height of workers
+        * 1 worker on level 1
+        * 2 workers on level 1
+        * (and so on for level 2)
+        * (repeat for opponent's workers)
+    * piece distance from centre of board (for you and opponent, each piece)
+    * 2nd order interactions (can trim through feature importance later on)
+
+* Tier 2 Importance (see how the earlier features do first, intended to be for more advanced strategies)
+    * defensive options (will minimax deal w this?
+    * ability to block opponents (defense)
+    * ability to build away from opponents without interference (offense)
+    * forcing opponent to go down levels (trapping)
