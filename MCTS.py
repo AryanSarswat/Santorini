@@ -40,7 +40,7 @@ class Node():
         """
         Select an action based on visit count and temperature
         """
-        visit_counts = np.array([child.visit_count for child in self.children.values()])
+        visit_counts = np.array([child.visit_count for child in self.children.keys()])
         actions = list(self.children.keys())
         if temperature == 0:
             new_state = actions[np.argmax(visit_counts)]
@@ -57,18 +57,17 @@ class Node():
         """
         Selects the child with the highest UCB score
         """
-        children_nodes = list(self.children.values())
-        children = list(self.children.keys())
+        children_nodes = list(self.children.keys())
         UCB_score = list(map(upper_confidence_bound,children_nodes))
-        return children[np.argmax(UCB_score)]
+        return children_nodes[np.argmax(UCB_score)]
     
     def expand(self):
-        """
+        """ 
         Expand Node
         """
-        children = self.state.all_possible_next_states()
+        children = self.state.all_possible_next_states(self.to_play)
         for child in children:
-            self.children[child] = Node(child,parent=self)
+            self.children[Node(child,parent=self)] = child
         pass
 
 class MCTS():
@@ -76,8 +75,8 @@ class MCTS():
     Class for containing the Monte Carlo Tree
     """
 
-    def __init__(self,game,model,args):
-        self.game = game
+    def __init__(self,root,model,args):
+        self.root = root
         self.model = model
         self.args = args
 
@@ -85,7 +84,7 @@ class MCTS():
         root = Node(state)
         root.expand()
 
-        for _ in range(args["Num_Simulations"]):
+        for _ in range(self.args["Num_Simulations"]):
             node = root
             search_path = [node]
             #Select
@@ -113,3 +112,14 @@ class MCTS():
         for node in reversed(search_path):
             node.value_sum += 1 if node.to_play == to_play else -1
             node.visit_count+=1
+    
+    def rollout(self,node):
+        state = node.state
+        if state.is_terminal():
+            return state.reward()
+        else:
+            while not state.is_terminal():
+                action = np.random.choice(state.all_possible_action(state.Player_turn()))
+                state = action
+                if state.is_terminal():
+                    return state.reward()
