@@ -111,3 +111,20 @@ class MCTS():
         """
         pass
     
+    def collapse(self):
+        """
+        Return a list of all the nodes in the MCTS
+        """
+        all_nodes = {}
+        to_explore = list(self.root.children.keys())
+        all_nodes = all_nodes | set(self.root.children.keys())
+        while to_explore != []:
+            current = to_explore.pop()
+            if current.children != {}:
+                childs = list(current.children.keys())
+                to_explore += childs
+                all_nodes = all_nodes | set(childs)
+            else:
+                continue
+
+        return all_nodes
