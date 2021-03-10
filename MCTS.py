@@ -4,8 +4,12 @@ import numpy as np
 
 
 def upper_confidence_bound(node):
+    """
+    Function which return the Upper Confidence Bound
+    C = 2 has been implemented to balance exploratio and exploitation
+    """
     value = node.value()
-    explore = 2*np.sqrt(np.log(node.parent.value())/node.visit_count)
+    explore = 2*np.sqrt(np.log(node.parent.visit_count)/node.visit_count)
     return value+explore
 
 class Node():
@@ -80,10 +84,28 @@ class MCTS():
         self.model = model
         self.args = args
 
+    def backpropagate(self,search_path,value,to_play):
+        """
+        Backpropagate the value of state
+        """
+        for node in reversed(search_path):
+            node.value_sum += 1 if node.to_play == to_play else -1
+            node.visit_count+=1
+    
+    def rollout(self,node):
+        state = node.state
+        if state.is_terminal():
+            return state.reward()
+        else:
+            while not state.is_terminal():
+                action = np.random.choice(state.all_possible_action(state.Player_turn()))
+                state = action
+                if state.is_terminal():
+                    return state.reward()
+    
     def run(self,model,state,to_play):
         root = Node(state)
         root.expand()
-
         for _ in range(self.args["Num_Simulations"]):
             node = root
             search_path = [node]
@@ -104,22 +126,3 @@ class MCTS():
             self.backpropagate(search_path,value,next_state.state.Player_turn())
         
         return root
-
-    def backpropagate(self,search_path,value,to_play):
-        """
-        Backpropagate the value of state
-        """
-        for node in reversed(search_path):
-            node.value_sum += 1 if node.to_play == to_play else -1
-            node.visit_count+=1
-    
-    def rollout(self,node):
-        state = node.state
-        if state.is_terminal():
-            return state.reward()
-        else:
-            while not state.is_terminal():
-                action = np.random.choice(state.all_possible_action(state.Player_turn()))
-                state = action
-                if state.is_terminal():
-                    return state.reward()
