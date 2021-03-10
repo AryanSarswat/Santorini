@@ -364,22 +364,20 @@ class Board(object):
         Return False if game is not over
         """
         #Check if Player 1 Lost or Won
-        if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
-            PlayerAWin = True
-        else:
-            PlayerAWin = False
+        Player = self.Player_turn()
+        if Player == "A":
+            if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
+                PlayerAWin = True
+            else:
+                PlayerAWin = False
+            return PlayerAWin
         #Check if Player 2 lost or won
-        if (self.start_turn_check_win(self.PlayerA) != None) or (self.end_turn_check_win(self.PlayerB) != None):
-            PlayerBWin = True
         else:
-            PlayerBWin = False
-        
-        #Return False if both False
-        if PlayerAWin == PlayerBWin:
-            return False
-        #Return True if somebody won
-        else:
-            return PlayerAWin if PlayerAWin else PlayerBWin
+            if (self.start_turn_check_win(self.PlayerA) != None) or (self.end_turn_check_win(self.PlayerB) != None):
+                PlayerBWin = True
+            else:
+                PlayerBWin = False
+            return PlayerBWin
  
     def reward(self):
         """
