@@ -5,7 +5,7 @@ from random import shuffle
 import torch
 import torch.optim as optim
 
-from MCTS import MCTS
+from MCTS import MCTS,Node
 
 class Trainer:
     def __init__(self, game, model, args):
@@ -47,7 +47,7 @@ class Trainer:
             filename = self.args["checkpoint_path"]
             self.save_checkpoint(folder=os.getcwd(),filename)
 
-    def train(self):
+    def train(self,train_examples):
         pass
 
     def loss_v(self,targets,outputs):

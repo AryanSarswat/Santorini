@@ -156,7 +156,7 @@ class HumanPlayer():
         return board
 
 
-class Board():
+class Board(object):
     '''
     Board class contains
     1) The entire board which is a list of Squares
@@ -180,35 +180,6 @@ class Board():
         self.PlayerA = agent1
         self.PlayerB = agent2
         self.total_building_count = 0
-
-
-    
-    '''def intialize_workers(self,Player_1_Worker_Locations,Player_2_Worker_Locations):
-        
-        Intializes the workers in the board
-        Player_n_Location is a list of coordinates [[row,col],[row,col]] where the workers are placed
-        
-        #Ensure all locations are unique
-        all_locations = Player_1_Worker_Locations + Player_2_Worker_Locations
-        if len(np.unique(all_locations,axis=0)) != len(all_locations):
-            raise Exception("Workers Cannot have the same locations")
-        
-        #Ensure all locations are within the board
-        for coord in all_locations:
-            if (coord[0] > 4 or coord [0] < 0) or (coord[1] > 4 or coord[1] < 0):
-                raise Exception("Incorrect Co-ordinates Entered please enter coordinates within the 5 X 5 board")
-            else:
-                continue
-    
-        #Create a list of all workers:
-        self.Player_1_Workers = [Worker(Player_1_Worker_Locations[0],"W11"),Worker(Player_1_Worker_Locations[1],"W12")]
-        self.Player_2_Workers = [Worker(Player_2_Worker_Locations[0],"W21"),Worker(Player_2_Worker_Locations[1],"W22")]
-        self.workers += self.Player_1_Workers + self.Player_2_Workers
-        #Intialize Workers into the board
-        for worker in self.workers:
-            row,col = worker.current_location
-            self.board[row][col].update_worker(worker)'''
-  
     
     def print_board(self):
         '''
@@ -224,7 +195,6 @@ class Board():
             print(temp_list)
             print("\n")
 
-            
     def valid_building_options(self,location):
         '''
         Returns all the possible building options at certain location
@@ -264,8 +234,6 @@ class Board():
         state.total_building_count+=1
         return state
 
-
-    
     def possible_worker_movements(self,Worker_loc):
         '''
         Returns all list of the possible movements for a worker

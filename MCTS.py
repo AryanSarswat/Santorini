@@ -78,7 +78,6 @@ class MCTS():
     """
     Class for containing the Monte Carlo Tree
     """
-
     def __init__(self,root,model,args):
         self.root = root
         self.model = model
@@ -89,7 +88,7 @@ class MCTS():
         Backpropagate the value of state
         """
         for node in reversed(search_path):
-            node.value_sum += 1 if node.to_play == to_play else -1
+            node.value_sum += (1 if node.to_play == to_play else -1)
             node.visit_count+=1
     
     def rollout(self,node):
@@ -123,6 +122,7 @@ class MCTS():
                 #Game has not ended thus expand the node
                 node.expand()
             
-            self.backpropagate(search_path,value,next_state.state.Player_turn())
+            self.backpropagate(search_path,value,next_state.state.Player_turn()*-1)
         
         return root
+    
