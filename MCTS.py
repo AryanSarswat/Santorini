@@ -105,12 +105,25 @@ class MCTS():
                 if state.is_terminal():
                     return state.reward()
     
-    def run(self,model,state,to_play):
+    def run(self,to_play):
         """
         Perform One iteration of Selection,Expand,Rollout
         """
-        pass
-    
+        if not self.root.is_expanded():
+            self.root.expand()
+        else:
+            search_path = [self.root]
+            current_node = self.root
+            while current_node.is_expanded():
+                current_node = self.root.select_child()
+                search_path.append(current_node)
+            for sim in range(self.args["Num_Simulations"]):
+                reward = self.rollout(current_node)
+                self.backpropagate(search_path,reward,current_node.state.Player_turn())
+            if not current_node.state.is_terminal():
+                current_node.expand()
+        return root
+
     def collapse(self):
         """
         Return a list of all the nodes in the MCTS
