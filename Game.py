@@ -167,7 +167,7 @@ class Board(object):
     
     def __init__(self, agent1, agent2):
         """
-        Overloaded constructor for training with 2 agents
+        Constructor for training with 2 agents
         """
         self.board = []
         for i in range(5):
@@ -363,21 +363,14 @@ class Board(object):
         Returns True if the game is over
         Return False if game is not over
         """
-        #Check if Player 1 Lost or Won
         Player = self.Player_turn()
         if Player == "A":
-            if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
-                PlayerAWin = True
-            else:
-                PlayerAWin = False
-            return PlayerAWin
-        #Check if Player 2 lost or won
-        else:
             if (self.start_turn_check_win(self.PlayerA) != None) or (self.end_turn_check_win(self.PlayerB) != None):
-                PlayerBWin = True
-            else:
-                PlayerBWin = False
-            return PlayerBWin
+                return True
+        elif Player == "B":
+            if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
+                return True        
+        return False
  
     def reward(self):
         """
@@ -386,7 +379,7 @@ class Board(object):
         Return 0 if game is not over
         """
         if self.is_terminal():
-            if (self.start_turn_check_win(2) != None) or (self.end_turn_check_win(1) != None):
+            if (self.start_turn_check_win(self.PlayerB) != None) or (self.end_turn_check_win(self.PlayerA) != None):
                 return 1
             else:
                 return -1
