@@ -107,7 +107,7 @@ class MCTS():
     
     def run(self,model,state,to_play):
         """
-        Perform One iteration of Select,Expand,Rollout
+        Perform One iteration of Selection,Expand,Rollout
         """
         pass
     
