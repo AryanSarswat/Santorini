@@ -92,6 +92,9 @@ class MCTS():
             node.visit_count+=1
     
     def rollout(self,node):
+        """
+        Perform a rollout
+        """
         state = node.state
         if state.is_terminal():
             return state.reward()
@@ -103,26 +106,25 @@ class MCTS():
                     return state.reward()
     
     def run(self,model,state,to_play):
-        root = Node(state)
-        root.expand()
-        for _ in range(self.args["Num_Simulations"]):
-            node = root
-            search_path = [node]
-            #Select
-            while node.is_expanded():
-                node = node.select_child()
-                search_path.append(node)
-            
-            parent = search_path[-2]
-            state = parent.state
-            next_state = node
-            value = next_state.state.reward()
-
-            if value == 0:
-                #Game has not ended thus expand the node
-                node.expand()
-            
-            self.backpropagate(search_path,value,next_state.state.Player_turn()*-1)
-        
-        return root
+        """
+        Perform One iteration of Select,Expand,Rollout
+        """
+        pass
     
+    def collapse(self):
+        """
+        Return a list of all the nodes in the MCTS
+        """
+        all_nodes = {}
+        to_explore = list(self.root.children.keys())
+        all_nodes = all_nodes | set(self.root.children.keys())
+        while to_explore != []:
+            current = to_explore.pop()
+            if current.children != {}:
+                childs = list(current.children.keys())
+                to_explore += childs
+                all_nodes = all_nodes | set(childs)
+            else:
+                continue
+
+        return all_nodes
