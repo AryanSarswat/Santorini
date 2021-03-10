@@ -45,7 +45,7 @@ class ValueFunc(nn.Module):
         self.loss = nn.MSELoss()
         self.device = T.device('cpu')
         self.to(self.device)
-        self.epsilon = 0.99
+        self.epsilon = 0.01
         self.epsilon_min = 0.01
         
 
@@ -83,13 +83,12 @@ class Agent():
             converted_state = self.convertTo2D(state)
             values.append(self.nn.forward(converted_state))
         if self.explore == True and rand > self.nn.epsilon:
-            highest_value = np.argmax(values)
+            if len(values) == 0:
+                board.print_board()
+            highest_value = T.argmax(T.FloatTensor(values))
             self.state_values.append(values[highest_value])
             return states[highest_value]
         else:
-            if len(values) == 0:
-                board.print_board()
-            print(len(values))
             choice = random.choice(values)
             index = values.index(choice)
             self.state_values.append(choice)

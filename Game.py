@@ -324,13 +324,13 @@ class Board(object):
         if Player.name == "A":
             for worker in self.PlayerA.workers:
                 if worker.building_level == 3:
-                    return "A wins!"
+                    return "A"
                 else:
                     continue
         else:
             for worker in self.PlayerB.workers:
                 if worker.building_level == 3:
-                    return "B wins!"
+                    return "B"
                 else:
                     continue
         return None
@@ -345,7 +345,7 @@ class Board(object):
                 location = worker.current_location
                 pos_moves.append(self.possible_worker_movements(location))
             if len(pos_moves) == 0:
-                return "B wins!"
+                return "B"
             else:
                 return None
         else:
@@ -354,7 +354,7 @@ class Board(object):
                 location = worker.current_location
                 pos_moves.append(self.possible_worker_movements(location))
             if len(pos_moves) == 0:
-                return "A wins!"
+                return "A"
             else:
                 return None
     

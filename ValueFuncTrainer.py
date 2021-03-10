@@ -41,19 +41,23 @@ class ValueFuncTrainer():
         self.agent = agent
     
     def train(self):
+        count = 0
         for epoch in tqdm(range(self.epochs)):
             epoch_loss = 0
             for batch in range(self.batches):
                 winner = training_loop(self.agent, RandomAgent("B"))
-                while self.agent.values != []:
+                val_list = len(self.agent.state_values)
+                while self.agent.state_values != []:
                     self.agent.nn.optimizer.zero_grad()
                     reward = self.agent.reward(winner)
-                    loss = self.agent.nn.loss(self.agent.values.pop(-1), reward)
+                    loss = self.agent.nn.loss(self.agent.state_values.pop(-1), T.Tensor([[reward]]))
                     loss.backward()
                     epoch_loss += loss.item()
                     self.agent.nn.optimizer.step()
                     reward = reward * 0.98
                 self.agent.nn.epsilon = self.agent.nn.epsilon * 0.99 if self.agent.nn.epsilon > self.agent.nn.epsilon_min else self.agent.nn.epsilon_min
+                print(count)
+                count+=1
             self.agent.loss_array.append(epoch_loss)
 
     
@@ -66,7 +70,6 @@ if os.path.isfile(PATH):
 
 else:
     print("\n Training..........")
-    print(T.__version__)
     brain = Agent(True)
     trainer = ValueFuncTrainer(10, 10, brain)
     trainer.train()
