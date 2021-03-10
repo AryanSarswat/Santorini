@@ -429,10 +429,10 @@ class Board():
     
     def Player_turn(self):
         """
-        Return 1 if it is Player A's turn
-        Return -1 if it is Player B's Turn
+        Return A if it is Player A's turn
+        Return B if it is Player B's Turn
         """
         if (self.total_building_count%2) == 0:
-            return 1
+            return "A"
         else:
-            return -1
+            return "B"
