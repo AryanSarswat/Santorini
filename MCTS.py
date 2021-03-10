@@ -1,8 +1,3 @@
-from Game import *
-from collections import defaultdict
-import numpy as np
-
-
 def upper_confidence_bound(node):
     """
     Function which return the Upper Confidence Bound
@@ -88,7 +83,8 @@ class MCTS():
         Backpropagate the value of state
         """
         for node in reversed(search_path):
-            node.value_sum += (1 if node.to_play == to_play else -1)
+            val = 1 if node.to_play == to_play else -1
+            node.value_sum += val*value
             node.visit_count+=1
     
     def rollout(self,node):
@@ -100,7 +96,8 @@ class MCTS():
             return state.reward()
         else:
             while not state.is_terminal():
-                action = np.random.choice(state.all_possible_action(state.Player_turn()))
+                actions = state.all_possible_next_states(state.Player_turn())
+                action = np.random.choice(actions)                                 
                 state = action
                 if state.is_terminal():
                     return state.reward()
@@ -122,13 +119,13 @@ class MCTS():
                 self.backpropagate(search_path,reward,current_node.state.Player_turn())
             if not current_node.state.is_terminal():
                 current_node.expand()
-        return root
+        return self.root
 
     def collapse(self):
         """
         Return a list of all the nodes in the MCTS
         """
-        all_nodes = {}
+        all_nodes = set()
         to_explore = list(self.root.children.keys())
         all_nodes = all_nodes | set(self.root.children.keys())
         while to_explore != []:
