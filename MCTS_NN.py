@@ -3,16 +3,17 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-class Santorni(nn.Module):
-    def __init__(self, device):
-        super(Santorni, self).__init__()
-        self.device = device
-        self.size = (5,5)
-        self.fc1 = nn.Linear(in_features=self.size, out_features=32)
-        self.fc2 = nn.Linear(in_features=32, out_features=64)
+import torch.optim as optim
+class Neural_Network(nn.Module):
+    def __init__(self):
+        super(Neural_Network, self).__init__()
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.fc1 = nn.Linear(in_features=325, out_features=256)
+        self.fc2 = nn.Linear(in_features=256, out_features=64)
         self.value_head = nn.Linear(in_features=64, out_features=1)
-        self.to(device)
+        self.to(self.device)
+        self.optimizer = optim.Adam(self.parameters(),lr=1e-2)
+        self.loss = nn.MSELoss()
 
     def forward(self, x):
         """
