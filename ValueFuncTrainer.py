@@ -55,8 +55,9 @@ class ValueFuncTrainer():
                     self.agent.nn.optimizer.step()
                     reward = reward * 0.98
                 self.agent.nn.epsilon = self.agent.nn.epsilon * 0.99 if self.agent.nn.epsilon > self.agent.nn.epsilon_min else self.agent.nn.epsilon_min
-                print(count)
                 count+=1
+                print("Count = " + str(count))
+                
             self.agent.loss_array.append(epoch_loss)
 
     
@@ -80,7 +81,7 @@ if os.path.isfile(PATH):
 else:
     print("\n Training..........")
     brain = Agent(True)
-    trainer = ValueFuncTrainer(10, 10, brain)
+    trainer = ValueFuncTrainer(2, 10, brain)
     trainer.train()
     T.save(brain.nn.state_dict(),PATH)
     brain.plot_loss()
