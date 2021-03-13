@@ -82,6 +82,7 @@ class Agent():
         for state in states:
             converted_state = self.convertTo2D(state)
             values.append(self.nn.forward(converted_state))
+        print(len(values))
         if self.explore == False and rand > self.nn.epsilon:
             highest_value = T.argmax(T.FloatTensor(values))
             self.state_values.append(values[highest_value])
