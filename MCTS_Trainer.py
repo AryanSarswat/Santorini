@@ -5,31 +5,20 @@ import matplotlib.pyplot as plt
 import torch
 import torch.optim as optim
 from sklearn.preprocessing import OneHotEncoder
+from Game import HumanPlayer,Board
+from MCTS_NN import Neural_Network
+from MCTS import MCTS,Node
+from RandomAgent import RandomAgent
 
-class Agent():
-    def __init__(self, game, model, args):
-        self.game = game
+class MCTS_Agent(HumanPlayer):
+    def __init__(self):
+        super().__init__()
         self.nn = Neural_Network()
-        self.args = args
-        self.mcts = MCTS(Node(self.game), self.nn, self.args)
-        self.name = "A"
-        self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
-        self.loss_array = []
-        self.mappings = mappings = {
-                                    (0,None) : 0,
-                                    (1,None) : 1,
-                                    (2,None) : 2,
-                                    (3,None) : 3,
-                                    (4,None) : 4,
-                                    (0,'A') : 5,
-                                    (1,'A') : 6,
-                                    (2,'A') : 7,
-                                    (3,'A') : 8,
-                                    (0,'B') : 9,
-                                    (1,'B') : 10,
-                                    (2,'B') : 11,
-                                    (3,'B') : 12,
-                                }
+        try:
+            self.nn.load_state_dict(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI")
+            self.nn.eval()
+        except:
+            print("Model Dictionary not found")
 
     def place_workers(self, board):
         """
@@ -58,6 +47,25 @@ class Agent():
             values.append(self.nn.forward(converted_state))
         return states[np.argmax(values)]
            
+
+
+
+class Trainer():
+    def __init__(self,args):
+        self.args = args
+        self.state = Board()
+        self.training_examples = []
+        self.mcts = None
+        self.nn = Neural_Network()
+    
+    def initialize_mcts(self):
+        RandA = RandomAgent("A")
+        RandB = RandomAgent("B")
+        RandA.place_workers(self.state)
+        RandB.place_workers(self.state)
+        root = Node(self.state)
+        self.mcts = MCTS(root,self.nn,self.args)
+
     def convert_nodes_to_input(self,set_of_nodes):
         """
         Converts a set of nodes to a list of one hot encoded boards
@@ -88,9 +96,14 @@ class Agent():
         Perform iteration of MCTS and return a collapsed tree for training
         """
         print("Generating Data")
-        for i in range(self.args['numIters']):
-            self.mcts.run(self.mcts.root.state.Player_turn())
-        training_data = self.mcts.collapse()
+        training_data = []
+        for i in range(self.args['depth']):
+            root = self.mcts.breadth_run()
+            app = list(self.mcts.collapse())
+            training_data+=app
+            child = root.select_child()
+            self.mcts = MCTS(child,self.nn,self.args)
+
         return training_data
     
     def learn(self,train_examples):
