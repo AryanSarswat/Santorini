@@ -121,6 +121,21 @@ class MCTS():
                 current_node.expand()
         return self.root
 
+    def breadth_run(self):
+        """
+        Performs a rollout for all child nodes regardless of UCB score
+        """
+        if not self.root.is_expanded():
+            self.root.expand()
+        child_nodes = list(self.root.children)
+        for child in child_nodes:
+            search_path = [self.root,child]
+            for sim in range(self.args["Num_Simulations"]):
+                reward = self.rollout(child)
+                self.backpropagate(search_path,reward,child.state.Player_turn())
+        return self.root
+                
+
     def collapse(self):
         """
         Return a list of all the nodes in the MCTS

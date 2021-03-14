@@ -51,12 +51,12 @@ class MCTS_Agent(HumanPlayer):
 
 
 class Trainer():
-    def __init__(self,args):
+    def __init__(self,args,NN = None):
         self.args = args
         self.state = Board()
         self.training_examples = []
         self.mcts = None
-        self.nn = Neural_Network()
+        self.nn = NN if NN != None else Neural_Network()
     
     def initialize_mcts(self):
         RandA = RandomAgent("A")
