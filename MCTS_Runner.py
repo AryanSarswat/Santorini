@@ -12,11 +12,12 @@ args = {
 }
 
 
-
+"""
 AI = Trainer(args)
 AI.initialize_mcts()
 AI.train()
 
+"""
 
 """
 model = Neural_Network().to(torch.device("cuda:0" if torch.cuda.is_available() else "cpu"))

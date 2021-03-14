@@ -161,7 +161,7 @@ class Trainer():
         if not os.path.exists(folder):
             os.mkdir(folder)
         
-        filepath = os.path.join(folder,"MCTS_AI2")
+        filepath = os.path.join(folder,"MCTS_AI")
         torch.save(self.nn.state_dict(),filepath)
    
     
