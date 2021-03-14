@@ -4,8 +4,6 @@ from random import shuffle
 import matplotlib.pyplot as plt
 import torch
 import torch.optim as optim
-from MCTS_NN import Neural_Network
-from MCTS import MCTS,Node
 from sklearn.preprocessing import OneHotEncoder
 
 class Agent():
@@ -13,7 +11,7 @@ class Agent():
         self.game = game
         self.nn = Neural_Network()
         self.args = args
-        self.mcts = MCTS(self.game, self.model, self.args)
+        self.mcts = MCTS(Node(self.game), self.nn, self.args)
         self.name = "A"
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.loss_array = []
@@ -89,8 +87,9 @@ class Agent():
         """
         Perform iteration of MCTS and return a collapsed tree for training
         """
+        print("Generating Data")
         for i in range(self.args['numIters']):
-            self.mcts.run()
+            self.mcts.run(self.mcts.root.state.Player_turn())
         training_data = self.mcts.collapse()
         return training_data
     
@@ -98,6 +97,7 @@ class Agent():
         """
         Learn using One MCTS tree
         """
+        print("Learning from Data")
         boards = self.convert_nodes_to_input(train_examples)
         target_values = [node.value() for node in train_examples]
         data = [(boards[i],target_values[i]) for i in range(len(boards))]
