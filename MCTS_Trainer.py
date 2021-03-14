@@ -53,16 +53,14 @@ class MCTS_Agent(HumanPlayer):
 class Trainer():
     def __init__(self,args,NN = None):
         self.args = args
-        self.state = Board()
+        self.state = Board(RandomAgent("A"),RandomAgent("B"))
         self.training_examples = []
         self.mcts = None
         self.nn = NN if NN != None else Neural_Network()
     
     def initialize_mcts(self):
-        RandA = RandomAgent("A")
-        RandB = RandomAgent("B")
-        RandA.place_workers(self.state)
-        RandB.place_workers(self.state)
+        self.state.PlayerA.place_workers(self.state)
+        self.state.PlayerB.place_workers(self.state)
         root = Node(self.state)
         self.mcts = MCTS(root,self.nn,self.args)
 
