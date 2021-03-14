@@ -58,6 +58,7 @@ class Trainer():
         self.training_examples = []
         self.mcts = None
         self.nn = NN if NN != None else Neural_Network()
+        self.loss_array = []
         self.mappings = {
                             (0,None) : 0,
                             (1,None) : 1,
@@ -73,6 +74,7 @@ class Trainer():
                             (2,'B') : 11,
                             (3,'B') : 12,
                                             }
+        self.nn.to(self.nn.device)
     
     def initialize_mcts(self):
         self.state.PlayerA.place_workers(self.state)
@@ -134,7 +136,8 @@ class Trainer():
         for i in range(len(boards)):
             target = torch.tensor(data[i][1],dtype=torch.float32).to(self.nn.device)
             target = target.view(1)
-            pred = self.nn.forward(data[i][0]).to(self.nn.device)
+            temp = torch.from_numpy(data[i][0]).float().to(self.nn.device)
+            pred = self.nn.forward(temp).to(self.nn.device)
             loss = self.nn.loss(pred,target)
             self.nn.optimizer.zero_grad()
             loss.backward()
@@ -158,10 +161,9 @@ class Trainer():
         if not os.path.exists(folder):
             os.mkdir(folder)
         
-        filepath = os.path.join(folder,"MCTS_AI")
-        torch.save({
-            'state_dict' : self.nn.state_dict(),
-        },filepath)
+        filepath = os.path.join(folder,"MCTS_AI2")
+        torch.save(self.nn.state_dict(),filepath)
+   
     
     def plot_loss(self):
         plt.plot(self.loss_array)
