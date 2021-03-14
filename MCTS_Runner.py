@@ -4,10 +4,9 @@ from MCTS_Trainer import MCTS_Agent,Trainer
 from MCTS_NN import Neural_Network
 
 args = {
-    'numTrees': 10,                                # Total number of training iterations
-    'Num_Simulations': 50,                     # Total number of MCTS simulations to run when deciding on a move to play
+    'Num_Simulations': 10,                     # Total number of MCTS simulations to run when deciding on a move to play
     'epochs': 1,
-    'depth' : 3,                                    # Number of epochs of training per iteration
+    'depth' : 2,                                    # Number of epochs of training per iteration
     'checkpoint_path': r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator"
 }
 

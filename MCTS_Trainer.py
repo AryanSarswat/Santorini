@@ -58,6 +58,21 @@ class Trainer():
         self.training_examples = []
         self.mcts = None
         self.nn = NN if NN != None else Neural_Network()
+        self.mappings = {
+                            (0,None) : 0,
+                            (1,None) : 1,
+                            (2,None) : 2,
+                            (3,None) : 3,
+                            (4,None) : 4,
+                            (0,'A') : 5,
+                            (1,'A') : 6,
+                            (2,'A') : 7,
+                            (3,'A') : 8,
+                            (0,'B') : 9,
+                            (1,'B') : 10,
+                            (2,'B') : 11,
+                            (3,'B') : 12,
+                                            }
     
     def initialize_mcts(self):
         self.state.PlayerA.place_workers(self.state)
@@ -73,7 +88,7 @@ class Trainer():
         boards = [i.board for i in states]
         
         enc = OneHotEncoder(handle_unknown='ignore')
-        vals = np.array(list(mappings.values())).reshape(-1,1)
+        vals = np.array(list(self.mappings.values())).reshape(-1,1)
         enc.fit(vals)
         
         in_nn = []
@@ -96,12 +111,13 @@ class Trainer():
         """
         print("\nGenerating Data")
         training_data = []
-        for i in range(self.args['depth']):
-            root = self.mcts.breadth_run()
-            app = list(self.mcts.collapse())
+        temp_MCTS = self.mcts
+        node = self.mcts.root
+        for i in tqdm(range(self.args['depth'])):
+            root = temp_MCTS.breadth_run(node)
+            app = list(temp_MCTS.collapse(root))
             training_data+=app
-            child = root.select_child()
-            self.mcts = MCTS(child,self.nn,self.args)
+            node = root.select_child()
 
         return training_data
     
@@ -113,7 +129,7 @@ class Trainer():
         boards = self.convert_nodes_to_input(train_examples)
         target_values = [node.value() for node in train_examples]
         data = [(boards[i],target_values[i]) for i in range(len(boards))]
-        data = np.random.shuffle(data)
+        np.random.shuffle(data)
         
         for i in range(len(boards)):
             target = torch.tensor(data[i][1],dtype=torch.float32).to(self.nn.device)
