@@ -9,6 +9,7 @@ from Game import HumanPlayer,Board
 from MCTS_NN import Neural_Network
 from MCTS import MCTS,Node
 from RandomAgent import RandomAgent
+from tqdm import tqdm
 
 class MCTS_Agent(HumanPlayer):
     def __init__(self):
@@ -128,7 +129,7 @@ class Trainer():
 
     def train(self):
         self.loss_array = []
-        for i in range(self.args["epochs"]):
+        for i in tqdm(self.args["epochs"]):
             training_examples = self.generate_training_data()
             self.learn(training_examples)
         self.save_checkpoint(r'C:\Users\sarya\Documents\GitHub\Master-Procrastinator')
