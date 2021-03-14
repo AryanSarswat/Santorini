@@ -94,7 +94,7 @@ class Trainer():
         """
         Perform iteration of MCTS and return a collapsed tree for training
         """
-        print("Generating Data")
+        print("\nGenerating Data")
         training_data = []
         for i in range(self.args['depth']):
             root = self.mcts.breadth_run()
@@ -109,7 +109,7 @@ class Trainer():
         """
         Learn using One MCTS tree
         """
-        print("Learning from Data")
+        print("\nLearning from Data")
         boards = self.convert_nodes_to_input(train_examples)
         target_values = [node.value() for node in train_examples]
         data = [(boards[i],target_values[i]) for i in range(len(boards))]
@@ -129,7 +129,7 @@ class Trainer():
 
     def train(self):
         self.loss_array = []
-        for i in tqdm(self.args["epochs"]):
+        for i in tqdm(range(self.args["epochs"])):
             training_examples = self.generate_training_data()
             self.learn(training_examples)
         self.save_checkpoint(r'C:\Users\sarya\Documents\GitHub\Master-Procrastinator')

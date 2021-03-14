@@ -1,3 +1,5 @@
+import numpy as np
+
 def upper_confidence_bound(node):
     """
     Function which return the Upper Confidence Bound
