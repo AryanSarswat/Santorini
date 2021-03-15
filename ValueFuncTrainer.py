@@ -62,19 +62,21 @@ class ValueFuncTrainer():
 
     
 
-if os.path.isfile(PATH):
+'''if os.path.isfile(PATH):
     print("\n Loading Saved Model")
     brain = Agent(False)
     brain.nn.load_state_dict(T.load(PATH))
+    brain.nn.eval()
     count = 0
     total = 0
-    for i in range(5):
-        winner = training_loop(brain, RandomAgent("B"))
-        if winner == "A":
-            count += 1
-            total += 1
-        else:
-            total += 1
+    with T.no_grad():
+        for i in range(10):
+            winner = training_loop(brain, RandomAgent("B"))
+            if winner == "A":
+                count += 1
+                total += 1
+            else:
+                total += 1
     print(count/total)
     #trainer = ValueFuncTrainer(10, 10, brain)
 
@@ -84,5 +86,6 @@ else:
     trainer = ValueFuncTrainer(2, 10, brain)
     trainer.train()
     T.save(brain.nn.state_dict(),PATH)
-    brain.plot_loss()
+    brain.plot_loss()'''
              
+print(T.cuda.is_available())
