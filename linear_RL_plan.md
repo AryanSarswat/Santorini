@@ -23,7 +23,7 @@
 ### **Tasks and Timeline**
 ---
 * **Week 7 (midterms  season)**
-    * Create list of heuristics for V1 of linear fn approximator (optimally play a few more game of Santorini to do this)
+    * ~~Create list of heuristics for V1 of linear fn approximator (optimally play a few more game of Santorini to do this)~~
     * ~~Create AI class that can interface with existing game code to play randomly~~
 
 * **Week 8**
@@ -75,6 +75,7 @@ Alternative: (simpler to implement but probably even weaker)
 ---
 * There are 2 ways to lose: run out of moves, or opponent gets to level 3
 * for convenience, consider a move to be moving + building
+* remember to **normalize** feature values
 
 **Heuristics to Implement**:
 
@@ -82,20 +83,20 @@ Alternative: (simpler to implement but probably even weaker)
     * options/mobility
         * num of possible moves that opponent's w1 can make + w2
         * num of potential moves your w1 can make, w2 can make
-        * 2nd order interactions?
-            * your possible num of moves - opponent num of moves
         * number of immediate opportunities to go up one level (0->1, 1->2, 2->3)
         * opportunities for opponent to go up one level
-    * height of workers
-        * 1 worker on level 1
-        * 2 workers on level 1
-        * (and so on for level 2)
-        * (repeat for opponent's workers)
-    * piece distance from centre of board (for you and opponent, each piece)
-    * 2nd order interactions (can trim through feature importance later on)
+    * position strength
+        * height of workers
+            * num of workers on level 1
+            * (and so on for level 2)
+            * (repeat for opponent's workers)
+        * piece distance from centre of board (for you and opponent, each piece)
 
 * Tier 2 Importance (see how the earlier features do first, intended to be for more advanced strategies)
+    * whether one of your workers is totally blocked
     * defensive options (will minimax deal w this?
     * ability to block opponents (defense)
     * ability to build away from opponents without interference (offense)
     * forcing opponent to go down levels (trapping)
+    * 2nd order interactions (can trim through feature importance later on)
+    * instead of num workers on specific level, have specific feature for 1 worker, 2 workers
