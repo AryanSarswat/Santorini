@@ -32,7 +32,9 @@ class ValueFunc(nn.Module):
     def __init__(self):
         super(ValueFunc, self).__init__()
         self.conv1 = nn.Conv2d(2, 16, (2,2), stride=1)
+        self.batch1 = nn.BatchNorm2d(16)
         self.conv2 = nn.Conv2d(16, 16, (2,2), stride=1)
+        self.batch2 = nn.BatchNorm2d(16)
         self.flat = nn.Flatten()
 
         x = T.randn(1,2,5,5)
@@ -43,7 +45,7 @@ class ValueFunc(nn.Module):
         self.fc2 = nn.Linear(32, 1)
         self.optimizer = optim.Adam(self.parameters(),lr=0.01)
         self.loss = nn.MSELoss()
-        self.device = T.device('cpu')
+        self.device = T.device('cuda:0')
         self.to(self.device)
         self.epsilon = 0.99
         self.epsilon_min = 0.01
@@ -51,7 +53,9 @@ class ValueFunc(nn.Module):
 
     def convs(self, x):
         x = F.relu(self.conv1(x))
+        x = self.batch1(x)
         x = F.relu(self.conv2(x))
+        x = self.batch2(x)
         x = self.flat(x)
 
         if self._to_linear == None:
@@ -59,8 +63,8 @@ class ValueFunc(nn.Module):
         return x
 
     def forward(self,x):
-        x = x.reshape(1,2,5,5)
-        x = T.Tensor(x).to(self.device)
+        x = x.reshape(1,2,5,5).to(self.device)
+        x = T.cuda.FloatTensor(x).to(self.device)
         x = self.convs(x)
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
@@ -69,7 +73,7 @@ class ValueFunc(nn.Module):
 class Agent():
     def __init__(self, explore):
         self.nn = ValueFunc()
-        self.name = "A"
+        self.name = "B"
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.state_values = []
         self.explore = explore
@@ -81,8 +85,7 @@ class Agent():
         rand = np.random.uniform()
         for state in states:
             converted_state = self.convertTo2D(state)
-            values.append(self.nn.forward(converted_state))
-        print(len(values))
+            values.append(self.nn.forward(converted_state).to(self.nn.device))
         if self.explore == False and rand > self.nn.epsilon:
             highest_value = T.argmax(T.FloatTensor(values))
             self.state_values.append(values[highest_value])
@@ -110,10 +113,10 @@ class Agent():
                     temp_lst2.append(0)
                 elif square.worker.name == "A1" or square.worker.name == "A2":
                     temp_lst.append(square.building_level/4)
-                    temp_lst2.append(1)
+                    temp_lst2.append(-1)
                 else:
                     temp_lst.append(square.building_level/4)
-                    temp_lst2.append(-1)
+                    temp_lst2.append(1)
             buildings.append(temp_lst)
             players.append(temp_lst2)
         data.append(buildings)
@@ -138,7 +141,7 @@ class Agent():
         return board
 
     def reward(self, win):
-        if win == "A":
+        if win == self.name:
             r = 1
         else:
             r = -1

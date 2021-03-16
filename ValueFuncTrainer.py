@@ -10,7 +10,7 @@ from tqdm import tqdm
 from Game import *
 from RandomAgent import *
 
-PATH = "Value_Func_State_Dict_CNN.pt"
+PATH = "Value_Func_State_Dict_CNN_B.pt"
 
 def training_loop(agent1, agent2):
     win = None
@@ -44,25 +44,25 @@ class ValueFuncTrainer():
         count = 0
         for epoch in tqdm(range(self.epochs)):
             epoch_loss = 0
-            for batch in range(self.batches):
-                winner = training_loop(self.agent, RandomAgent("B"))
+            for batch in tqdm(range(self.batches)):
+                winner = training_loop(RandomAgent("A"), self.agent)
                 while self.agent.state_values != []:
                     self.agent.nn.optimizer.zero_grad()
                     reward = self.agent.reward(winner)
-                    loss = self.agent.nn.loss(self.agent.state_values.pop(-1), T.Tensor([[reward]]))
+                    loss = self.agent.nn.loss(self.agent.state_values.pop(-1), T.cuda.FloatTensor([[reward]])).to(self.agent.nn.device)
                     loss.backward()
                     epoch_loss += loss.item()
                     self.agent.nn.optimizer.step()
                     reward = reward * 0.98
                 self.agent.nn.epsilon = self.agent.nn.epsilon * 0.99 if self.agent.nn.epsilon > self.agent.nn.epsilon_min else self.agent.nn.epsilon_min
                 count+=1
-                print("Count = " + str(count))
-                
+                #print("Count = " + str(count))
+            print(epoch_loss)    
             self.agent.loss_array.append(epoch_loss)
 
     
 
-'''if os.path.isfile(PATH):
+if os.path.isfile(PATH):
     print("\n Loading Saved Model")
     brain = Agent(False)
     brain.nn.load_state_dict(T.load(PATH))
@@ -70,9 +70,9 @@ class ValueFuncTrainer():
     count = 0
     total = 0
     with T.no_grad():
-        for i in range(10):
-            winner = training_loop(brain, RandomAgent("B"))
-            if winner == "A":
+        for i in range(1):
+            winner = training_loop(RandomAgent("A"), brain)
+            if winner == "B":
                 count += 1
                 total += 1
             else:
@@ -83,9 +83,12 @@ class ValueFuncTrainer():
 else:
     print("\n Training..........")
     brain = Agent(True)
-    trainer = ValueFuncTrainer(2, 10, brain)
+    trainer = ValueFuncTrainer(100, 100, brain)
     trainer.train()
     T.save(brain.nn.state_dict(),PATH)
-    brain.plot_loss()'''
+    #print(trainer.agent.nn.epsilon)
+    brain.plot_loss()
              
-print(T.cuda.is_available())
+#print(T.cuda.is_available())
+#print(os.environ.get('CUDA_PATH'))
+#print(T.__version__)
