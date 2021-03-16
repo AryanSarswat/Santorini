@@ -1,6 +1,39 @@
 from Game import *
-import random
+import random, math
 import numpy as np
+
+#figure out out to organize classes in separate files later
+class searchTree():
+    '''
+    Parameters:
+    board - board object, acts as root node for search tree
+    current_player - whether PlayerA or PlayerB is currently going to make a move
+    depth 
+    - how deep should the search tree go (each move = one lvl deeper regardless of player)
+    - even number makes more sense, so that terminal nodes are at same player acting again)
+    
+    each searchTree contains a root_node, as well as all child node objects extending from it
+    (basically more searchTree objects)
+
+    '''
+    def __init__(self, board, current_player, depth): 
+        self.depth = depth
+        self.root_node = board
+        self.current_player = current_player
+        #generate list of child nodes
+
+    def find_child_nodes(self):
+        # this function uses the find all possible moves to get all possible child nodes
+        # recursively call searchTree(new_board, next player, and depth-1) and add to a list
+
+class minimaxTree(searchTree):
+    '''
+    adds minimax values to indiv nodes of search tree, based on search depth.
+    When not at win state (this needs to be checked with functions), use linear fn approximator
+    Otherwise, if win state set value to math.inf to ensure this gets picked
+    '''
+
+#finally, need another class for the RL algorithm itself (TD lambda? to train, 
 
 class RandomAgent():
     '''
@@ -37,6 +70,7 @@ class RandomAgent():
 
 class linearFnApproximator():
     def __init__(self, weights):
+        #should board be in init?
 
     def calculate_state_value(self, board, name):
         '''
@@ -122,23 +156,10 @@ class linearFnApproximator():
 class linearRlAgent(RandomAgent):
     '''
     basic RL agent using a linear function approximator and TD learning
+    epsilon greedy policy too?
     '''
     def __init__(self, name):
         super().__init__(name)
-
-
-    def  
-
-'''
-class linearFnApproximator():
-    def __init__(self):
-        self.feature_values
-        self.weights = 
-        self.state_values
-    def calculate_features(self, state):
-        
-        takes in a given board state and returns feature values.
-        '''
 
 ###Code for Running Game
 def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
