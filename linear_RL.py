@@ -104,21 +104,23 @@ class LinearFnApproximator():
     inputs: board object, weights vector (1-dim numpy array), current_player ('A' or 'B')
     attributes: state_value (positive for A, negative for B)
     '''
-    def __init__(self, board, weights = [1 for i in range(8)]):
-        self.board = board
+    def __init__(self, board, weights = [1,-1,1,1,1,-1,-1,-1,0,1,1,0,-1,-1,-1,1]):
         self.weights = weights
-        self.players = [self.board.PlayerA, self.board.PlayerB]
+        self.BOARD = board
+        self.PLAYER_CODES = ["A","B"]
+        self.PLAYERS = [self.BOARD.PlayerA, self.BOARD.PlayerB]
         self.NUM_WORKERS = 2
         self.CENTER_X, self.CENTER_Y = 2,2 #center coords
         self.BOARD_SIZE = 5
         self.MAX_POSSIBLE_MOVES = 100 #not proven, but close enough
-        #self.state_value = self.calculate_state_value(self)
+        self.state_value = self.calculate_state_value()
 
     def __repr__(self):
-        position_features = self.calculate_position_features()
         mobility_features = self.calculate_mobility_features()
-        return f'Here are the position features: {position_features}\
-        \n and the mobility features: {mobility_features}'
+        position_features = self.calculate_position_features()
+        return f'Here are the mobility features: {mobility_features}\
+        \n and the position features: {position_features}\
+        \n the value of this state is {self.state_value}'
 
     def calculate_state_value(self):
         '''
@@ -145,36 +147,47 @@ class LinearFnApproximator():
 
         features normalized from 0 to 1
         '''
-        playerA_possible_moves = self.board.all_possible_next_states(self.players[0].name)
-        playerB_possible_moves = self.board.all_possible_next_states(self.players[1].name)
+        playerA_possible_moves = self.BOARD.all_possible_next_states(self.PLAYERS[0].name)
+        playerB_possible_moves = self.BOARD.all_possible_next_states(self.PLAYERS[1].name)
+        possible_moves_normalization = self.MAX_POSSIBLE_MOVES
         features = []
 
         #feature 1 and 2
         for possible_moves in [playerA_possible_moves, playerB_possible_moves]:
             num_possible_moves = len(possible_moves)
-            possible_moves_normalization = self.MAX_POSSIBLE_MOVES
             features.append(num_possible_moves/possible_moves_normalization)
 
         #features 3-8
-        for player in range(2):
+        for player_code in self.PLAYER_CODES:
             for level in [0,1,2]:
-                features.append(self.num_possible_moves_upward)
-
+                if player_code == 'A':
+                    num_moves_upwards = self.num_possible_moves_upward(player_code, self.PLAYERS[0], playerA_possible_moves, level)
+                    features.append(num_moves_upwards/possible_moves_normalization)
+                else:
+                    num_moves_upwards = self.num_possible_moves_upward(player_code, self.PLAYERS[1], playerB_possible_moves, level)
+                    features.append(num_moves_upwards/possible_moves_normalization)
         return features
 
-    def num_possible_moves_upward(self, board, player, player_possible_moves, level):
+    def num_possible_moves_upward(self, player_code, player, player_possible_moves, start_level):
         '''
-        inputs: current board state, player obj, player's possible moves, amd desired starting level (either 0,1 or 2)
+        inputs: current player, player obj, player's possible moves, amd desired starting level (either 0,1 or 2)
         outputs: number of possible moves up that level
         '''
-        if any workers on desired starting level: (using num_workers_on_level)
-            for each move in player_possible_moves:
-                compare using num_workers_on_level, then
-                return the result
-        else:
-            return 0
-
-        #find out max possible number of upward moves...is it also 100?
+        count = 0
+        if self.num_workers_on_level(player, start_level) > 0:
+            start_lvl_count_bef_move = self.num_workers_on_level(player, start_level)
+            upper_lvl_count_bef_move = self.num_workers_on_level(player, start_level+1)
+            for move in player_possible_moves:
+                if player_code == 'A':
+                    player_aft_move = move.PlayerA
+                else:
+                    player_aft_move = move.PlayerB
+                start_lvl_count_aft_move = self.num_workers_on_level(player_aft_move, start_level)
+                upper_lvl_count_aft_move = self.num_workers_on_level(player_aft_move, start_level+1)
+                if (start_lvl_count_aft_move - start_lvl_count_bef_move == -1) and \
+                    (upper_lvl_count_aft_move - upper_lvl_count_bef_move == 1):
+                    count += 1
+        return count
 
     def calculate_position_features(self):
         '''
@@ -194,15 +207,16 @@ class LinearFnApproximator():
         features = []
 
         #calculate features 1 - 6
-        for player in self.players:
+        worker_normalization_factor = self.NUM_WORKERS
+        for player in self.PLAYERS:
             for level in [0,1,2]:
-                features.append(self.num_workers_on_level(player, level))
+                features.append(self.num_workers_on_level(player, level)/worker_normalization_factor)
         
         #calculate features 7, 8
         def distance(x1, x2, y1, y2):
             return math.sqrt((x1-x2)**2 + (y1-y2)**2)
 
-        for player in self.players:
+        for player in self.PLAYERS:
             total_dist = 0
             for worker in player.workers:
                 worker_x, worker_y = worker.current_location[0], worker.current_location[1]
@@ -214,15 +228,14 @@ class LinearFnApproximator():
 
     def num_workers_on_level(self, player, level):
         '''
-        inputs: player, building level
+        inputs: player object, building level
         output: number of given player's workers on the given building level at that state
         '''
         output = 0
         for worker in player.workers:
             if worker.building_level == level:
                 output += 1
-        normalization_factor = self.NUM_WORKERS
-        return output/normalization_factor
+        return output
 
 class LinearRlAgent(RandomAgent):
     '''
