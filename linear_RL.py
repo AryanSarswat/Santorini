@@ -7,24 +7,50 @@ class searchTree():
     '''
     Parameters:
     board - board object, acts as root node for search tree
-    current_player - whether PlayerA or PlayerB is currently going to make a move
+    current_player - either 'A' or 'B', depending on which is currently going to make a move
     depth 
     - how deep should the search tree go (each move = one lvl deeper regardless of player)
     - even number makes more sense, so that terminal nodes are at same player acting again)
     
     each searchTree contains a root_node, as well as all child node objects extending from it
     (basically more searchTree objects)
-
     '''
+    
     def __init__(self, board, current_player, depth): 
         self.depth = depth
         self.root_node = board
         self.current_player = current_player
-        #generate list of child nodes
+        if current_player == 'A':
+            self.current_player_name = board.PlayerA.name
+        else:
+            self.current_player_name = board.PlayerB.name
 
-    def find_child_nodes(self):
-        # this function uses the find all possible moves to get all possible child nodes
-        # recursively call searchTree(new_board, next player, and depth-1) and add to a list
+        if current_player == 'A':
+            self.next_player = 'B'
+        else:
+            self.next_player = 'A'
+        #generate list of child nodes
+        if depth>0:
+            self.populate_child_nodes()
+
+    def populate_child_nodes(self):
+        '''
+        this function uses the find all possible moves to get all possible child nodes
+        recursively calls searchTree(new_board, next player, and depth-1) and adds to a list
+        '''
+        possible_states = self.root_node.all_possible_next_states(self.current_player_name)
+        self.child_nodes = []
+        for child_state in possible_states:
+            self.child_nodes.append(searchTree(child_state, self.next_player, self.depth-1))
+
+    def __repr__(self):
+        total_2nd_order_nodes = 0
+        for node in self.child_nodes:
+            total_2nd_order_nodes += len(node.child_nodes)
+
+        return (f'This is a search tree with depth {self.depth} and {len(self.child_nodes)} child nodes.\
+        \n Current player is {self.current_player}\
+        \n We have {total_2nd_order_nodes} 2nd order nodes')
 
 class minimaxTree(searchTree):
     '''
@@ -70,6 +96,7 @@ class RandomAgent():
 
 class linearFnApproximator():
     def __init__(self, weights):
+        pass
         #should board be in init?
 
     def calculate_state_value(self, board, name):
@@ -100,7 +127,7 @@ class linearFnApproximator():
         features[0] = len(player_possible_moves)/max_possible_moves
         
     def num_moves_upward_from_state(self, board, player, level):
-        
+        pass
 
 
 
@@ -171,10 +198,10 @@ def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
     #initial worker placement
     board = board.PlayerA.place_workers(board)
     board = board.PlayerB.place_workers(board)
-    current_player = 'player_a'
+    current_player = 'A'
     
     def get_current_board_player(current_player):
-        if current_player == 'player_a':
+        if current_player == 'A':
             return board.PlayerA
         else:
             return board.PlayerB
@@ -187,10 +214,10 @@ def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
         if win != None:
             break
         else:
+            print(searchTree(board, current_player, depth=2))
             board.print_board()
             print("----------------------------------------------------------------\n")
             board = board_player.action(board)
-
             #because the board has been replaced, need to retrieve player obj again
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
@@ -198,10 +225,10 @@ def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
                 board.print_board()
                 break
         
-        if current_player == 'player_a':
-            current_player = 'player_b'
+        if current_player == 'A':
+            current_player = 'B'
         else:
-            current_player = 'player_a'
+            current_player = 'A'
         
     return win
     
