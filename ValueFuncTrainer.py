@@ -43,6 +43,7 @@ class ValueFuncTrainer():
                     self.nn.optimizer.step()
                     self.nn.epsilon = self.nn.epsilon * 0.999 if self.nn.epsilon > self.nn.epsilon_min else self.nn.epsilon_min
                 self.agent.loss_array.append(batch_loss)
+                #print(f"\n{batch_loss}")
             print(f"\n{epoch_loss}")    
 
     def training_loop(self, agent1, agent2):
@@ -78,19 +79,19 @@ class ValueFuncTrainer():
                 if win != None:
                     break
 
-            if currentPlayer == board.PlayerA:
+            if currentPlayer.name == board.PlayerA.name:
                 currentPlayer = board.PlayerB
             else:
                 currentPlayer = board.PlayerA
         return win
-def evaluate_model(PATH, brain):
+def evaluate_model(brain):
     brain.nn.eval()
     count = 0
     total = 0
     with T.no_grad():
-        for i in range(100):
-            winner = run_santorini(brain, RandomAgent("B"))
-            if winner == "A":
+        for i in tqdm(range(100)):
+            winner = run_santorini(RandomAgent("A"), brain)
+            if winner == brain.name:
                 count += 1
                 total += 1
             else:
@@ -100,15 +101,15 @@ def evaluate_model(PATH, brain):
 
 if os.path.isfile(PATH):
     print("\n Loading Saved Model")
-    brain = Agent("A", False)
+    brain = Agent("B", True)
     brain.nn.load_state_dict(T.load(PATH))
-    #print(evaluate_model)
-    trainer = ValueFuncTrainer(40, 10, brain)
+    print(evaluate_model(brain))
+    #trainer = ValueFuncTrainer(40, 100, brain)
 
 else:
     print("\n Training..........")
     brain = Agent("A", False)
-    trainer = ValueFuncTrainer(40, 100, brain)
+    trainer = ValueFuncTrainer(50, 100, brain)
     trainer.train()
     T.save(trainer.nn.state_dict(),PATH)
     #print(trainer.agent.nn.epsilon)

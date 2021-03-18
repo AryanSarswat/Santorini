@@ -165,8 +165,8 @@ class Agent():
         plt.xlabel("Iteration")
         plt.ylabel("Loss")
         plt.show()
-    
+
+
     
 
            
-        
