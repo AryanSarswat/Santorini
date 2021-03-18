@@ -7,6 +7,16 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from Game import *
 import random
+import torch as T
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+import numpy as np
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+from Game import *
+from RandomAgent import *
+import os
 
 def state_mappings():
     mappings = {
@@ -26,14 +36,17 @@ def state_mappings():
     }
     return mappings
 
+class Logger():
+    def __init__(self):
+        self.values = []
             
 
 class ValueFunc(nn.Module):
     def __init__(self):
         super(ValueFunc, self).__init__()
-        self.conv1 = nn.Conv2d(2, 16, (2,2), stride=1)
+        self.conv1 = nn.Conv2d(2, 16, (3,3), stride=1, padding=1)
         self.batch1 = nn.BatchNorm2d(16)
-        self.conv2 = nn.Conv2d(16, 16, (2,2), stride=1)
+        self.conv2 = nn.Conv2d(16, 16, (3,3), stride=1, padding=1)
         self.batch2 = nn.BatchNorm2d(16)
         self.flat = nn.Flatten()
 
@@ -47,7 +60,7 @@ class ValueFunc(nn.Module):
         self.loss = nn.MSELoss()
         self.device = T.device('cuda:0')
         self.to(self.device)
-        self.epsilon = 0.99
+        self.epsilon = 0.999
         self.epsilon_min = 0.01
         
 
@@ -63,37 +76,36 @@ class ValueFunc(nn.Module):
         return x
 
     def forward(self,x):
-        x = x.reshape(1,2,5,5).to(self.device)
-        x = T.cuda.FloatTensor(x).to(self.device)
-        x = self.convs(x)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
+        with T.autograd.set_detect_anomaly(True):
+            x = x.reshape(1,2,5,5).to(self.device)
+            #x = T.cuda.FloatTensor(x).to(self.device)
+            x = self.convs(x)
+            x = F.relu(self.fc1(x))
+            x = self.fc2(x)
         return x
 
 class Agent():
-    def __init__(self, explore):
+    def __init__(self, name, explore):
         self.nn = ValueFunc()
-        self.name = "B"
+        self.name = name
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
-        self.state_values = []
         self.explore = explore
         self.loss_array = []
+        self.all_values = []
     
     def action(self, board):
         states = board.all_possible_next_states(self.name)
         values = []
-        rand = np.random.uniform()
+        rand = 1 #np.random.uniform()
         for state in states:
             converted_state = self.convertTo2D(state)
-            values.append(self.nn.forward(converted_state).to(self.nn.device))
-        if self.explore == False and rand > self.nn.epsilon:
-            highest_value = T.argmax(T.FloatTensor(values))
-            self.state_values.append(values[highest_value])
+            values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
+        if (self.explore == False) and (rand > self.nn.epsilon):
+            highest_value = T.argmax(T.cat(values)).item()
             return states[highest_value]
         else:
             choice = random.choice(values)
             index = values.index(choice)
-            self.state_values.append(choice)
             return states[index]
 
 
@@ -111,12 +123,12 @@ class Agent():
                 if square.worker == None:
                     temp_lst.append(square.building_level/4)
                     temp_lst2.append(0)
-                elif square.worker.name == "A1" or square.worker.name == "A2":
-                    temp_lst.append(square.building_level/4)
-                    temp_lst2.append(-1)
-                else:
+                elif square.worker.name[0] == self.name:
                     temp_lst.append(square.building_level/4)
                     temp_lst2.append(1)
+                else:
+                    temp_lst.append(square.building_level/4)
+                    temp_lst2.append(-1)
             buildings.append(temp_lst)
             players.append(temp_lst2)
         data.append(buildings)
