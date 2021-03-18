@@ -248,10 +248,15 @@ class Board(object):
         if current_building_level == 0 :
             possible_building_levels.append(0)
             possible_building_levels.append(1)
-        elif current_building_level < 3:
+        elif current_building_level == 1:
             possible_building_levels.append(current_building_level)
             possible_building_levels.append(current_building_level+1)
             possible_building_levels.append(current_building_level-1)
+        elif current_building_level == 2:
+            possible_building_levels.append(current_building_level)
+            possible_building_levels.append(current_building_level+1)
+            possible_building_levels.append(current_building_level-1)
+            possible_building_levels.append(current_building_level-2)
 
         #Sort based on Building level
         possible_movements = list(filter(lambda element : self.board[element[0]][element[1]].building_level in possible_building_levels, neighbour_locations))
