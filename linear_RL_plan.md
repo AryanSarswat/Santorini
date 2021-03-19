@@ -27,7 +27,7 @@
     * ~~Create AI class that can interface with existing game code to play randomly~~
 
 * **Week 8**
-    * Implement data structure for linear function approximator + means to calculate it given a certain board game state
+    * ~~Implement data structure for linear function approximator + means to calculate it given a certain board game state~~
     * Implement AI class that uses TD learning (should be gradient descent) to play, can also be epsilon greedy.
         * Note: if this is too inefficient I think I will need to go straight to TD(lambda) which uses eligibility traces, or even implement minimax straight away.
     * Test out this basic AI against the random one, see whether win rate makes sense.

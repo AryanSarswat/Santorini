@@ -11,6 +11,7 @@ class SearchTree():
     depth 
     - how deep should the search tree go (each move = one lvl deeper regardless of player)
     - even number makes more sense, so that terminal nodes are at same player acting again)
+    - if a player wins, search tree terminates there and self.winner is set to 'A' or 'B'
     
     each SearchTree contains a root_node, as well as all child node objects extending from it
     (basically more SearchTree objects)
@@ -29,9 +30,29 @@ class SearchTree():
             self.next_player = 'B'
         else:
             self.next_player = 'A'
+        #check if winning node for previous player
+        self.winner = self.check_previous_player_win()
+
         #generate list of child nodes
-        if depth>0:
+        if depth>0 and self.winner == None:
             self.populate_child_nodes()
+        else:
+            self.child_nodes = []
+
+    def check_previous_player_win(self):
+        '''
+        this function checks if the prev player has already won the game (i.e. worker on lvl 3)
+        output: 'A' or 'B' if either win, else None
+        '''
+        if self.current_player == 'A':
+            player_to_check = self.root_node.PlayerB
+        else:
+            player_to_check = self.root_node.PlayerA
+
+        if self.root_node.end_turn_check_win(player_to_check) != None:
+            return self.next_player #returns alphabet of winning player
+        else:
+            return None
 
     def populate_child_nodes(self):
         '''
@@ -40,8 +61,11 @@ class SearchTree():
         '''
         possible_states = self.root_node.all_possible_next_states(self.current_player_name)
         self.child_nodes = []
-        for child_state in possible_states:
-            self.child_nodes.append(SearchTree(child_state, self.next_player, self.depth-1))
+        if len(possible_states) == 0: #if no possible moves, then other player already wins.
+            self.winner = self.next_player
+        else:
+            for child_state in possible_states:
+                self.child_nodes.append(SearchTree(child_state, self.next_player, self.depth-1))
 
     def __repr__(self):
         total_2nd_order_nodes = 0
@@ -52,12 +76,29 @@ class SearchTree():
         \n Current player is {self.current_player}\
         \n We have {total_2nd_order_nodes} 2nd order nodes')
 
-class MinimaxTree(SearchTree):
-    '''
-    adds minimax values to indiv nodes of search tree, based on search depth.
-    When not at win state (this needs to be checked with functions), use linear fn approximator
-    Otherwise, if win state set value to math.inf to ensure this gets picked
-    '''
+# class MinimaxTree(SearchTree):
+#     '''
+#     adds minimax values to indiv nodes of search tree, based on search depth.
+#     When not at win state (this needs to be checked with functions), use linear fn approximator
+#     Otherwise, if win state set value to math.inf to ensure this gets picked
+#     '''
+#     def __init__(self, board, current_player, depth):
+#         super().__init__(board, current_player, depth)
+#         if depth == 0: #if root node
+#             #check if win
+#             '''
+#                     if winner != None:
+#             if winner == 'A':
+#                 self.value == 
+#             self.value = 
+#             '''
+#             #approximate value using linearapproximator
+#         else:
+#             #calculate minimax values from nodes
+
+#     def minimax_from_child_nodes(self):
+#         pass
+
 
 #finally, need another class for the RL algorithm itself (TD lambda? to train, 
 
@@ -271,8 +312,8 @@ def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
         if win != None:
             break
         else:
-            #print(SearchTree(board, current_player, depth=2))
-            print(LinearFnApproximator(board))
+            print(SearchTree(board, current_player, depth=2))
+            #print(LinearFnApproximator(board))
             board.print_board()
             print("----------------------------------------------------------------\n")
             board = board_player.action(board)

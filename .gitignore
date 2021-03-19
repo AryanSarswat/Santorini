@@ -2,3 +2,4 @@
 *.json
 *.pyc
 MCTS_AI
+linear_RL_test.ipynb
