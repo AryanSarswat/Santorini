@@ -12,6 +12,7 @@ from RandomAgent import *
 from runner import run_santorini
 
 PATH = "Value_Func_State_Dict_CNN_B.pt"
+PATH2 = "Value_Func_State_Dict_CNN_D.pt"
 
 
 
@@ -23,44 +24,28 @@ class ValueFuncTrainer():
         self.agent2 = agent2
         self.nn = nn
         self.state_values1 = []
-        self.state_values2 = []
         self.batch_loss_array = []
         self.epoch_loss_array = []
     
     def train(self):
         for epoch in tqdm(range(self.epochs)):
             epoch_loss = 0
-            batch_counter = 0
-            batch_loss = 0
             for batch in tqdm(range(self.batches)):
                 winner = self.training_loop(self.agent1, self.agent2)
                 #print(f"\n{winner}") 
                 #print(f"\n{self.state_values}")
+                reward = self.agent1.reward(winner)
                 with T.autograd.set_detect_anomaly(True):
                     while self.state_values1 != []:
                         self.nn.optimizer.zero_grad()
-                        reward = self.agent1.reward(winner)
                         loss = self.nn.loss(self.state_values1.pop(-1), T.cuda.FloatTensor([[reward]])).to(self.nn.device)
                         loss.backward()
-                        batch_loss += loss.item()
-                        epoch_loss += batch_loss
-                        reward = reward * 0.97
-                    while self.state_values2 != []:
-                        self.nn.optimizer.zero_grad()
-                        reward = self.agent2.reward(winner)
-                        loss = self.nn.loss(self.state_values2.pop(-1), T.cuda.FloatTensor([[reward]])).to(self.nn.device)
-                        loss.backward()
-                        batch_loss += loss.item()
-                        epoch_loss += batch_loss
-                        reward = reward * 0.97    
+                        item = loss.item()
+                        #print(f"\n{item}")
+                        epoch_loss +=item
+                        reward = reward * 0.96   
                     self.nn.optimizer.step()
-                    self.nn.epsilon = self.nn.epsilon * 0.999 if self.nn.epsilon > self.nn.epsilon_min else self.nn.epsilon_min
-                batch_counter += 1
-                if batch_counter == 10:
-                    self.batch_loss_array.append(batch_loss)
-                    batch_loss = 0
-                    batch_counter = 0
-                #print(f"\n{batch_loss}")
+                    self.nn.epsilon = self.nn.epsilon * 0.999 if self.nn.epsilon > self.nn.epsilon_min else self.nn.epsilon_min                
             self.epoch_loss_array.append(epoch_loss)
             print(f"\n{epoch_loss}")    
 
@@ -91,8 +76,8 @@ class ValueFuncTrainer():
                     self.state_values1.append(choice)
                     board = states[index] 
             else:
-                #board = currentPlayer.action(board)
-                states = board.all_possible_next_states(self.agent2.name)
+                board = currentPlayer.action(board)
+                '''states = board.all_possible_next_states(self.agent2.name)
                 values = []
                 rand = np.random.uniform()
                 for state in states:
@@ -100,13 +85,11 @@ class ValueFuncTrainer():
                     values.append(self.nn.forward(converted_state).to(self.nn.device))
                 if (self.agent2.explore == False) and (rand > self.nn.epsilon):
                     highest_value = T.argmax(T.cat(values)).item()
-                    self.state_values2.append(values[highest_value])
                     board = states[highest_value]
                 else:
                     choice = random.choice(values)
                     index = values.index(choice)
-                    self.state_values2.append(choice)
-                    board = states[index] 
+                    board = states[index] '''
             win = board.end_turn_check_win(currentPlayer)
             if win != None:
                 break
@@ -123,21 +106,17 @@ class ValueFuncTrainer():
         plt.ylabel("Loss")
         plt.show()
 
-    def plot_loss_batch(self):
-        plt.plot(self.batch_loss_array)
-        plt.title("Loss versus Batch")
-        plt.xlabel("Batch")
-        plt.ylabel("Loss")
-        plt.show()
+    
 
-def evaluate_model(brain):
-    brain.nn.eval()
+def evaluate_model(brain1, brain2):
+    brain2.nn.eval()
+    #brain2.nn.eval()
     count = 0
     total = 0
     with T.no_grad():
-        for i in tqdm(range(1)):
-            winner = run_santorini(brain, HumanPlayer("B"))
-            if winner == brain.name:
+        for i in tqdm(range(100)):
+            winner = run_santorini(brain1, brain2)
+            if winner == brain2.name:
                 count += 1
                 total += 1
             else:
@@ -147,17 +126,15 @@ def evaluate_model(brain):
 
 if os.path.isfile(PATH):
     print("\n Loading Saved Model")
-    brain1 = Agent("A", True)    
+    brain1 = Agent("B", False)    
     #brain2 = Agent("B", False)
     #loaded_nn = ValueFunc()
-    brain1.nn.load_state_dict(T.load(PATH))
-    #loaded_nn.train()
-    print(evaluate_model(brain1))
-    #trainer = ValueFuncTrainer(100, 100, loaded_nn, brain1, brain2)
-   #trainer.train()
-    #T.save(trainer.nn.state_dict(),PATH)
-   # trainer.plot_loss_epoch()
-    #trainer.plot_loss_batch()
+    brain1.nn.load_state_dict(T.load(PATH2))
+    print(evaluate_model(RandomAgent("A"), brain1))
+    #trainer = ValueFuncTrainer(1000, 10, loaded_nn, brain1, RandomAgent("B"))
+    #trainer.train()
+    #T.save(trainer.nn.state_dict(),PATH2)
+    #trainer.plot_loss_epoch()
 
 else:
     print("\n Training..........")

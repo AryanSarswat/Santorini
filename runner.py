@@ -24,14 +24,14 @@ def run_santorini(agent1, agent2):
         if win != None:
             break
         else:
-            board.print_board()
-            print("----------------------------------------------------------------\n")
+            #board.print_board()
+            #print("----------------------------------------------------------------\n")
             board = board_player.action(board)
             #because the board has been replaced, need to retrieve player obj again
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
             if win != None:
-                board.print_board()
+               # board.print_board()
                 break
         
         #swap players
