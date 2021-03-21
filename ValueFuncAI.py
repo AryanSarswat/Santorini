@@ -58,7 +58,7 @@ class ValueFunc(nn.Module):
         self.fc2 = nn.Linear(32, 1)
         self.optimizer = optim.Adam(self.parameters(),lr=0.01)
         self.loss = nn.MSELoss()
-        self.device = T.device('cuda:0')
+        self.device = T.device('cuda' if T.cuda.is_available() else 'cpu')
         self.to(self.device)
         self.epsilon = 0.999
         self.epsilon_min = 0.01
