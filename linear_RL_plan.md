@@ -31,7 +31,7 @@
     * Implement AI class that uses TD learning (should be gradient descent) to play, can also be epsilon greedy.
         * Note: if this is too inefficient I think I will need to go straight to TD(lambda) which uses eligibility traces, or even implement minimax straight away.
     * Test out this basic AI against the random one, see whether win rate makes sense.
-    * **If possible**: implement minimax search and incorporate it into RL learning with one of the simpler approaches
+    * ~~**If possible**: implement minimax search and incorporate it into RL learning with one of the simpler approaches~~
 
 * **Week 9**
     * Implement the higher level RL + search approaches and review their relative performance
