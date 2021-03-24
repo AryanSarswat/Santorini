@@ -9,10 +9,11 @@ class LinearFnApproximator():
         - involves running allpossiblemoves from given board state; meant to be used on SearchTree terminal nodes
     2. a means of updating the given weights using a selected RL training method? (or do this separately...)
     
-    inputs: board object, weights vector (1-dim numpy array), current_player ('A' or 'B')
+    inputs: board object, weights vector (1-dim numpy array),
+    whether to use only features that avoid invoking all_possible_moves)
     attributes: state_value (positive for A, negative for B)
     '''
-    def __init__(self, board, weights = [1,-1,1,2,4,-1,-2,-4,0,2,4,0,-2,-4,-1,1]):
+    def __init__(self, board, weights = [1,-1,1,2,4,-1,-2,-4,0,2,4,0,-2,-4,-1,1], fast_features_only = True):
         self.weights = weights
         self.BOARD = board
         self.PLAYER_CODES = ["A","B"]
@@ -21,9 +22,13 @@ class LinearFnApproximator():
         self.CENTER_X, self.CENTER_Y = 2,2 #center coords
         self.BOARD_SIZE = 5
         self.MAX_POSSIBLE_MOVES = 100 #not proven, but close enough
+        self.fast_features_only = fast_features_only
         self.state_value = self.calculate_state_value()
-
+        
     def __repr__(self):
+        '''
+        prints values of calculated features for debugging purposes
+        '''
         mobility_features = self.calculate_mobility_features()
         position_features = self.calculate_position_features()
         return f'Here are the mobility features: {mobility_features}\
@@ -36,11 +41,13 @@ class LinearFnApproximator():
         output: numerical value of given game state
         utilizes weights + board state to calculate the state value
         '''
-        #mobility_features = self.calculate_mobility_features()
         position_features = np.array(self.calculate_position_features())
-        #feature_vector = np.array(mobility_features+position_features)
-        return np.sum(position_features*self.weights[8:])
-        #return np.sum(feature_vector*self.weights)
+        if self.fast_features_only:
+            return np.sum(position_features*self.weights[8:])
+        else:
+            mobility_features = self.calculate_mobility_features()
+            feature_vector = np.array(mobility_features+position_features)
+            return np.sum(feature_vector*self.weights)
 
     def calculate_mobility_features(self):
         '''
@@ -230,8 +237,7 @@ class MinimaxTree(SearchTree):
     '''
     adds minimax values to indiv nodes of search tree, based on search depth.
     When not at win state (this needs to be checked with functions), use linear fn approximator
-    Otherwise, if win state set value to either 1 or -1 (corresponding to reward fn)
-    how to ensure win states ALWAYS get picked though......
+    Otherwise, if win state set value to either inf or -inf
     '''
     def __init__(self, board, current_player, depth):
         super().__init__(board, current_player, depth)
@@ -280,12 +286,16 @@ class MinimaxTree(SearchTree):
 class MinimaxWithPruning():
     '''
     Core algorithm referenced from: https://www.youtube.com/watch?v=l-hh51ncgDI
+    Constructs Minimax Tree with Alpha-Beta pruning
+    Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
     def __init__(self, board, current_player, depth, alpha = -math.inf, beta = math.inf):
         #initialize attributes
         self.depth = depth
         self.game_state = board
         self.current_player = current_player
+        self.alpha = alpha
+        self.beta = beta
         if current_player == 'A':
             self.current_player_name = board.PlayerA.name
             self.next_player = 'B'
@@ -295,25 +305,21 @@ class MinimaxWithPruning():
             self.next_player = 'A'
             self.maximizing_player = False
 
-        self.alpha = alpha
-        self.beta = beta
         #check if winning node for previous player
-        self.winner = self.check_previous_player_win()
-        #if len(self.possible_states) == 0: #if no possible moves, then other player already wins.
-            #self.winner = self.next_player
-        
+        self.winner = self.check_previous_player_win()        
         self.child_nodes = []
-        #do minimax things
+        #calculate value depending on situation
         if self.winner != None:
-            if self.winner == 'A':
-                self.value = math.inf
-            elif self.winner == 'B':
-                self.value = -math.inf
+            self.set_win_node_value()
         elif depth == 0:
             self.value = LinearFnApproximator(self.game_state).state_value
         else:
             self.possible_states = self.game_state.all_possible_next_states(self.current_player_name)
-            self.value = self.get_minimax_from_children()
+            if len(self.possible_states) == 0: #if no possible moves, then other player already wins.
+                self.winner = self.next_player
+                self.set_win_node_value()
+            else:
+                self.value = self.get_minimax_from_children()
 
     def __repr__(self):
         total_2nd_order_nodes = 0
@@ -339,9 +345,18 @@ class MinimaxWithPruning():
         else:
             return None
 
+    def set_win_node_value(self):
+        '''
+        depending on winning player, sets self.value either to positive or negative infinity
+        '''
+        if self.winner == 'A':
+            self.value = math.inf
+        elif self.winner == 'B':
+            self.value = -math.inf
+
     def get_minimax_from_children(self):
         '''
-
+        returns minimax values of child_nodes based on recursive minimax algorithm incorporating alpha-beta pruning
         '''
         if self.maximizing_player:
             maxValue = -math.inf
@@ -411,15 +426,14 @@ class LinearRlAgent(RandomAgent):
         """
         Method to select and place a worker, afterwards, place a building
         """
-        minimax = MinimaxWithPruning(board, self.name, 3)
+        minimax = MinimaxWithPruning(board, self.name, 2)
         value = minimax.value
         for node in minimax.child_nodes:
             if minimax.value == node.value:
                 return node.game_state
 
 #Work in progress
-#need to fix edge cases: what will be value of node when pruning takes place
-#the issue of whether to reduce the strength of the approximator in favour of greater search depth
-#dealing with a player running out of moves
-#re-organize minimax pruning class, it's a huge mess
-#linearRl agent not ideal way of taking actions
+    #the issue of whether to reduce the strength of the approximator in favour of greater search depth
+    #linearRl agent not ideal way of taking actions
+    #when generating possible moves, we want to prioritize moves we think will be good to speed up pruning
+    #how to factor in rewards when minimax tree returns infinity...
