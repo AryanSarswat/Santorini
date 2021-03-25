@@ -38,7 +38,7 @@ class FastBoard():
         '''
         takes in board object, converts to representation using np arrays
         outputs: 5x5 array containing square levels
-        4x2 array containing worker positions (A1, A2, B1, B2)
+        2x4x1 array containing worker positions (A1, A2, B1, B2)
         '''
         board_levels = []
         for row in board.board:
