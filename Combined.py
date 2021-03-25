@@ -1118,7 +1118,7 @@ class MCTS():
             while not state.is_terminal():
                 player = state.Player_turn()
                 if player == "A":
-                        state = state.PlayerA.action(state)
+                    state = state.PlayerA.action(state)
                 else:
                     state = state.PlayerB.action(state)
                 if state.is_terminal():
