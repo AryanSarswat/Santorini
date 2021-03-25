@@ -3,8 +3,9 @@ from Game import *
 import numpy as np
 import time
 from linear_rl_core import RandomAgent, LinearRlAgent, MinimaxWithPruning, SearchTree, MinimaxTree
+from fast_board import FastBoard
 
-def run_santorini(agent1 = LinearRlAgent("A"), agent2 = RandomAgent("B")):
+def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B")):
     '''
     should run a game of Santorini, allow choice of AI/human players
     '''
@@ -29,6 +30,9 @@ def run_santorini(agent1 = LinearRlAgent("A"), agent2 = RandomAgent("B")):
         if win != None:
             break
         else:
+            #test_board = FastBoard()
+            #board_levels, worker_coords = FastBoard.convert_board_to_array(board)
+            #print(test_board.all_possible_next_states(board_levels, worker_coords, current_player))
             '''
             start = time.time()
             #print(MinimaxTree(board, current_player, depth=3))
@@ -59,19 +63,27 @@ def run_santorini(agent1 = LinearRlAgent("A"), agent2 = RandomAgent("B")):
         
     return win
     
-run_santorini()
+#run_santorini()
 
 
-# import time
-# import copy
-# board = Board(agent1 = RandomAgent("A"), agent2 = RandomAgent("B"))
-# board = board.PlayerA.place_workers(board)
-# board = board.PlayerB.place_workers(board)
-# start = time.time()
-# for i in range(10000):
-#     board2 = copy.deepcopy(board)
-# end = time.time()
-# print(end-start)
+import time
+import copy
+board = Board(agent1 = RandomAgent("A"), agent2 = RandomAgent("B"))
+board = board.PlayerA.place_workers(board)
+board = board.PlayerB.place_workers(board)
+start = time.time()
+for i in range(1):
+    print(len(board.all_possible_next_states(board.PlayerA.name)))
+end = time.time()
+print(end-start)
+
+test_board = FastBoard()
+board_levels, worker_coords = FastBoard.convert_board_to_array(board)
+start = time.time()
+for i in range(1):
+    print(len(test_board.all_possible_next_states(board_levels, worker_coords, 'A')))
+end = time.time()
+print(end-start)
 
 # board = [((2, None), (0, None), (0, 'B2'), (0, None), (0, None)),
 # ((0, None), (4, None), (1, None), (0, None), (0, None)),
