@@ -6,7 +6,7 @@ from linear_rl_core_v2 import RandomAgent, LinearRlAgentV2, MinimaxWithPruning
 from linear_rl_core_v1 import LinearRlAgentV1
 from fast_board import FastBoard
 
-def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = RandomAgent("B")):
+def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
     '''
     should run a game of Santorini, allow choice of AI/human players
     '''

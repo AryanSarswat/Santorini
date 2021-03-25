@@ -84,7 +84,6 @@ class FastBoard():
         #Filter based on Occupancy
         possible_movements  = list(filter(lambda element: (element[0],element[1]) not in all_worker_coords, possible_movements))
         return possible_movements
-    
         
     def valid_building_options(self, board_levels, all_worker_coords, location):
         '''
@@ -140,7 +139,23 @@ class FastBoard():
             for b in builds:
                 altered_board_level = board_levels.copy()
                 altered_board_level[b[0]][b[1]] += 1
-                next_states.append((altered_board_level, altered_worker_coords))     
+                next_states.append((altered_board_level, altered_worker_coords))   
+
+                
+        def getHeight(state):
+            '''
+            function that retrieves the sum of squares of player's worker heights
+            allows for move ordering so that better moves are prioritized in minimax search
+
+            squared worker height is used to prioritize moves to level 3>2>1.
+            '''
+            board_level, worker_coords = state
+            total_worker_height = 0
+            for index in worker_index:
+                worker_pos = worker_coords[index]
+                total_worker_height += (board_level[worker_pos[0]][worker_pos[1]])**2
+            return total_worker_height
+        next_states.sort(reverse=True, key = getHeight)
         return next_states
 
     @staticmethod
