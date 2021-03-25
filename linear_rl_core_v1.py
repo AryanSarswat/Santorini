@@ -414,7 +414,7 @@ class RandomAgent():
         board = random.choice(board.all_possible_next_states(self.name))
         return board
 
-class LinearRlAgent(RandomAgent):
+class LinearRlAgentV1(RandomAgent):
     '''
     basic RL agent using a linear function approximator and TD learning
     epsilon greedy policy too?

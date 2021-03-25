@@ -3,3 +3,4 @@
 *.pyc
 MCTS_AI
 linear_RL_test.ipynb
+board_speed_test_code.py

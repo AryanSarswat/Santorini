@@ -1,4 +1,6 @@
 import numpy as np
+from Game import Board
+from copy import deepcopy
 
 class FastBoard():
     '''
@@ -56,7 +58,7 @@ class FastBoard():
     def retrieve_valid_worker_moves(self, board_levels, all_worker_coords, worker_coords):
         '''
         Inputs: 
-        - board_levels and worker_coords of specific worker in tuple format (x,y)
+        - board_levels, coords of all workers, and worker_coords of specific worker in tuple format (x,y)
 
         Outputs:
         - list of all valid worker moves from current state (sorted by heuristic prioritizing better moves??)
@@ -77,16 +79,17 @@ class FastBoard():
             possible_building_levels.append(current_building_level+1)
             possible_building_levels.append(current_building_level-1)
             possible_building_levels.append(current_building_level-2)
-        #Sort based on Building level
+        #Filter based on Building level
         possible_movements = list(filter(lambda element : board_levels[element[0]][element[1]] in possible_building_levels, valid_squares))
-        #Sort based on Occupancy
-        possible_movements  = list(filter(lambda element: (element[0],element[1]) not in all_worker_coords, possible_movements)) #forget to exclude yourself??
+        #Filter based on Occupancy
+        possible_movements  = list(filter(lambda element: (element[0],element[1]) not in all_worker_coords, possible_movements))
         return possible_movements
     
         
     def valid_building_options(self, board_levels, all_worker_coords, location):
         '''
-        Returns all the possible building options at certain location. Uses all_worker_coords after worker has been moved.
+        Returns all the possible building options at a given location. 
+        Uses all_worker_coords from after the worker has been moved.
         '''
         neighbour_locations = self.valid_coord_dict[location]
         possible_options = []
@@ -98,6 +101,7 @@ class FastBoard():
     def all_possible_next_states(self, board_levels, all_worker_coords, current_player):
         """
         Return a copy of all the possible next states after a worker movement and a bulding placement
+        Output Format: List containing tuples with (board_levels, all_worker_coords)
         """
         if current_player == 'A':
             worker_index = [0,1]
@@ -150,6 +154,39 @@ class FastBoard():
         return neighbour_locations
 
     @staticmethod
-    def convert_array_to_board():
-        pass
+    def convert_array_to_board(old_board_obj, board_levels, worker_coords):
+        board = deepcopy(old_board_obj)
+        num_rows, num_cols = 5,5
+        #update square building levels and worker
+        total_building_count = 0
+        for row in range(num_rows):
+            for col in range(num_cols):
+                board.board[row][col].building_level = board_levels[row][col]
+                total_building_count += board_levels[row][col]
+                if (row,col) in worker_coords:
+                    worker_index = worker_coords.index((row,col))
+                    if worker_index == 0 or worker_index == 1:
+                        board.board[row][col].worker = board.PlayerA.workers[worker_index]
+                    else:
+                        board.board[row][col].worker = board.PlayerB.workers[worker_index-2]
+                else:
+                    board.board[row][col].remove_worker()
+        #update total building count
+        board.total_building_count = total_building_count
+
+        a_worker_coords = worker_coords[:2]
+        b_worker_coords = worker_coords[2:]
+        #update worker objects
+        for worker_num in range(len(a_worker_coords)):
+            worker_coords = a_worker_coords[worker_num]
+            board.PlayerA.workers[worker_num].update_location(list(worker_coords))
+            new_level = board_levels[worker_coords[0]][worker_coords[1]]
+            board.PlayerA.workers[worker_num].update_building_level(new_level)
+        for worker_num in range(len(b_worker_coords)):
+            worker_coords = b_worker_coords[worker_num]
+            board.PlayerB.workers[worker_num].update_location(list(worker_coords))
+            new_level = board_levels[worker_coords[0]][worker_coords[1]]
+            board.PlayerB.workers[worker_num].update_building_level(new_level)
+        
+        return board
 #move ordering: want to examine upward moves first, followed by central moves
