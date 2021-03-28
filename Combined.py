@@ -1118,9 +1118,11 @@ class MCTS():
             while not state.is_terminal():
                 player = state.Player_turn()
                 if player == "A":
-                    state = state.PlayerA.action(state)
+                    ag = LinearRlAgentV2("A")
+                    state = ag.action(state)
                 else:
-                    state = state.PlayerB.action(state)
+                    ag = LinearRlAgentV2("B")
+                    state = ag.action(state)
                 if state.is_terminal():
                     return state.reward()
     
@@ -1177,6 +1179,32 @@ class MCTS():
                 continue
 
         return all_nodes
+
+    
+class MCTS_Only_Agent(RandomAgent):
+    def __init__(self,name,args):
+        super().__init__(name)
+        self.args = args
+    
+    def action(self,board):
+        node = Node(board)
+        mcts = MCTS(node,None,self.args)
+        if not node.is_expanded():
+            node.expand()
+        
+        children = list(node.children)
+        for child in children:
+            search_path = [node,child]
+            for sim in range(self.args["Num_Simulations"]):
+                reward = mcts.rollout(child)
+                mcts.backpropagate(search_path,reward,child.state.Player_turn())
+        vals = [n.value() for n in children]
+        if node.state.Player_turn() == "A":
+            return children[np.argmax(vals)].state
+        else:
+            return children[np.argmin(vals)].state
+
+
     
 def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
     '''
@@ -1229,13 +1257,12 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
 
 
 args = {
-    'Num_Simulations': 20,
+    'Num_Simulations': 5,
     'Iterations' : 10000,                     # Total number of MCTS simulations to run when deciding on a move to play
     'epochs': 1,
     'depth' : 25,                                    # Number of epochs of training per iteration
     'checkpoint_path': r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator"
 }
 
-brain = Trainer_CNN(args)
-brain.initialize_mcts()
-brain.train()
+Ag = MCTS_Only_Agent("A",args)
+run_santorini(agent1=Ag)
