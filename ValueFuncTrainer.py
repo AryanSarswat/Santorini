@@ -11,7 +11,7 @@ from Game import *
 from RandomAgent import *
 from runner import run_santorini
 
-PATH = "Value_Func_State_Dict_CNN_B.pt"
+PATH = "Value_Func_State_Dict_CNN_random2.pt"
 PATH2 = "Value_Func_State_Dict_CNN_D.pt"
 
 
@@ -24,13 +24,14 @@ class ValueFuncTrainer():
         self.agent2 = agent2
         self.nn = nn
         self.state_values1 = []
-        self.batch_loss_array = []
+        self.iter_loss_array = []
         self.epoch_loss_array = []
     
     def train(self):
         for epoch in tqdm(range(self.epochs)):
             epoch_loss = 0
             for batch in tqdm(range(self.batches)):
+                iter_loss = 0
                 winner = self.training_loop(self.agent1, self.agent2)
                 #print(f"\n{winner}") 
                 #print(f"\n{self.state_values}")
@@ -41,11 +42,13 @@ class ValueFuncTrainer():
                         loss = self.nn.loss(self.state_values1.pop(-1), T.cuda.FloatTensor([[reward]])).to(self.nn.device)
                         loss.backward()
                         item = loss.item()
+                        iter_loss += item
                         #print(f"\n{item}")
                         epoch_loss +=item
                         reward = reward * 0.96   
                     self.nn.optimizer.step()
-                    self.nn.epsilon = self.nn.epsilon * 0.999 if self.nn.epsilon > self.nn.epsilon_min else self.nn.epsilon_min                
+                    self.nn.epsilon = self.nn.epsilon * 0.999 if self.nn.epsilon > self.nn.epsilon_min else self.nn.epsilon_min
+                    self.iter_loss_array.append(iter_loss)                
             self.epoch_loss_array.append(epoch_loss)
             print(f"\n{epoch_loss}")    
 
@@ -106,6 +109,14 @@ class ValueFuncTrainer():
         plt.ylabel("Loss")
         plt.show()
 
+    def plot_loss_iter(self):
+        plt.plot(self.iter_loss_array)
+        plt.title("Loss versus Iteration")
+        plt.xlabel("Iteration")
+        plt.ylabel("Loss")
+        plt.show()
+
+
     
 
 def evaluate_model(brain1, brain2):
@@ -139,12 +150,14 @@ if os.path.isfile(PATH):
 else:
     print("\n Training..........")
     brain = Agent("A", False)
-    trainer = ValueFuncTrainer(50, 100, brain)
+    loaded_nn = ValueFunc()
+    loaded_nn.load_state_dict(T.load(PATH2))
+    trainer = ValueFuncTrainer(100, 100, loaded_nn, brain, RandomAgent("B"))
     trainer.train()
     T.save(trainer.nn.state_dict(),PATH)
     #print(trainer.agent.nn.epsilon)
-    brain.plot_loss()
-             
+    trainer.plot_loss_iter()
+    trainer.plot_loss_epoch()         
 #print(T.cuda.is_available())
 #print(os.environ.get('CUDA_PATH'))
 #print(T.__version__)
