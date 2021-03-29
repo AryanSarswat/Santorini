@@ -646,8 +646,9 @@ class LinearRlAgentV2(RandomAgent):
     basic RL agent using a linear function approximator and TD learning
     epsilon greedy policy too?
     '''
-    def __init__(self, name):
+    def __init__(self, name,depth=3):
         super().__init__(name)
+        self.depth = depth
 
     def action(self, board):
         """
@@ -655,7 +656,7 @@ class LinearRlAgentV2(RandomAgent):
         """
         board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
         fast_board = FastBoard()
-        minimax = MinimaxWithPruning(board_levels, all_worker_coords, self.name, 3, fast_board)
+        minimax = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.depth, fast_board)
         new_board_levels, new_worker_coords = minimax.get_best_node()
         new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
@@ -1097,6 +1098,8 @@ class MCTS():
         self.root = root
         self.model = model
         self.args = args
+        self.depth = args["Tree_depth"]
+        self.fast_board = FastBoard()
 
     def backpropagate(self,search_path,value,to_play):
         """
@@ -1111,20 +1114,34 @@ class MCTS():
         """
         Perform a rollout
         """
-        state = node.state
-        if state.is_terminal():
-            return state.reward()
+        if self.args["random"] == 1:
+            state = node.state
+            if state.is_terminal():
+                return state.reward()
+            else:
+                while not state.is_terminal():
+                    player = state.Player_turn()
+                    build,work = self.fast_board.convert_board_to_array(state)
+                    pos_state = self.fast_board.all_possible_next_states(build,work,player)
+                    next_state = pos_state[np.random.randint(0,len(pos_state))]
+                    state = self.fast_board.convert_array_to_board(state,next_state[0],next_state[1])
+                    if state.is_terminal():
+                        return state.reward()   
         else:
-            while not state.is_terminal():
-                player = state.Player_turn()
-                if player == "A":
-                    ag = LinearRlAgentV2("A")
-                    state = ag.action(state)
-                else:
-                    ag = LinearRlAgentV2("B")
-                    state = ag.action(state)
-                if state.is_terminal():
-                    return state.reward()
+            state = node.state
+            if state.is_terminal():
+                return state.reward()
+            else:
+                while not state.is_terminal():
+                    player = state.Player_turn()
+                    if player == "A":
+                        ag = LinearRlAgentV2("A",depth=self.depth)
+                        state = ag.action(state)
+                    else:
+                        ag = LinearRlAgentV2("B",depth=self.depth)
+                        state = ag.action(state)
+                    if state.is_terminal():
+                        return state.reward()
     
     def run(self,to_play):
         """
@@ -1193,12 +1210,11 @@ class MCTS_Only_Agent(RandomAgent):
             node.expand()
         
         children = list(node.children)
-        for child in children:
-            search_path = [node,child]
-            for sim in range(self.args["Num_Simulations"]):
-                reward = mcts.rollout(child)
-                mcts.backpropagate(search_path,reward,child.state.Player_turn())
         vals = [n.value() for n in children]
+        for child in range(len(children)):
+            for sim in range(self.args["Num_Simulations"]):
+                reward = mcts.rollout(children[child])
+                vals[child]+=reward
         if node.state.Player_turn() == "A":
             return children[np.argmax(vals)].state
         else:
@@ -1257,12 +1273,20 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
 
 
 args = {
-    'Num_Simulations': 5,
-    'Iterations' : 10000,                     # Total number of MCTS simulations to run when deciding on a move to play
+    'Num_Simulations': 1,
+    'Iterations' : 10000,
+    'Tree_depth' : 2,                     # Total number of MCTS simulations to run when deciding on a move to play
     'epochs': 1,
     'depth' : 25,                                    # Number of epochs of training per iteration
-    'checkpoint_path': r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator"
+    'checkpoint_path': r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator",
+    'random' : 0
 }
 
 Ag = MCTS_Only_Agent("A",args)
-run_santorini(agent1=Ag)
+w = 0
+for i in range(10):
+    if run_santorini(agent1=Ag) == "A":
+        w+=1
+
+print(w)
+    
