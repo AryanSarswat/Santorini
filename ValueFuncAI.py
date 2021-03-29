@@ -96,7 +96,7 @@ class Agent():
     def action(self, board):
         states = board.all_possible_next_states(self.name)
         values = []
-        rand = 1 #np.random.uniform()
+        rand = np.random.uniform()
         for state in states:
             converted_state = self.convertTo2D(state)
             values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
