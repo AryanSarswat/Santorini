@@ -16,7 +16,7 @@ class LinearFnApproximator():
     whether to use only features that avoid invoking all_possible_moves)
     attributes: state_value (positive for A, negative for B)
     '''
-    def __init__(self, board_levels, all_worker_coords, weights = [0,2,4,0,-2,-4,-1,1]):
+    def __init__(self, board_levels, all_worker_coords, weights):
         self.weights = weights
         self.BOARD_LEVELS = board_levels
         self.ALL_WORKER_COORDS = all_worker_coords
@@ -36,6 +36,9 @@ class LinearFnApproximator():
         return f'\These are the position features: {position_features}\
         \n the value of this state is {self.state_value}'
 
+    def get_features(self):
+        return np.array(self.calculate_position_features())
+
     def calculate_state_value(self):
         '''
         input: game board object, weights
@@ -43,7 +46,12 @@ class LinearFnApproximator():
         utilizes weights + board state to calculate the state value
         '''
         position_features = np.array(self.calculate_position_features())
-        return np.sum(position_features*self.weights)
+        state_value = np.sum(position_features*self.weights)
+
+        #ensures approximated value is within -9999 and 9999.
+        state_value = min(state_value, 9999)
+        state_value = max(-9999, state_value)
+        return state_value
 
     def calculate_position_features(self):
         '''
@@ -101,12 +109,13 @@ class MinimaxWithPruning():
     Constructs Minimax Tree with Alpha-Beta pruning
     Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, alpha = -math.inf, beta = math.inf):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1], alpha = -math.inf, beta = math.inf):
         #initialize attributes
         self.depth = depth
         self.board_levels = board_levels
         self.all_worker_coords = all_worker_coords
         self.current_player = current_player
+        self.weights = weights
         self.alpha = alpha
         self.beta = beta
         self.fast_board = fast_board
@@ -128,7 +137,7 @@ class MinimaxWithPruning():
         if self.winner != None:
             self.set_win_node_value()
         elif depth == 0:
-            self.value = LinearFnApproximator(board_levels, all_worker_coords).state_value
+            self.value = LinearFnApproximator(board_levels, all_worker_coords, self.weights).state_value
         else:
             self.possible_states = fast_board.all_possible_next_states(board_levels, all_worker_coords, current_player)
             if len(self.possible_states) == 0: #if no possible moves, then other player already wins.
@@ -161,9 +170,9 @@ class MinimaxWithPruning():
         depending on winning player, sets self.value either to positive or negative infinity
         '''
         if self.winner == 'A':
-            self.value = math.inf
+            self.value = 9999
         elif self.winner == 'B':
-            self.value = -math.inf
+            self.value = -9999
 
     def get_minimax_from_children(self):
         '''
@@ -172,7 +181,7 @@ class MinimaxWithPruning():
         if self.maximizing_player:
             maxValue = -math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.alpha, self.beta)
+                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.alpha, self.beta)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 maxValue = max(maxValue, value)
@@ -183,7 +192,7 @@ class MinimaxWithPruning():
         else:
             minValue = math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.alpha, self.beta)
+                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.alpha, self.beta)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 minValue = min(minValue, value)
@@ -235,18 +244,26 @@ class LinearRlAgentV2(RandomAgent):
     basic RL agent using a linear function approximator and TD learning
     epsilon greedy policy too?
     '''
-    def __init__(self, name):
+    def __init__(self, name, search_depth):
         super().__init__(name)
+        self.search_depth = search_depth
 
-    def action(self, board):
+    def action(self, board, trainer = None):
         """
         Method to select and place a worker, afterwards, place a building
         """
         board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
         fast_board = FastBoard()
-        minimax = MinimaxWithPruning(board_levels, all_worker_coords, self.name, 3, fast_board)
-        new_board_levels, new_worker_coords = minimax.get_best_node()
-        new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
+        if trainer != None:
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
+            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
+            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
+            #update weights if in training mode. instance must be called rootstrap
+            trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
+        else:
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board)
+            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
+            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
 
 #Work in progress
