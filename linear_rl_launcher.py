@@ -1,12 +1,12 @@
 ###Code for Running Game
 from Game import *
-import numpy as np
-import time
-from linear_rl_core_v2 import RandomAgent, LinearRlAgentV2, MinimaxWithPruning
-from linear_rl_core_v1 import LinearRlAgentV1
-from fast_board import FastBoard
+#import numpy as np
+#import time
+#from linear_rl_core_v2 import RandomAgent, LinaerRlAgentV2
+#from linear_rl_core_v1 import LinearRlAgentV1
+#from fast_board import FastBoard
 
-def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B"), verbose = True, trainer_a = None, trainer_b = None):
+def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = None):
     '''
     Runs a game of Santorini, allow choice of AI/human players
     '''
@@ -51,5 +51,5 @@ def run_santorini(agent1 = RandomAgent("A"), agent2 = RandomAgent("B"), verbose 
         
     return win
     
-#print(run_santorini(LinearRlAgentV2("A"), LinearRlAgentV1("B"), False))
+#run_santorini(LinearRlAgentV2("A", 4), LinearRlAgentV2("B", 4), True)
 

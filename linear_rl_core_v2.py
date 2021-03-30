@@ -103,21 +103,18 @@ class LinearFnApproximator():
 #finally, need another class for the RL algorithm itself (TD lambda? to train, 
 #does the RL algorthim need some kind of regularization to prevent the rewards getting too ridiculous?
 
-class MinimaxWithPruning():
+class Minimax():
     '''
-    Core algorithm referenced from: https://www.youtube.com/watch?v=l-hh51ncgDI
-    Constructs Minimax Tree with Alpha-Beta pruning
+    Constructs entire Minimax Tree
     Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1], alpha = -math.inf, beta = math.inf):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1]):
         #initialize attributes
         self.depth = depth
         self.board_levels = board_levels
         self.all_worker_coords = all_worker_coords
         self.current_player = current_player
         self.weights = weights
-        self.alpha = alpha
-        self.beta = beta
         self.fast_board = fast_board
         if current_player == 'A':
             self.next_player = 'B'
@@ -151,7 +148,7 @@ class MinimaxWithPruning():
         for node in self.child_nodes:
             total_2nd_order_nodes += len(node.child_nodes)
             
-        return (f'This is a pruned tree with depth {self.depth} and {len(self.child_nodes)} child nodes.\
+        return (f'This is a tree with depth {self.depth} and {len(self.child_nodes)} child nodes.\
         \n Current player is {self.current_player}\
         \n We have {total_2nd_order_nodes} 2nd order nodes')
 
@@ -181,6 +178,52 @@ class MinimaxWithPruning():
         if self.maximizing_player:
             maxValue = -math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
+                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights)
+                self.child_nodes.append(child_node)
+                value = child_node.value
+                maxValue = max(maxValue, value)
+            return maxValue
+        else:
+            minValue = math.inf
+            for altered_board_levels, altered_worker_coords in self.possible_states:
+                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights)
+                self.child_nodes.append(child_node)
+                value = child_node.value
+                minValue = min(minValue, value)
+            return minValue
+
+    def get_best_node(self):
+        for node in self.child_nodes:
+            if self.value == node.value:
+                return (node.board_levels, node.all_worker_coords)
+
+class MinimaxWithPruning(Minimax):
+    '''
+    Core algorithm referenced from: https://www.youtube.com/watch?v=l-hh51ncgDI
+    Constructs Minimax Tree with Alpha-Beta pruning
+    Inputs: Board object, current_player ('A' or 'B'), depth to search to
+    '''
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1], alpha = -math.inf, beta = math.inf):
+        self.alpha = alpha
+        self.beta = beta
+        super().__init__(board_levels, all_worker_coords, current_player, depth, fast_board, weights)
+
+    def __repr__(self):
+        total_2nd_order_nodes = 0
+        for node in self.child_nodes:
+            total_2nd_order_nodes += len(node.child_nodes)
+            
+        return (f'This is a pruned tree with depth {self.depth} and {len(self.child_nodes)} child nodes.\
+        \n Current player is {self.current_player}\
+        \n We have {total_2nd_order_nodes} 2nd order nodes')
+
+    def get_minimax_from_children(self):
+        '''
+        returns minimax values of child_nodes based on recursive minimax algorithm incorporating alpha-beta pruning
+        '''
+        if self.maximizing_player:
+            maxValue = -math.inf
+            for altered_board_levels, altered_worker_coords in self.possible_states:
                 child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.alpha, self.beta)
                 self.child_nodes.append(child_node)
                 value = child_node.value
@@ -200,74 +243,3 @@ class MinimaxWithPruning():
                 if self.beta <= self.alpha:
                     break
             return minValue
-
-    def get_best_node(self):
-        for node in self.child_nodes:
-            if self.value == node.value:
-                return (node.board_levels, node.all_worker_coords)
-
-class RandomAgent():
-    '''
-    parent class for AI agent playing Santorini. by default, will play completely randomly.
-    '''
-    def __init__(self, name):
-        self.name = name
-        self.workers = [Worker([], str(name)+"1"), Worker([], str(name)+"2")]
-        
-    def place_workers(self, board):
-        """
-        Method to randomly place a player's worker on the board. in-place function.
-        """
-        workers_placed = 0
-        while workers_placed < 2:
-            try:
-                coords = [random.randint(0, 5), random.randint(0, 5)]
-                # Update own workers
-                self.workers[workers_placed].update_location(coords)
-                #updates directly into square of board (breaking abstraction barriers much?)
-                board.board[coords[0]][coords[1]].update_worker(self.workers[workers_placed])
-                workers_placed += 1
-            except Exception:
-                continue
-
-        return board
-
-    def action(self, board):
-        """
-        Method to select and place a worker, afterwards, place a building
-        """
-        board = random.choice(board.all_possible_next_states(self.name))
-        return board
-
-class LinearRlAgentV2(RandomAgent):
-    '''
-    basic RL agent using a linear function approximator and TD learning
-    epsilon greedy policy too?
-    '''
-    def __init__(self, name, search_depth):
-        super().__init__(name)
-        self.search_depth = search_depth
-
-    def action(self, board, trainer = None):
-        """
-        Method to select and place a worker, afterwards, place a building
-        """
-        board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
-        fast_board = FastBoard()
-        if trainer != None:
-            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
-            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
-            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
-            #update weights if in training mode. instance must be called rootstrap
-            trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
-        else:
-            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board)
-            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
-            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
-        return new_board
-
-#Work in progress
-    #the issue of whether to reduce the strength of the approximator in favour of greater search depth
-    #linearRl agent not ideal way of taking actions
-    #when generating possible moves, we want to prioritize moves we think will be good to speed up pruning
-    #how to factor in rewards when minimax tree returns infinity...
