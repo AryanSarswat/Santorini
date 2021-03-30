@@ -53,7 +53,7 @@ class TreeStrapMinimax(SearchBootstrapper):
             linear_approximator = LinearFnApproximator(child_node.board_levels, child_node.all_worker_coords, self.weights)
             approximated_value = linear_approximator.state_value
             feature_vector = linear_approximator.get_features()
-            error = minimax_tree.value - approximated_value
+            error = child_node.value - approximated_value
             weight_update = self.learning_rate * error * feature_vector
             total_weight_update += weight_update
         #only update self.weights at the end to 'freeze' state value approximation
@@ -110,28 +110,18 @@ class LinearRlAgentV2(RandomAgent):
         if trainer != None:
             if isinstance(trainer, RootStrapAB):
                 minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
-                new_board_levels, new_worker_coords = minimax_tree.get_best_node()
-                new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
-                #update weights if in training mode. instance must be called rootstrap
-                trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
             elif isinstance(trainer, TreeStrapMinimax):
                 minimax_tree = Minimax(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
-                new_board_levels, new_worker_coords = minimax_tree.get_best_node()
-                new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
-                #update weights if in training mode. instance must be called treestrap
-                trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
+
+            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
+            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
+            #update weights if in training mode. instance must be called treestrap
+            trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
         else:
             minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board)
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
-
-#Work in progress
-    #the issue of whether to reduce the strength of the approximator in favour of greater search depth
-    #linearRl agent not ideal way of taking actions
-    #when generating possible moves, we want to prioritize moves we think will be good to speed up pruning
-    #how to factor in rewards when minimax tree returns infinity...
-
 
 def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
     a_wins = 0
@@ -146,11 +136,11 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
         print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
 
 rootstrap = RootStrapAB()
-treestrap = TreeStrapMinimax()
+treestrap = TreeStrapMinimax([-27.8177124,  -17.38723488,  -8.1350203,   -2.91982269, -12.06854257, -37.34683681, -24.54237358, -23.99931087])
     #[-36.87386823, -15.7237439,   52.04003867,  13.61611649,  20.9258601, -36.89773159,  -5.50453141,  10.62089711])
     #[-0.69692801,  0.85068979,  9.44413328,  0.45168497,  2.3968307,  -5.25062061, 0.02590619, 3.0396221])
-agent_a = LinearRlAgentV2('A', 3)
-agent_b = LinearRlAgentV2('B', 3)
-training_loop(treestrap, treestrap, agent_a, agent_b, 100)
+agent_a = LinearRlAgentV2('A', 2)
+agent_b = LinearRlAgentV2('B', 2)
+training_loop(treestrap, None, agent_a, agent_b, 100)
 
 #should I tie opposite features to each other..hmmm...or break them down further.....
