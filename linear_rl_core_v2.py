@@ -108,7 +108,7 @@ class Minimax():
     Constructs entire Minimax Tree
     Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1]):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights):
         #initialize attributes
         self.depth = depth
         self.board_levels = board_levels
@@ -203,7 +203,7 @@ class MinimaxWithPruning(Minimax):
     Constructs Minimax Tree with Alpha-Beta pruning
     Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights = [0,2,4,0,-2,-4,-1,1], alpha = -math.inf, beta = math.inf):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights, alpha = -math.inf, beta = math.inf):
         self.alpha = alpha
         self.beta = beta
         super().__init__(board_levels, all_worker_coords, current_player, depth, fast_board, weights)

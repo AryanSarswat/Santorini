@@ -41,7 +41,7 @@ def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = 
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
             if win != None:
-                board.print_board()
+                #board.print_board()
                 break
         
         if current_player == 'A':

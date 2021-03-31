@@ -96,14 +96,19 @@ class LinearRlAgentV2(RandomAgent):
     '''
     basic RL agent using a linear function approximator and TD learning
     epsilon greedy policy too?
+
+    Inputs: name: either 'A' or 'B', search depth, and trained_weights (when not in training mode)
     '''
-    def __init__(self, name, search_depth):
+    def __init__(self, name, search_depth, trained_weights = [0,2,4,0,-2,-4,-1,1]):
         super().__init__(name)
         self.search_depth = search_depth
+        self.trained_weights = trained_weights
 
     def action(self, board, trainer = None):
         """
-        Method to select and place a worker, afterwards, place a building
+        Method to select and place a worker, afterwards, place a building/
+        If trainer is specified, will call corresponding search tree and update weights
+        Otherwise, uses the specified weights and searches with a minimax tree with alpha beta pruning.
         """
         board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
         fast_board = FastBoard()
@@ -118,7 +123,7 @@ class LinearRlAgentV2(RandomAgent):
             #update weights if in training mode. instance must be called treestrap
             trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
         else:
-            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board)
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights)
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
@@ -135,12 +140,18 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
         print(trainer_a) #, trainer_b)
         print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
 
+#trained weights
+treestrap_depth3_self_play_100_games = [-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511]
+rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
+
+#trainer objects
 rootstrap = RootStrapAB()
-treestrap = TreeStrapMinimax([-27.8177124,  -17.38723488,  -8.1350203,   -2.91982269, -12.06854257, -37.34683681, -24.54237358, -23.99931087])
-    #[-36.87386823, -15.7237439,   52.04003867,  13.61611649,  20.9258601, -36.89773159,  -5.50453141,  10.62089711])
-    #[-0.69692801,  0.85068979,  9.44413328,  0.45168497,  2.3968307,  -5.25062061, 0.02590619, 3.0396221])
-agent_a = LinearRlAgentV2('A', 2)
-agent_b = LinearRlAgentV2('B', 2)
-training_loop(treestrap, None, agent_a, agent_b, 100)
+treestrap = TreeStrapMinimax([-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511])
+
+#initialize agents
+agent_a = LinearRlAgentV2('A', 3, treestrap_depth3_self_play_100_games)
+agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
+
+training_loop(None, None, agent_a, agent_b, 100)
 
 #should I tie opposite features to each other..hmmm...or break them down further.....
