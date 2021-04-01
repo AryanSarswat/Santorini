@@ -18,7 +18,7 @@ class SearchBootstrapper():
     def __repr__(self):
         return f'Current weights are {self.weights}'
 
-    def update_weights(self, minimax_tree, board_levels, all_worker_coords):
+    def update_weights(self, minimax_tree):
         pass
 
 class RootStrapAB(SearchBootstrapper):
@@ -30,9 +30,9 @@ class RootStrapAB(SearchBootstrapper):
     def __init__(self, weights = None, learning_rate = 10**-5):
         super().__init__(weights, learning_rate)
 
-    def update_weights(self, minimax_tree, board_levels, all_worker_coords):
+    def update_weights(self, minimax_tree):
         #update weights of approximator towards minimax search value
-        linear_approximator = LinearFnApproximator(board_levels, all_worker_coords, self.weights)
+        linear_approximator = LinearFnApproximator(minimax_tree.board_levels, minimax_tree.all_worker_coords, self.weights)
         approximated_value = linear_approximator.state_value
         feature_vector = linear_approximator.get_features()
         error = minimax_tree.value - approximated_value
@@ -41,23 +41,33 @@ class RootStrapAB(SearchBootstrapper):
 
 class TreeStrapMinimax(SearchBootstrapper):
     '''
-    performs full minimax search at current state, then for each leaf node update
+    performs full minimax search at current state, then for every single leaf node update
     parameters towards minimax search value using SGD
     '''
     def __init__(self, weights = None, learning_rate = 10**-6):
         super().__init__(weights, learning_rate)
 
-    def update_weights(self, minimax_tree, board_levels, all_worker_coords):
+    def update_weights(self, minimax_tree, root = True):
         total_weight_update = np.array([0.0 for i in range(self.NUM_WEIGHTS)])
-        for child_node in minimax_tree.child_nodes:
-            linear_approximator = LinearFnApproximator(child_node.board_levels, child_node.all_worker_coords, self.weights)
-            approximated_value = linear_approximator.state_value
-            feature_vector = linear_approximator.get_features()
-            error = child_node.value - approximated_value
-            weight_update = self.learning_rate * error * feature_vector
-            total_weight_update += weight_update
-        #only update self.weights at the end to 'freeze' state value approximation
-        self.weights += total_weight_update
+        #if minimax_tree.depth == 1:
+        total_weight_update += self.calculate_weight_update(minimax_tree)
+        if minimax_tree.depth > 1:
+            for child_node in minimax_tree.child_nodes:
+                total_weight_update += self.update_weights(child_node, False)
+        if not root:
+            return total_weight_update
+        else:
+            #print(total_weight_update)
+            #only update self.weights at the end to 'freeze' state value approximation
+            self.weights += total_weight_update
+
+    def calculate_weight_update(self, node):
+        linear_approximator = LinearFnApproximator(node.board_levels, node.all_worker_coords, self.weights)
+        approximated_value = linear_approximator.state_value
+        feature_vector = linear_approximator.get_features()
+        error = node.value - approximated_value
+        weight_update = self.learning_rate * error * feature_vector
+        return weight_update
         
 class RandomAgent():
     '''
@@ -120,8 +130,8 @@ class LinearRlAgentV2(RandomAgent):
 
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
-            #update weights if in training mode. instance must be called treestrap
-            trainer.update_weights(minimax_tree, board_levels, all_worker_coords)
+            #update weights if in training mode.
+            trainer.update_weights(minimax_tree)
         else:
             minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights)
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
@@ -141,17 +151,18 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
         print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
 
 #trained weights
-treestrap_depth3_self_play_100_games = [-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511]
+treestrap_depth3_self_play_100_games = [-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511] #trained with flawed algo
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
+treestrap_depth3_self_play_26_games = [-57.1350499,  -24.43606518, 87.43759999,  70.55689126,  61.53952637, -48.80110254, -13.22514194,  29.42421974]
 
 #trainer objects
 rootstrap = RootStrapAB()
-treestrap = TreeStrapMinimax([-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511])
+treestrap = TreeStrapMinimax([-57.1350499,  -24.43606518, 87.43759999,  70.55689126,  61.53952637, -48.80110254, -13.22514194,  29.42421974])
 
 #initialize agents
-agent_a = LinearRlAgentV2('A', 3, treestrap_depth3_self_play_100_games)
-agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
+agent_a = LinearRlAgentV2('A', 2)
+agent_b = LinearRlAgentV2('B', 2)# rootstrap_depth3_self_play_100_games)
 
-training_loop(None, None, agent_a, agent_b, 100)
+training_loop(treestrap, treestrap, agent_a, agent_b, 74)
 
 #should I tie opposite features to each other..hmmm...or break them down further.....
