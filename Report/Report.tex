@@ -1,14 +1,19 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt,table]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{fancyhdr}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{float}
 \usepackage{pgfplots}
 \usepackage{blindtext}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage[ruled,vlined]{algorithm2e}
+
+
+\renewcommand{\arraystretch}{2.5}
 
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{1em}
@@ -257,6 +262,30 @@ The Algorithm is as follows: for each node, all the child nodes are selected one
 
 
 \section{Results and Dicussion}
+
+text \par
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|c|cccccccccc}
+    \hline
+    \multicolumn{11}{|c|}{Win Rates}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+                   & \multicolumn{1}{c|}{Random}                     & \multicolumn{1}{c|}{ANN}                        & \multicolumn{1}{c|}{CNN}                        & \multicolumn{1}{c|}{MCTS\_ANN}                  & \multicolumn{1}{c|}{MCTS\_CNN}                  & \multicolumn{1}{c|}{Combined}                   & \multicolumn{1}{c|}{Linear Depth 1}             & \multicolumn{1}{c|}{Linear Depth 2}             & \multicolumn{1}{c|}{Linear Depth 3}             & \multicolumn{1}{c|}{Human}                      \\ \hline
+    Random         & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-2}
+    ANN            & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-3}
+    CNN            & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{333333} } & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-4}
+    MCTS\_ANN      & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } \\ \cline{1-5}
+    MCTS\_CNN      & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-6}
+    Combined       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } \\ \cline{1-7}
+    Linear Depth 1 & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-8}
+    Linear Depth 2 & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-9}
+    Linear Depth 3 & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
+    Human          & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
+    \end{tabular}%
+    }
+    \caption{Win Rate of Each Agent}
+    \label{table: }
+\end{table}
 
 \section{Conclusion}
 
