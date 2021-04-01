@@ -2,6 +2,7 @@ from Combined import LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neu
 from MCTS_Trainer import MCTS_Agent
 from Game import Board
 import torch
+from tqdm import tqdm
 
 def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
     '''
@@ -42,7 +43,7 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
             if win != None:
-                board.print_board()
+                #board.print_board()
                 break
         
         if current_player == 'A':
@@ -108,7 +109,7 @@ dat = dict()
 
 for i in Possible_Games:
     wins = 0
-    for j in range(num_games):
+    for j in tqdm(range(num_games)):
         if run_santorini(agent1=i[0],agent2=i[1]) == "A":
             wins+=1
     one = str(i).split()[0]
