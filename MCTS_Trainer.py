@@ -10,18 +10,28 @@ from MCTS_NN import Neural_Network
 from MCTS import MCTS,Node
 from RandomAgent import RandomAgent
 from tqdm import tqdm
-from linear_rl_core import LinearRlAgent
+from linear_rl_agents import LinearRlAgentV2
 from ValueFuncAI import ValueFunc
 
 class MCTS_Agent(HumanPlayer):
-    def __init__(self):
-        super().__init__()
-        self.nn = Neural_Network()
-        try:
-            self.nn.load_state_dict(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI")
-            self.nn.eval()
-        except:
-            print("Model Dictionary not found")
+    def __init__(self,player,NN=None):
+        super().__init__(player)
+        self.nn = Neural_Network() if NN == None else NN
+        self.mappings = {
+                        (0,None) : 0,
+                        (1,None) : 1,
+                        (2,None) : 2,
+                        (3,None) : 3,
+                        (4,None) : 4,
+                        (0,'A') : 5,
+                        (1,'A') : 6,
+                        (2,'A') : 7,
+                        (3,'A') : 8,
+                        (0,'B') : 9,
+                        (1,'B') : 10,
+                        (2,'B') : 11,
+                        (3,'B') : 12,
+                    }
 
     def place_workers(self, board):
         """
@@ -43,13 +53,41 @@ class MCTS_Agent(HumanPlayer):
         """
         Performs an action
         """
-        states = board.all_possible_next_states(self.name)
+        states = board.all_possible_next_states(board.Player_turn())
+        nodes = [Node(i) for i in states]
         values = []
-        for state in states:
-            converted_state = self.convert_nodes_to_input(state)
-            values.append(self.nn.forward(converted_state))
-        return states[np.argmax(values)]
-           
+        converted_state = self.convert_nodes_to_input(nodes)
+        for state in converted_state:
+            values.append(self.nn.forward(state).item())
+        if board.Player_turn == "A":
+            return states[np.argmax(values)]
+        else:
+            return states[np.argmin(values)]
+    
+    def convert_nodes_to_input(self,set_of_nodes):
+        """
+        Converts a set of nodes to a list of one hot encoded boards
+        """
+        states = [i.state for i in set_of_nodes]
+        boards = [i.board for i in states]
+        
+        enc = OneHotEncoder(handle_unknown='ignore')
+        vals = np.array(list(self.mappings.values())).reshape(-1,1)
+        enc.fit(vals)
+        
+        in_nn = []
+        for board in boards:
+            temp1 = []
+            for row in board:
+                temp2 = []
+                for element in row:
+                    worker = element.worker.name[0] if element.worker != None else None
+                    temp2.append([self.mappings[(element.building_level,worker)]])
+                one_hot = enc.transform(np.array(temp2)).toarray()
+                temp1.append(one_hot)
+            flattened = np.array(temp1).flatten()
+            in_nn.append(flattened)
+        return in_nn
 
 
 
@@ -179,7 +217,7 @@ class Trainer():
 
 class Trainer_CNN(Trainer):
 
-    def __init__(self,args,NN=None):
+    def __init__(self,player,args,NN=None):
         self.args = args
         self.state = Board(LinearRlAgent("A"),LinearRlAgent("B"))
         self.training_examples = []
@@ -202,6 +240,7 @@ class Trainer_CNN(Trainer):
                             (3,'B') : 12,
                                             }
         self.nn.to(self.nn.device)
+        self.name = player
 
     def convertTo2D(self, board):
         """
@@ -294,6 +333,11 @@ class Trainer_CNN(Trainer):
         rand = 1 #np.random.uniform()
         for state in states:
             converted_state = self.convertTo2D(state)
-            values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
-        highest_value = torch.argmax(T.cat(values)).item()
-        return states[highest_value]
+            values.append(torch.flatten(self.nn.forward(converted_state).to(self.nn.device)))
+        if self.name == "A":
+            highest_value = torch.argmax(torch.cat(values)).item()
+            return states[highest_value]
+        else:
+            lowest_value = torch.argmin(torch.cat(values)).item()
+            return states[highest_value]
+            

@@ -77,8 +77,10 @@ class ValueFunc(nn.Module):
 
     def forward(self,x):
         with T.autograd.set_detect_anomaly(True):
-            x = x.reshape(1,2,5,5).to(self.device)
-            #x = T.cuda.FloatTensor(x).to(self.device)
+            x = x.reshape(1,2,5,5).float().to(self.device)
+            #print(type(x))
+            #if x != T.cuda.FloatTensor or T.cuda.float32:
+                #x = T.cuda.DoubleTensor(x).float().to(self.device)
             x = self.convs(x)
             x = F.relu(self.fc1(x))
             x = self.fc2(x)
@@ -100,13 +102,17 @@ class Agent():
         for state in states:
             converted_state = self.convertTo2D(state)
             values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
-        if (self.explore == False) and (rand > self.nn.epsilon):
+        if (self.explore == False):
             highest_value = T.argmax(T.cat(values)).item()
             return states[highest_value]
         else:
-            choice = random.choice(values)
-            index = values.index(choice)
-            return states[index]
+            if (rand > self.nn.epsilon):
+                highest_value = T.argmax(T.cat(values)).item()
+                return states[highest_value]
+            else:
+                choice = random.choice(values)
+                index = values.index(choice)
+                return states[index]
 
 
     def convertTo2D(self, board):

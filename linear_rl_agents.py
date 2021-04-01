@@ -163,6 +163,7 @@ treestrap = TreeStrapMinimax([-57.1350499,  -24.43606518, 87.43759999,  70.55689
 agent_a = LinearRlAgentV2('A', 2)
 agent_b = LinearRlAgentV2('B', 2)# rootstrap_depth3_self_play_100_games)
 
-training_loop(treestrap, treestrap, agent_a, agent_b, 74)
+if __name__ == "__main__":
+    training_loop(None, None, agent_a, agent_b, 74)
 
 #should I tie opposite features to each other..hmmm...or break them down further.....
