@@ -10,9 +10,10 @@ from tqdm import tqdm
 from Game import *
 from RandomAgent import *
 from runner import run_santorini
+from linear_rl_agents import LinearRlAgentV2
 
 PATH = "Value_Func_State_Dict_CNN_random2.pt"
-PATH2 = "Value_Func_State_Dict_CNN_D.pt"
+PATH2 = "Value_Func_State_Dict_CNN_B.pt"
 
 
 
@@ -120,12 +121,12 @@ class ValueFuncTrainer():
     
 
 def evaluate_model(brain1, brain2):
-    brain2.nn.eval()
+    brain1.nn.eval()
     #brain2.nn.eval()
     count = 0
     total = 0
     with T.no_grad():
-        for i in tqdm(range(100)):
+        for i in tqdm(range(50)):
             winner = run_santorini(brain1, brain2)
             if winner == brain2.name:
                 count += 1
@@ -133,16 +134,21 @@ def evaluate_model(brain1, brain2):
             else:
                 total += 1
     return count/total
+treestrap_depth3_self_play_100_games = [-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511]
+rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
 
 
 if os.path.isfile(PATH):
     print("\n Loading Saved Model")
-    brain1 = Agent("B", False)    
+    agent_a = LinearRlAgentV2('B', 3)
+    brain1 = Agent("A", False)    
+    #agent_b = LinearRlAgentV2('B', 3, treestrap_depth3_self_play_100_games)
     #brain2 = Agent("B", False)
     #loaded_nn = ValueFunc()
-    brain1.nn.load_state_dict(T.load(PATH2))
-    print(evaluate_model(RandomAgent("A"), brain1))
-    #trainer = ValueFuncTrainer(1000, 10, loaded_nn, brain1, RandomAgent("B"))
+    brain1.nn.load_state_dict(T.load(PATH))
+    #brain2.nn.load_state_dict(T.load(PATH))
+    print(evaluate_model(brain1, agent_a))
+     #trainer = ValueFuncTrainer(1000, 10, loaded_nn, brain1, RandomAgent("B"))
     #trainer.train()
     #T.save(trainer.nn.state_dict(),PATH2)
     #trainer.plot_loss_epoch()
