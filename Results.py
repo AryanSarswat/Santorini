@@ -1,6 +1,58 @@
-from Combined import run_santorini,LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
+from Combined import LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
 from MCTS_Trainer import MCTS_Agent
 import torch
+
+def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
+    '''
+    should run a game of Santorini, allow choice of AI/human players
+    '''
+    board = Board(agent1, agent2)
+    win = None
+    #initial worker placement
+    board = board.PlayerA.place_workers(board)
+    board = board.PlayerB.place_workers(board)
+    current_player = 'A'
+    
+    def get_current_board_player(current_player):
+        if current_player == 'A':
+            return board.PlayerA
+        else:
+            return board.PlayerB
+    #game loop
+    while win == None:
+        board_player = get_current_board_player(current_player)
+        win = board.start_turn_check_win(board_player)
+        if win != None:
+            break
+        else:
+            '''
+            board_levels, worker_coords = FastBoard.convert_board_to_array(board)
+            fast_board = FastBoard()
+            start = time.time()
+            print(MinimaxWithPruning(board_levels, worker_coords, current_player, 3, fast_board))
+            end = time.time()
+            print(f'tree with ab pruning took {end-start}')
+            '''
+            #print(f'Current Player is {current_player}')
+            board.print_board()
+            #print("----------------------------------------------------------------\n")
+            board = board_player.action(board)
+            #because the board has been replaced, need to retrieve player obj again
+            board_player = get_current_board_player(current_player)
+            win = board.end_turn_check_win(board_player)
+            if win != None:
+                board.print_board()
+                break
+        
+        if current_player == 'A':
+            current_player = 'B'
+        else:
+            current_player = 'A'
+        
+    return win
+
+
+
 
 args = {
     'Num_Simulations': 1,
