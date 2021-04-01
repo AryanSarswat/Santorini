@@ -761,6 +761,40 @@ class ValueFunc(nn.Module):
         data.append(players)
         return torch.as_tensor(data)
 
+class Neural_Network(nn.Module):
+    def __init__(self):
+        super(Neural_Network, self).__init__()
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.fc1 = nn.Linear(in_features=325, out_features=256)
+        self.fc2 = nn.Linear(in_features=256, out_features=64)
+        self.value_head = nn.Linear(in_features=64, out_features=1)
+        self.to(self.device)
+        self.optimizer = optim.Adam(self.parameters(),lr=1e-2)
+        self.loss = nn.MSELoss()
+
+    def forward(self, x):
+        """
+        Feed forward into the Neural Network
+        """
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+
+        value_logit = self.value_head(x)
+
+        return torch.tanh(value_logit)
+ 
+    def predict(self, board):
+        """
+        Predict the value of a state
+        """
+        board = torch.FloatTensor(board.astype(np.float32)).to(self.device)
+        board = board.view(1, self.size)
+        self.eval()
+        with torch.no_grad():
+            v = self.forward(board)
+
+        return v.data.cpu().numpy()[0]
+
 
 class Trainer():
     def __init__(self, args, NN=None):
@@ -994,8 +1028,10 @@ class Trainer_CNN(Trainer):
         for state in b_pos_states:
             converted_state = self.convertTo2D(state)
             values.append(torch.flatten(self.nn.forward(converted_state).to(self.nn.device)))
-        highest_value = torch.argmax(torch.cat(values)).item()
-        return b_pos_states[highest_value]
+        if board.Player_turn() == "A":
+            return b_pos_states[torch.argmax(torch.cat(values)).item()]
+        else:
+            return b_pos_states[torch.argmin(torch.cat(values)).item()]
 
     def place_workers(self, board):
         """
@@ -1272,21 +1308,3 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
     return win
 
 
-args = {
-    'Num_Simulations': 1,
-    'Iterations' : 10000,
-    'Tree_depth' : 2,                     # Total number of MCTS simulations to run when deciding on a move to play
-    'epochs': 1,
-    'depth' : 25,                                    # Number of epochs of training per iteration
-    'checkpoint_path': r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator",
-    'random' : 0
-}
-
-Ag = MCTS_Only_Agent("A",args)
-w = 0
-for i in range(10):
-    if run_santorini(agent1=Ag) == "A":
-        w+=1
-
-print(w)
-    

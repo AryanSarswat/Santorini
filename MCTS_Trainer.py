@@ -10,12 +10,12 @@ from MCTS_NN import Neural_Network
 from MCTS import MCTS,Node
 from RandomAgent import RandomAgent
 from tqdm import tqdm
-from linear_rl_core import LinearRlAgent
+from linear_rl_agents import LinearRlAgentV2
 from ValueFuncAI import ValueFunc
 
 class MCTS_Agent(HumanPlayer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,player):
+        super().__init__(player)
         self.nn = Neural_Network()
         try:
             self.nn.load_state_dict(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI")
@@ -48,8 +48,35 @@ class MCTS_Agent(HumanPlayer):
         for state in states:
             converted_state = self.convert_nodes_to_input(state)
             values.append(self.nn.forward(converted_state))
-        return states[np.argmax(values)]
-           
+        if board.Player_turn == "A":
+            return states[np.argmax(values)]
+        else:
+            return states[np.argmin(values)]
+    
+    def convert_nodes_to_input(self,set_of_nodes):
+        """
+        Converts a set of nodes to a list of one hot encoded boards
+        """
+        states = [i.state for i in set_of_nodes]
+        boards = [i.board for i in states]
+        
+        enc = OneHotEncoder(handle_unknown='ignore')
+        vals = np.array(list(self.mappings.values())).reshape(-1,1)
+        enc.fit(vals)
+        
+        in_nn = []
+        for board in boards:
+            temp1 = []
+            for row in board:
+                temp2 = []
+                for element in row:
+                    worker = element.worker.name[0] if element.worker != None else None
+                    temp2.append([self.mappings[(element.building_level,worker)]])
+                one_hot = enc.transform(np.array(temp2)).toarray()
+                temp1.append(one_hot)
+            flattened = np.array(temp1).flatten()
+            in_nn.append(flattened)
+        return in_nn
 
 
 

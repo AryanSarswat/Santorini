@@ -141,6 +141,8 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
         print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
 
 #trained weights
+
+
 treestrap_depth3_self_play_100_games = [-7.98225784, -4.91059489, 22.11999484, 16.75009827, 14.2341987, -18.18913095,  1.98056001,  9.05921511]
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
 
@@ -152,6 +154,7 @@ treestrap = TreeStrapMinimax([-7.98225784, -4.91059489, 22.11999484, 16.75009827
 agent_a = LinearRlAgentV2('A', 3, treestrap_depth3_self_play_100_games)
 agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
 
-training_loop(None, None, agent_a, agent_b, 100)
+if __name__ == "__main__":
+    training_loop(None, None, agent_a, agent_b, 100)
 
 #should I tie opposite features to each other..hmmm...or break them down further.....
