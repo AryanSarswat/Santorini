@@ -17,11 +17,6 @@ class MCTS_Agent(HumanPlayer):
     def __init__(self,player,NN=None):
         super().__init__(player)
         self.nn = Neural_Network() if NN == None else NN
-        try:
-            self.nn.load_state_dict(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI")
-            self.nn.eval()
-        except:
-            print("Model Dictionary not found")
         self.mappings = {
                         (0,None) : 0,
                         (1,None) : 1,

@@ -1,5 +1,6 @@
 from Combined import LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
 from MCTS_Trainer import MCTS_Agent
+from Game import Board
 import torch
 
 def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
@@ -34,7 +35,7 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
             print(f'tree with ab pruning took {end-start}')
             '''
             #print(f'Current Player is {current_player}')
-            board.print_board()
+            #board.print_board()
             #print("----------------------------------------------------------------\n")
             board = board_player.action(board)
             #because the board has been replaced, need to retrieve player obj again
