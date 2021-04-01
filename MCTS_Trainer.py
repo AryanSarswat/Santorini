@@ -22,6 +22,21 @@ class MCTS_Agent(HumanPlayer):
             self.nn.eval()
         except:
             print("Model Dictionary not found")
+        self.mappings = {
+                        (0,None) : 0,
+                        (1,None) : 1,
+                        (2,None) : 2,
+                        (3,None) : 3,
+                        (4,None) : 4,
+                        (0,'A') : 5,
+                        (1,'A') : 6,
+                        (2,'A') : 7,
+                        (3,'A') : 8,
+                        (0,'B') : 9,
+                        (1,'B') : 10,
+                        (2,'B') : 11,
+                        (3,'B') : 12,
+                    }
 
     def place_workers(self, board):
         """
@@ -43,10 +58,11 @@ class MCTS_Agent(HumanPlayer):
         """
         Performs an action
         """
-        states = board.all_possible_next_states(self.name)
+        states = board.all_possible_next_states(board.Player_turn())
+        nodes = [Node(i) for i in states]
         values = []
         for state in states:
-            converted_state = self.convert_nodes_to_input(state)
+            converted_state = self.convert_nodes_to_input(nodes)
             values.append(self.nn.forward(converted_state))
         if board.Player_turn == "A":
             return states[np.argmax(values)]
@@ -206,7 +222,7 @@ class Trainer():
 
 class Trainer_CNN(Trainer):
 
-    def __init__(self,args,NN=None):
+    def __init__(self,player,args,NN=None):
         self.args = args
         self.state = Board(LinearRlAgent("A"),LinearRlAgent("B"))
         self.training_examples = []
@@ -229,6 +245,7 @@ class Trainer_CNN(Trainer):
                             (3,'B') : 12,
                                             }
         self.nn.to(self.nn.device)
+        self.name = player
 
     def convertTo2D(self, board):
         """

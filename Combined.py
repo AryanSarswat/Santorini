@@ -701,8 +701,8 @@ class ValueFunc(nn.Module):
         self.convs(x)
 
         self.fc1 = nn.Linear(self._to_linear, 128)
-        self.fc2 = nn.Linear(128, 128)
-        self.fc3 = nn.Linear(128, 1)
+        self.fc2 = nn.Linear(128, 256)
+        self.fc3 = nn.Linear(256, 1)
 
         self.optimizer = optim.SGD(self.parameters(), lr=0.1)
         self.loss = nn.MSELoss()
