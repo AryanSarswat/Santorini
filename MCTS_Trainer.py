@@ -14,9 +14,9 @@ from linear_rl_agents import LinearRlAgentV2
 from ValueFuncAI import ValueFunc
 
 class MCTS_Agent(HumanPlayer):
-    def __init__(self,player):
+    def __init__(self,player,NN=None):
         super().__init__(player)
-        self.nn = Neural_Network()
+        self.nn = Neural_Network() if NN == None else NN
         try:
             self.nn.load_state_dict(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI")
             self.nn.eval()
@@ -61,9 +61,9 @@ class MCTS_Agent(HumanPlayer):
         states = board.all_possible_next_states(board.Player_turn())
         nodes = [Node(i) for i in states]
         values = []
-        for state in states:
-            converted_state = self.convert_nodes_to_input(nodes)
-            values.append(self.nn.forward(converted_state))
+        converted_state = self.convert_nodes_to_input(nodes)
+        for state in converted_state:
+            values.append(self.nn.forward(state).item())
         if board.Player_turn == "A":
             return states[np.argmax(values)]
         else:
@@ -338,6 +338,11 @@ class Trainer_CNN(Trainer):
         rand = 1 #np.random.uniform()
         for state in states:
             converted_state = self.convertTo2D(state)
-            values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
-        highest_value = torch.argmax(T.cat(values)).item()
-        return states[highest_value]
+            values.append(torch.flatten(self.nn.forward(converted_state).to(self.nn.device)))
+        if self.name == "A":
+            highest_value = torch.argmax(torch.cat(values)).item()
+            return states[highest_value]
+        else:
+            lowest_value = torch.argmin(torch.cat(values)).item()
+            return states[highest_value]
+            

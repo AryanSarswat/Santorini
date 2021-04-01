@@ -20,17 +20,17 @@ model_CNN = ValueFunc()
 model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_CNN"))
 model_CNN.eval()
 
-try:
-    MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)
-    MCTS_ANN_Agent_B = MCTS_Agent("B")
-except :
-    print("ANN not Loaded")
+#try:
+MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)
+MCTS_ANN_Agent_B = MCTS_Agent("B",NN=model_ANN)
+#except :
+    #print("ANN not Loaded")
 
-try:
-    MCTS_CNN_Agent_A = Trainer_CNN("A",args,NN=model_CNN)
-    MCTS_CNN_Agent_B = Trainer_CNN("B",args)
-except :
-    print("CNN not loaded")
+#try:
+MCTS_CNN_Agent_A = Trainer_CNN("A",args,NN=model_CNN)
+MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
+#except :
+    #print("CNN not loaded")
 
 Linear_A = LinearRlAgentV2("A")
 Linear_B = LinearRlAgentV2("B")
