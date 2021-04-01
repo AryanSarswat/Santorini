@@ -49,8 +49,8 @@ class LinearFnApproximator():
         state_value = np.sum(position_features*self.weights)
 
         #ensures approximated value is within -9999 and 9999.
-        state_value = min(state_value, 9999)
-        state_value = max(-9999, state_value)
+        state_value = min(state_value, 9990)
+        state_value = max(-9990, state_value)
         return state_value
 
     def calculate_position_features(self):
