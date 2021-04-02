@@ -11,7 +11,7 @@
 \contentsline {subsection}{\numberline {3.3}Neural Networks with Convolutional Layers (Value Function Approximation)}{11}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Monte Carlo Tree Search}{13}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Combining the Above}{16}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Results and Dicussion}{17}{section.4}%
+\contentsline {section}{\numberline {4}Results and Discussion}{17}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Loss against iteration for CNN Model}{17}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{18}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Limitations of above methods}{20}{subsection.4.3}%
