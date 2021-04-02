@@ -159,8 +159,8 @@ rootstrap = RootStrapAB()
 treestrap = TreeStrapMinimax([-57.1350499,  -24.43606518, 87.43759999,  70.55689126,  61.53952637, -48.80110254, -13.22514194,  29.42421974])
 
 #initialize agents
-agent_a = LinearRlAgentV2('A', 3, rootstrap_depth3_self_play_100_games)
-agent_b = LinearRlAgentV2('B', 3)
+agent_a = LinearRlAgentV2('A', 3)
+agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
 
 if __name__ == "__main__":
     training_loop(None, None, agent_a, agent_b, 100)
@@ -170,4 +170,7 @@ Test Results: (at Depth 3, 100 games per side)
 - Treestrap as Player A vs Manual as Player B (53 vs 47)
 - Manual as Player A vs Treestrap as Player B (52 vs 48)
 - Rootstrap as Player A vs Manual as Player B (62 vs 38)
+- Manual as Player A vs Rootstrap as Player B (54 vs 46)
 '''
+
+#mention how trained weighst are optimized for their specific search depth
