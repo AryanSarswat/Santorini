@@ -171,11 +171,11 @@ Let the state value given by the linear approximator be given by V\_approx(State
 
 \begin{algorithm}[H]
     \SetAlgoLined
-    \KwResult{Weights Trainied}
+    \KwResult{Weights Trained}
     Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
-            Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
+            Construct an $\alpha \beta$ pruned search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
             Find minimax value V given by the minimax search tree of the current state S \;
             $Error \leftarrow V - V\_approx(S,W)$ \;
             $W \leftarrow W + learning\_rate \times error \times feature\_vector of S$ \;
@@ -188,16 +188,16 @@ Let the state value given by the linear approximator be given by V\_approx(State
             }
         }        
     }
-    \caption{Algorithm for RootStrap}
+    \caption{Algorithm for RootStrap($\alpha \beta$)}
 \end{algorithm}
 
 \begin{algorithm}[H]
     \SetAlgoLined
-    \KwResult{Weights Trainied}
+    \KwResult{Weights Trained}
     Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
-            Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
+            Construct a full minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
             $total\_update \leftarrow 0$ \;
             \ForEach{State $S'$ in the tree}{
                 Find value $V’$ given by the minimax search tree of that state $S’$ \;
@@ -214,10 +214,10 @@ Let the state value given by the linear approximator be given by V\_approx(State
             }
         }        
     }
-    \caption{Algorithm for TreeStrap}
+    \caption{Algorithm for TreeStrap(Minimax)}
 \end{algorithm}
 
-Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was about evenly matched to that of the manually tuned weights, showing evidence that these algorithms were indeed able to learn from automatically generated experience. \par
+Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was almost equal to that of the manually tuned weights, showing evidence that these algorithms were indeed able to effectively learn from automatically generated experience. \par
 
 That said, since the linear function approximator trained through Reinforcement Learning does not yet manage to surpass the one tuned manually, it is clear that further optimizations will have to be made to improve the strength of the linear approximator and learning algorithms. \par
 
@@ -310,7 +310,7 @@ The neural network was split into two distinct sections, the CNN layers (for fea
     \newline
     Pooling was not implemented in the CNN as the value function should retain as much information about the board as possible. 
     
-    \item \textbf{Kernal Size}
+    \item \textbf{Kernel Size}
     \newline
     A kernel size of 3 was adopted to capture the possible features of the board, as the worker could move in the adjacent 8 squares, hence the features that are extracted will be more relevant for the player’s worker.
     
@@ -324,12 +324,12 @@ The neural network was split into two distinct sections, the CNN layers (for fea
 
     \item \textbf{Loss Function}
     \newline
-    The Loss Function used was the MSE loss function, with the rationale similar to that of the ANN (as explained in Section \_\_).
+    The Loss Function used was the MSE loss function, with the rationale similar to that of the ANN (as explained in Section 3.2).
 \end{enumerate}
 
 \textbf{Training of the first CNN Model}
 \newline
-The first CNN model was trained on a random agent (who made random worker movements and worker placements) for 5000 iterations. Each iteration represents a complete game of Santorini. For each state, the CNN agent will generate all possible next states, evaluate the states through the CNN, and output the state-value for each possible state. Based on an epsilon-greedy policy, it will then either make a random move, or make a move based on the state with the highest state-value. The state-value of the next state (either the random state or the state with the highest state-value) is saved in an array for backpropagation at the end of the iteration. As the reward given to the agent is only known at the end of the iteration, there is no update of weights to the CNN until the end of one iteration. \par
+The first CNN model was trained on a random agent (who made random worker movements and worker placements) for 10,000 iterations. Each iteration represents a complete game of Santorini. For each state, the CNN agent will generate all possible next states, evaluate the states through the CNN, and output the state-value for each possible state. Based on an epsilon-greedy policy, it will then either make a random move, or make a move based on the state with the highest state-value. The state-value of the next state (either the random state or the state with the highest state-value) is saved in an array for backpropagation at the end of the iteration. As the reward given to the agent is only known at the end of the iteration, there is no update of weights to the CNN until the end of one iteration. \par
 
 \begin{algorithm}[H]
     \SetAlgoLined
@@ -337,7 +337,7 @@ The first CNN model was trained on a random agent (who made random worker moveme
     \ForEach(){Episode}{
         \While{game is not terminal}{
             Generate all possible states\;
-            Generate all possible states-values for all states\;
+            Generate all possible state-values for all states\;
             r $\leftarrow$ generate random number\;
             \eIf{r $>$ $\epsilon$}{
              Make action with the highest state-value\;
@@ -421,7 +421,7 @@ In an attempt to address the limitation of each of the methods described above a
 
 The hope was to be able to be able to use the MCTS tree to be able to simulate professional games by following the Linear RL agent’s policy which using its features was able to emulate some of the considerations human players take into account while playing a game. This process when applied to multiple simulations allows all us to determine the correct value of a state accurately. This produces a dataset with a reliable set of state values. With these states and state values, the CNN network should be able to identify features in a winning state or a losing state, allowing the network to learn more advanced features. \par
 
-\section{Results and Dicussion}
+\section{Results and Discussion}
 
 \subsection{Loss against iteration for CNN Model}
 
@@ -433,7 +433,7 @@ The hope was to be able to be able to use the MCTS tree to be able to simulate p
     \end{center}
 \end{figure}
 
-The CNN value function was trained against a random agent for 10,000 iterations, with 1 iteration being a complete Santorini game. The algorithm used to generate the reward for each state, as well as to backpropagate the loss, is as explained in Section \_\_. The loss displayed in the graph is the cumulative loss for each iteration. From the graph, there is a general decreasing trend, plateauing at a value close to 0.  \par
+The CNN value function was trained against a random agent for 10,000 iterations, with 1 iteration being a complete Santorini game. The algorithm used to generate the reward for each state, as well as to backpropagate the loss, is as explained in Section 3.3. The loss displayed in the graph is the cumulative loss for each iteration. From the graph, there is a general decreasing trend, plateauing at a value close to 0.  \par
 
 There are also many “spikes” that can be seen protruding from the general trendline. The model, in these iterations, has not explored these states before, and this results in a state-value that is extremely different from the true state-value, thus contributing to the high loss value for each evaluated state per iteration. The cumulative sum of these losses for that iteration resulted in the spike for 1 iteration. \par
 
@@ -446,9 +446,9 @@ There are also many “spikes” that can be seen protruding from the general tr
     \end{center}
 \end{figure}
 
-The ANN model was trained using training data produced from a MCTS search tree. In total approximately 500 nodes were explored and with each node there were about 30 simulations, this means in total the algorithm had explored about 1500 states. The loss from each node is the mean squared Error loss and is represented in the figure 4. As expected the initial loss is high in the 20s, this is due to the random weights which are initialized whenever a new Neural Network is created. Soon after the loss quickly reduced to lower values. \par
+The ANN model was trained using training data produced from a MCTS search tree. In total approximately 500 nodes were explored and with each node there were about 30 simulations, this means in total the algorithm had explored about 1500 states. The loss from each node is the mean squared Error loss and is represented in Figure 5. As expected the initial loss is high in the 20s, this is due to the random weights which are initialized whenever a new Neural Network is created. Soon after the loss quickly reduced to lower values. \par
 
-As mentioned earlier, the erratic peaks and falls at later halfs of the training is primarmly due to the fact that new states are encountered and the neural network needs to adjust its weights to account for this novel state.  \par
+As mentioned earlier, the erratic peaks and falls during the latter half of the training is primarily due to the fact that new states are encountered and the neural network needs to adjust its weights to account for this novel state.  \par
 
 \begin{figure}[H]
     \begin{center}
@@ -458,7 +458,7 @@ As mentioned earlier, the erratic peaks and falls at later halfs of the training
     \end{center}
 \end{figure}
 \vspace{-1cm}
-The CNN model was trained using training data produced from a MCTS search tree. In total approximately 2800 nodes were explored and with each node there were about 30 simulations, this means that about 84000 total states were explored during training. The loss from each node is the mean squared error loss and is represented in the figure 4. However unlike with the ANN, the training loss for the MCTS CNN model is quite different. This can partly be attributed to the fact the the CNN may be overestimate the value of certain features which were encountered in a previous training iterations, and the time for which the MCTS algorithm ran was not long enough for the values of the different states to converge. \par
+The CNN model was trained using training data produced from a MCTS search tree. In total approximately 2800 nodes were explored and with each node there were about 30 simulations, this means that about 84000 total states were explored during training. The loss from each node is the mean squared error loss and is represented in Figure 6. However unlike with the ANN, the training loss for the MCTS CNN model is quite different. This can partly be attributed to the fact the the CNN may be overestimate the value of certain features which were encountered in previous training iterations, and the time for which the MCTS algorithm ran was not long enough for the values of the different states to converge. \par
 
 
 \begin{table}[H]
@@ -486,7 +486,7 @@ The CNN model was trained using training data produced from a MCTS search tree. 
 
 \subsection{Limitations of above methods}
 
-\textbf{General Limitaion}
+\textbf{General Limitation}
 \newline
 This study had a few limitations that were common across all methods employed. These limitations restricted further optimization and hyperparameter tuning of the models. This section will be using AlphaGo as a benchmark for model training and optimization, as AlphaGo is seen as one of the most successful agents trained using reinforcement learning for playing a board game. \par
 
@@ -519,17 +519,18 @@ This study had a few limitations that were common across all methods employed. T
     \begin{itemize}
         \item \textbf{Effects on Model Performance}
         \newline
-        The initial training of agents against a random agent greatly hampered the learning rate of the models. This was due to the randomness in the random agent’s movement, such as not playing a winning move, or moving into a position of less value, which resulted in “false” wins for the agents (as the agents would have lost if it was a “rational”, or human, player), hence giving the agents a positive reward for the states when the states were actually of neutral or negative value. Therefore, this will result in a much slower convergence to the true state-value (for neural networks value function approximator) or the optimal weights for the linear features (for a linear approximator).
+        The initial training of agents against a random agent greatly hampered the learning rate of the models. This was due to the randomness in the random agent’s movement, such as not playing a winning move, or moving into a position of less value, which resulted in “false” wins for the agents (as the agents would have lost if it was a “rational”, or human, player), hence giving the agents a positive reward for the states when the states were actually of neutral or negative value. Therefore, this will result in a much slower convergence to the true state-value (for neural networks value function approximator) or the optimal weights for the linear features (for a linear approximator). \\
 
-        Additionally, the lack of available literature on Santorini also limits the amount of features that can be implemented with regards to the linear value function approximator, given that the ability to come up with informative features is heavily reliant on possessing a deep understanding of the tactics involved in playing Santorini.
-    
+        Additionally, the lack of available literature on Santorini also limits the amount of features that can be implemented with regards to the linear value function approximator, given that the ability to come up with informative features is heavily reliant on possessing a deep understanding of the tactics involved in playing Santorini.\\
+    \newline
+    \newline
     \end{itemize}
-
+   
     \item \textbf{Limitations of CNN model training}
     \newline
     As the CNN was only a value function approximator and does not have a policy network, this severely limited the performance of the CNN against more robust models, such as the linear approximator, which had features such as centrality and number of workers on a certain level, as well as a minimax policy with a certain lookahead depth. There was no lookahead for the CNN as it only evaluated the next possible states (acting like a depth 1 agent), thus not learning to consider opponent moves, as well as learning to prevent the opposition from winning (such as placing a level 4 block to prevent the opponent from winning).  \par
 
-    Training a CNN on only a random agent also prevented it from learning the true state-value, as mentioned in Section \_\_. Attempts to train the CNN against itself also did not succeed, as the loss per iteration did not converge, and its performance was comparable to the CNN model train on the random agent. \par
+    Training a CNN on only a random agent also prevented it from learning the true state-value, as mentioned previously. Attempts to train the CNN against itself also did not succeed, as the loss per iteration did not converge, and its performance was comparable to the CNN model trained on the random agent. \par
 
     Nevertheless, the CNN model did perform well against the random agent, implying that it is learning to win by building “staircases” (moving the worker upwards, and placing consecutive building blocks to build a staircase-like structure).  \par
 
