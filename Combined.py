@@ -1244,6 +1244,8 @@ class MCTS_Only_Agent(RandomAgent):
     def action(self,board):
         node = Node(board)
         mcts = MCTS(node,None,self.args)
+        if board.is_terminal():
+            return board
         if not node.is_expanded():
             node.expand()
         
