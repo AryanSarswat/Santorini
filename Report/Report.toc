@@ -8,7 +8,7 @@
 \contentsline {subsection}{\numberline {3.1}Traditional Approaches using Minimax Search coupled with Linear Value Function Approximators and Reinforcement Learning}{4}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Neural Networks (Value Function Approximation)}{9}{subsection.3.2}%
 \contentsline {paragraph}{ANN Architecture}{9}{section*.2}%
-\contentsline {subsection}{\numberline {3.3}Neural Networks with Convolutional Layers (Value Function Approximation)}{10}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.3}Neural Networks with Convolutional Layers (Value Function Approximation)}{11}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Monte Carlo Tree Search}{13}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Combining the Above}{16}{subsection.3.5}%
 \contentsline {section}{\numberline {4}Results and Dicussion}{17}{section.4}%
