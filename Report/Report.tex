@@ -175,7 +175,7 @@ Let the state value given by the linear approximator be given by V\_approx(State
     Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
-            Construct a $\alpha \beta$ pruned minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
+            Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
             Find minimax value V given by the minimax search tree of the current state S \;
             $Error \leftarrow V - V\_approx(S,W)$ \;
             $W \leftarrow W + learning\_rate \times error \times feature\_vector of S$ \;
@@ -188,7 +188,7 @@ Let the state value given by the linear approximator be given by V\_approx(State
             }
         }        
     }
-    \caption{Algorithm for RootStrap($\alpha \beta$)}
+    \caption{Algorithm for RootStrap}
 \end{algorithm}
 
 \begin{algorithm}[H]
@@ -197,7 +197,7 @@ Let the state value given by the linear approximator be given by V\_approx(State
     Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
-            Construct a full minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
+            Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
             $total\_update \leftarrow 0$ \;
             \ForEach{State $S'$ in the tree}{
                 Find value $V’$ given by the minimax search tree of that state $S’$ \;
@@ -214,10 +214,10 @@ Let the state value given by the linear approximator be given by V\_approx(State
             }
         }        
     }
-    \caption{Algorithm for TreeStrap(Minimax)}
+    \caption{Algorithm for TreeStrap}
 \end{algorithm}
 
-Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was almost equal to that of the manually tuned weights, showing evidence that these algorithms were indeed able to effectively learn from automatically generated experience. \par
+Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was about evenly matched to that of the manually tuned weights, showing evidence that these algorithms were indeed able to learn from automatically generated experience. \par
 
 That said, since the linear function approximator trained through Reinforcement Learning does not yet manage to surpass the one tuned manually, it is clear that further optimizations will have to be made to improve the strength of the linear approximator and learning algorithms. \par
 
@@ -475,7 +475,7 @@ The CNN model was trained using training data produced from a MCTS search tree. 
     Combined       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } \\ \cline{1-7}
     Linear TreeStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-8}
     Linear RootStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-9}
-    Linear Manual & \multicolumn{1}{c|}{100\%}                       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{84\%}                       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
+    Linear Manual & \multicolumn{1}{c|}{100\%}                       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{84\%}                       & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{49.5\%}                     & \multicolumn{1}{c|}{54\%}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
     Human          & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \multicolumn{1}{c|}{}                           & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
     \end{tabular}%
     }
