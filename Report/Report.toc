@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {2.1}Game Rules}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Game Code}{3}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Methods employed to create AI Agent}{4}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Traditional Approaches using Minimax Search coupled with Linear Value Function Approximators and Reinforcement Learning}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.1}Combining Linear Value Function Approximation with Minimax Search}{4}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Neural Networks (Value Function Approximation)}{9}{subsection.3.2}%
 \contentsline {paragraph}{ANN Architecture}{9}{section*.2}%
 \contentsline {subsection}{\numberline {3.3}Neural Networks with Convolutional Layers (Value Function Approximation)}{11}{subsection.3.3}%

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  2 APR 2021 14:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  2 APR 2021 18:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -546,7 +546,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 128--130
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 132--134
 
  []
 
@@ -557,16 +565,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[4]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 154--156
+Underfull \hbox (badness 10000) in paragraph at lines 158--160
 
  []
 
@@ -579,16 +579,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [6]
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 213.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 217.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 213.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 217.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 213.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 217.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 213.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 217.
+
+
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 217.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -614,11 +617,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-<ANN_Architecture.jpg, id=162, 638.385pt x 446.41782pt>
+<ANN_Architecture.jpg, id=160, 638.385pt x 446.41782pt>
 File: ANN_Architecture.jpg Graphic file (type jpg)
 <use ANN_Architecture.jpg>
-Package pdftex.def Info: ANN_Architecture.jpg  used on input line 262.
-(pdftex.def)             Requested size: 446.86644pt x 312.49033pt.
+Package pdftex.def Info: ANN_Architecture.jpg  used on input line 266.
+(pdftex.def)             Requested size: 414.94533pt x 290.16814pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -628,18 +631,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ANN_Architecture.jpg>]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=171, 1160.335pt x 752.8125pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=170, 1160.335pt x 752.8125pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 281.
-(pdftex.def)             Requested size: 464.12578pt x 301.11966pt.
-
-Overfull \hbox (11.15788pt too wide) in paragraph at lines 281--282
- [] 
- []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 285.
+(pdftex.def)             Requested size: 406.12334pt x 263.48831pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -648,7 +644,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[11]
+[11 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -656,7 +652,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[12 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>]
+[12]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -665,10 +661,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=198, 683.55376pt x 449.68pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=197, 683.55376pt x 449.68pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 374.
+Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 378.
 (pdftex.def)             Requested size: 444.30469pt x 292.28853pt.
 
 
@@ -690,13 +686,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [15 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>]
-<Pure_CNN.png, id=216, 642.4pt x 481.8pt>
+<Pure_CNN.png, id=215, 642.4pt x 481.8pt>
 File: Pure_CNN.png Graphic file (type png)
 <use Pure_CNN.png>
-Package pdftex.def Info: Pure_CNN.png  used on input line 426.
+Package pdftex.def Info: Pure_CNN.png  used on input line 430.
 (pdftex.def)             Requested size: 481.79883pt x 361.3491pt.
 
-Overfull \hbox (28.83093pt too wide) in paragraph at lines 426--427
+Overfull \hbox (28.83093pt too wide) in paragraph at lines 430--431
  [] 
  []
 
@@ -708,10 +704,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16]
-<MCTS_ANN.png, id=221, 513.92pt x 385.44pt>
+<MCTS_ANN.png, id=220, 513.92pt x 385.44pt>
 File: MCTS_ANN.png Graphic file (type png)
 <use MCTS_ANN.png>
-Package pdftex.def Info: MCTS_ANN.png  used on input line 439.
+Package pdftex.def Info: MCTS_ANN.png  used on input line 443.
 (pdftex.def)             Requested size: 411.13655pt x 308.35242pt.
 
 
@@ -722,10 +718,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_CNN.png>]
-<MCTS_CNN.png, id=227, 513.92pt x 385.44pt>
+<MCTS_CNN.png, id=226, 513.92pt x 385.44pt>
 File: MCTS_CNN.png Graphic file (type png)
 <use MCTS_CNN.png>
-Package pdftex.def Info: MCTS_CNN.png  used on input line 451.
+Package pdftex.def Info: MCTS_CNN.png  used on input line 455.
 (pdftex.def)             Requested size: 334.04404pt x 250.53302pt.
 
 
@@ -744,17 +740,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_CNN.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 497--500
+Underfull \hbox (badness 10000) in paragraph at lines 501--504
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 501--502
+Underfull \hbox (badness 10000) in paragraph at lines 505--506
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 503--504
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
 
  []
 
@@ -786,21 +782,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: 5871BD7614CBA1CA9CA298BA96564E6D;3587.
+(rerunfilecheck)             Checksum: DF5DD8E58899A233B073DFDBBD2990D6;3299.
  ) 
 Here is how much of TeX's memory you used:
  13288 strings out of 479302
  197643 string characters out of 5868234
- 569855 words of memory out of 5000000
+ 569866 words of memory out of 5000000
  30062 multiletter control sequences out of 15000+600000
  415192 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,20n,74p,1484b,477s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/LaTeX/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (23 pages, 440329 bytes).
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (23 pages, 440089 bytes).
 PDF statistics:
- 321 PDF objects out of 1000 (max. 8388607)
- 276 compressed objects within 3 object streams
+ 320 PDF objects out of 1000 (max. 8388607)
+ 275 compressed objects within 3 object streams
  93 named destinations out of 1000 (max. 500000)
  26791 words of extra memory for PDF output out of 29859 (max. 10000000)
 

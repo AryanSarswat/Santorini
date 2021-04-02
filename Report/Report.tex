@@ -233,7 +233,7 @@ Finally, to create an AI that truly learns on its own without requiring prior ex
 
 \subsection{Neural Networks (Value Function Approximation)}
 
-Using Linear Value Function Approximation with minimax is an extremely effective process. In games where the branching factor is not very large, minimax can lead to optimal gameplay by the AI agent. However, due to the relatively large branching factor of Santorini (128 moves per turn), a reasonably fast AI agent can play by looking up to 4 states maximally. This severely handicaps the performance of the AI. This is one of the main reasons to attempt to use a Neural Network to predict the value of a state instead. \par
+Using Linear Value Function Approximation with minimax is an extremely effective process. However only in games where the branching factor is not very large, minimax can lead to optimal gameplay with a resonable thinking time by the AI agent. However, due to the relatively large branching factor of Santorini (128 moves per turn), a reasonably fast AI agent can play by looking up to 4 states maximally. This severely handicaps the performance of the AI. This is one of the main reasons to attempt to use a Neural Network to predict the value of a state instead. \par
 
 Neural Networks are essentially seen as universal function approximators, which can be used to mimic any function. Thus by using the minimax algorithm we can find the true value of a state and use that as our training data. This training data will be fed into the neural network which will adjust its weights and bias to be able to create a function which can accurately determine how strong a certain state is. This will increase the speed at which our agent can predict the value of a state and consequentely the optimal move. Since the minimax algorithm determines the value of the state by back propagating the value from a terminal state, there is no need to look ahead further states as they are already accounted for. This aspect of Neural Networks as function approximators significantly speed up the “thinking-time” of our agent. \par
 
@@ -243,16 +243,16 @@ One Hot Encoding was employed to turn the board state into a flattened array of 
 \begin{enumerate}
     \item \textbf{Input}
     \newline
-    Consists of a 1,325 layer of Neurons as each board state contains 25 squares and there are 13 unique states thus a hot encoded flattened matrix would have 325 ones and zeros.
+    Consists of a $[1,325]$ layer of Neurons as each board state contains 25 squares and there are 13 unique states thus a hot encoded flattened matrix would have 325 ones and zeros.
     \item \textbf{Neuron Layers}
     \newline
     This is actually a hyperparameter which we can change, for our experiments there was one hidden layer consisting of 256 input neurons and 64 output neurons. This layer was chosen arbitrarily.
     \item \textbf{Output}
     \newline
-    The output consists of a tensor with one value. This value is between $[-1,1]$ inclusively. The higher its value is the better the state is for Player 1 and the lower it is the better the state is for Player 2. A value of 0 implies that the state is equally strong for both players.
+    The output consists of a tensor with one value. This value is between $[-1,1]$ inclusively. The higher the value is the better the state is for Player 1 and the lower it is the better the state is for Player 2. A value of 0 implies that the state is equally strong for both players.
     \item \textbf{Activation Functions}
     \newline
-    The Rectified Linear unit (ReLU) activation function was employed to linearize the function and reduce its computational complexity. The Tanh function was also used in the output layer to ensure that the output was between $[-1,1]$. This not only squashed the results into this range but also did it proportionally. Thus if the value of a state is extremely large it would be reduced to 1 which can be interpreted as a completely winning state for Player 1.
+    The Rectified Linear unit (ReLU) activation function was employed to linearize the function and reduce its computational complexity. The $Tanh$ function was also used in the output layer to ensure that the output was between $[-1,1]$. This not only squashed the results into this range but also did it proportionally. Thus if the value of a state is extremely large it would be reduced to 1 which can be interpreted as a completely winning state for Player 1.
     \item \textbf{The Loss Function}
     \newline
     The Mean Squared Error loss was employed, this ensured that the state values did not explode as it heavily punishes large differences between the true value and the value predicted by the neural network.
@@ -261,9 +261,9 @@ One Hot Encoding was employed to turn the board state into a flattened array of 
     For updating the weights of the Neural Network the Stochastic gradient descent (SGD) was employed. Due to the large number of Neurons in each layer and the weights associated with each of these neurons, SGD is an appropriate optimizer as it reduces the computational burden allowing us to achieve faster training for a trade off of lower convergence rate.
 \end{enumerate}
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.7]{ANN_Architecture.jpg}
+        \includegraphics[scale=0.65]{ANN_Architecture.jpg}
         \caption{ANN Architecture}
         \label{fig:}
     \end{center}
@@ -280,9 +280,9 @@ The rationale of employing a CNN in the determination of the state-value of a bo
 
 The neural network was split into two distinct sections, the CNN layers (for feature extraction) and the ANN layers (for state-value determination).   \par
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.4]{CNN_Archi.png}
+        \includegraphics[scale=0.35]{CNN_Archi.png}
         \caption{CNN architecture for first value function approximator}
         \label{fig:}
     \end{center}
@@ -446,7 +446,7 @@ There are also many “spikes” that can be seen protruding from the general tr
     \end{center}
 \end{figure}
 
-The ANN model was trained using training data produced from a MCTS search tree. In total approximately 500 nodes were explored and with each node there were about 30 simulations. The loss from each node is the mean squared Error loss and is represented in the figure 4. As expected the initial loss is high in the 20s, this is due to the random weights which are intialize whenever a new Neural Network is created. Soon after the loss quickly reduced to lower values. \par
+The ANN model was trained using training data produced from a MCTS search tree. In total approximately 500 nodes were explored and with each node there were about 30 simulations, this means in total the algorithm had explored about 1500 states. The loss from each node is the mean squared Error loss and is represented in the figure 4. As expected the initial loss is high in the 20s, this is due to the random weights which are initialized whenever a new Neural Network is created. Soon after the loss quickly reduced to lower values. \par
 
 As mentioned earlier, the erratic peaks and falls at later halfs of the training is primarmly due to the fact that new states are encountered and the neural network needs to adjust its weights to account for this novel state.  \par
 
@@ -458,7 +458,7 @@ As mentioned earlier, the erratic peaks and falls at later halfs of the training
     \end{center}
 \end{figure}
 \vspace{-1cm}
-The CNN model was trained using training data produced from a MCTS search tree. In total approximately 2800 nodes were explored and with each node there were about 30 simulations. The loss from each node is the mean squared error loss and is represented in the figure 4. However unlike with the ANN, the training loss for the MCTS CNN model is quite different. This can partly be attributed to the fact the the CNN may be overestimate the value of certain features which were encountered in a previous training iterations, and the time for which the MCTS algorithm ran was not long enough for the values of the different states to converge. \par
+The CNN model was trained using training data produced from a MCTS search tree. In total approximately 2800 nodes were explored and with each node there were about 30 simulations, this means that about 84000 total states were explored during training. The loss from each node is the mean squared error loss and is represented in the figure 4. However unlike with the ANN, the training loss for the MCTS CNN model is quite different. This can partly be attributed to the fact the the CNN may be overestimate the value of certain features which were encountered in a previous training iterations, and the time for which the MCTS algorithm ran was not long enough for the values of the different states to converge. \par
 
 
 \begin{table}[H]
