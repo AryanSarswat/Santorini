@@ -83,7 +83,11 @@ Evaluation of the implemented models was undertaken by pitting them against each
 
 \subsection{Game Rules}
 
-Santorini is a 2-player board game on a 5x5 grid, with 3 distinct pieces: building blocks, the worker and a dome. Each turn, a player will move his worker to an adjacent tile, then place a building block on a tile adjacent to the moved worker. The building blocks can be stacked up to 3 levels. The worker can only traverse to an adjacent tile that is within 1 level of the worker’s current tile or if it is jumping down levels (i.e. if the worker is on level 1, he can only move to an adjacent tile of level 0, 1 or 2). When there are 3 building blocks on a tile, a dome can be placed on top of the blocks to prevent another player from reaching level 3. The worker has to traverse from the ground level (level 0) to level 3 in order to win the game. Another way to win is to force the opposing worker to have no adjacent tiles to move to. \par
+Santorini is a 2-player board game on a 5x5 grid, with 3 distinct pieces: building blocks, the worker and the dome. Each player has two workers they can control, although only one can be moved in every turn. \par
+
+Before the game begins, players will first select the coordinates for their initial worker placement. Then, on each turn, a player will select a worker to move, move their worker to an adjacent tile, (diagonal movement is acceptable) then place a building block on a tile adjacent to the moved worker. The building blocks can be stacked up to 3 levels, and at the beginning all tiles have no building blocks on them (i.e. level 0) The objective of the game is to move a worker to a level 3 tile. The player also wins if the opponent runs out of valid moves. \par
+
+Workers can only traverse to an adjacent tile that is within 1 level above that of the worker’s current tile (i.e. if the worker is on level 1, he can only move to an adjacent tile of level 0, 1 or 2). Particularly, workers can go down any number of levels. (i.e. level 2 to level 0) When there are 3 building blocks on a tile, a dome can be placed on top of those blocks to prevent an opponent from winning; this tile becomes impassable for the remainder of the game. \par
 
 \subsection{Game Code}
 
@@ -112,7 +116,7 @@ A simulation of the board game will start with the creation of a Board object an
 
 \section{Methods employed to create AI Agent}
 
-\subsection{Traditional Approaches using Minimax Search coupled with Linear Value Function Approximators and Reinforcement Learning}
+\subsection{Combining Linear Value Function Approximation with Minimax Search}
 
 \textbf{Minimax Search}
 \newline
@@ -128,7 +132,7 @@ Unfortunately, in most games (Santorini included), it is not possible to constru
 \textbf{Linear Value Function Approximation}
 \newline
 
-One simple and effective way of approximating the value of a given game state would be using a linear value function approximator. Linear approximators have a preset list of features used to evaluate a game state, as well as an array of weights, which represent the value of each feature. The state value will then be calculated by taking the dot product of the feature vector and weights vector \hl{(insert eqn?)} Such linear approximators have seen great success in other traditional board games, most notably in Chess, where IBM’s Deep Blue beat the reigning world champion Garry Kasparov. \par
+One simple and effective way of approximating the value of a given game state would be using a linear value function approximator. Linear approximators have a preset list of features used to evaluate a game state, as well as an array of weights, which represent the value of each feature. The state value will then be calculated by taking the dot product of the feature vector and weights vector. Such linear approximators have seen great success in other traditional board games, most notably in Chess, where IBM’s Deep Blue beat the reigning world champion Garry Kasparov. \par
 
 As a preliminary investigation, a simple linear value function approximator for Santorini was constructed, comprising of the following 8 features that were normalized from 0 to 1:
 \begin{enumerate}
@@ -147,11 +151,11 @@ It was also observed that one major factor greatly contributing to the strength 
 
 The first optimization technique implemented was alpha-beta pruning, which is a method of reducing the time complexity of a full minimax search by skipping calculations of nodes and entire branches in the search tree which are certain not to affect the final outcome. Additionally, further optimizations can be made to enhance alpha-beta pruning itself - one of these is known as move ordering, which involves sorting the list of all possible moves generated based on a heuristic so that moves likely to be stronger are considered first. This would result in pruning taking place earlier in the search tree, and hence fewer calculations being made. For Santorini, the list of all possible moves generated was sorted based on the sum of squares of the current player’s worker heights, as typically moves that bring the worker up to higher floors tend to be stronger. Squaring the height automatically prioritizes moves to level 3 over level 2, 1 and 0. \par
 
-Furthermore, the game’s implementation was partially rewritten based on observed bottlenecks in the original code, one of which was due to the use of the rather slow deepcopy function when generating all possible moves. This problem was compounded as a minimax search tree easily generates and searches through a large number ($>10000$) possible moves every time the agent has to make a decision, and as mentioned above this number increases exponentially with search depth. Instead, the game state was changed to be represented by numpy arrays and lists of tuples while searching through the large number of possible moves, as they could be copied much more efficiently. \par
+Furthermore, the game’s implementation was partially rewritten based on observed bottlenecks in the original code, one of which was due to the use of the rather slow deepcopy function when generating all possible moves. This problem was compounded as a minimax search tree easily generates and searches through a large number of ($>10000$) possible moves every time the agent has to make a decision, and as mentioned above this number increases exponentially with search depth. Instead, the game state was changed to be represented by numpy arrays and lists of tuples while searching through the large number of possible moves, as they could be copied much more efficiently. \par
 
 Collectively, these optimizations allowed for an optimized minimax search tree of depth 4 to be generated in about 2 seconds, as compared to the same amount of time needed just for depth 2 previously. \par
 
-\textbf{Learning Feature Weights thorugh Reinforcement Learning}
+\textbf{Learning Feature Weights through Reinforcement Learning}
 \newline
 
 After the linear value function approximator was created and the search algorithm optimized, the possibility of the agent learning the weights through existing reinforcement learning techniques was investigated. In the paper ‘Bootstrapping from Game Tree Search’, Veness et al., introduced new and improved algorithms for performing minimax search bootstrapping, which is the idea that a value function approximator can approximate the minimax value resulting from a deep game tree search without actually using computational power to perform said search. Game playing performance would then be significantly improved due to the greater effective search depth resulting from both the search actually performed and the bootstrapped search from the approximator. The algorithms introduced, applied to a linear value function approximator of 1812 features, were demonstrated to be capable of learning from self-play and with randomly initialized weights in Chess, achieving master-level performance. \cite{Bootstrapping from Game Tree Search} This approach combines both reinforcement learning as well as the idea of searching for good moves using minimax, which is important in ‘highly tactical domains’ \cite{Bootstrapping from Game Tree Search}. Hence, we apply the same approaches for the purpose of playing Santorini, which is also a tactical 2-player game. \par
@@ -161,24 +165,24 @@ The two main algorithms introduced in the paper, named RootStrap and TreeStrap, 
 Both algorithms update the linear value function approximator’s weights using ‘stochastic gradient descent on the squared error’ between the approximator’s predicted value, and the actual minimax search value. While RootStrap updates only the root node towards the calculated minimax value at that node, TreeStrap updates all nodes within the search tree towards their respective minimax search values. \par
 
 \bigskip
-Let the state value given by the linear approximator be given by V\_approx.(State, Weights)
+Let the state value given by the linear approximator be given by V\_approx(State, Weights)
 
 \medskip
 
 \begin{algorithm}[H]
     \SetAlgoLined
     \KwResult{Weights Trainied}
-    Randomly initialize starting weight vector W from -1 to 1 for each element\;
+    Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
             Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
-            Find value V given by the minimax tree of the current state S \;
+            Find minimax value V given by the minimax search tree of the current state S \;
             $Error \leftarrow V - V\_approx(S,W)$ \;
-            $W \leftarrow W + learning\_rate \times error \times feature_vector of state S$ \;
+            $W \leftarrow W + learning\_rate \times error \times feature\_vector of S$ \;
             Pick best move by taking the argmax of minimax values of child nodes \;
             Execute move \;
             \eIf{either player wins}{
-                Break out of inner loop\;
+                Continue to next game\;
             }{
                 Carry on with next state as the other player \;  
             }
@@ -190,21 +194,21 @@ Let the state value given by the linear approximator be given by V\_approx.(Stat
 \begin{algorithm}[H]
     \SetAlgoLined
     \KwResult{Weights Trainied}
-    Randomly initialize starting weight vector W from -1 to 1 for each element\;
+    Randomly initialize starting weight vector W from -1 to 1 for each feature\;
     \ForEach(){Game}{
         \ForEach{state S}{
             Construct a minimax search tree of specified depth, evaluating terminal nodes using V\_approx(child\_state, W) \;
-            $Total_update \leftarrow 0$ \;
+            $total\_update \leftarrow 0$ \;
             \ForEach{State $S'$ in the tree}{
                 Find value $V’$ given by the minimax search tree of that state $S’$ \;
                 $Error \leftarrow V’ - V\_approx(S’, W)$ \;
-                $ total\_update \leftarrow total\_update + learning\_rate \times error \times feature\_vector$ of S \;
+                $ total\_update \leftarrow total\_update + learning\_rate \times error \times feature\_vector$ of $S’$ \;
             }
             $W \leftarrow W + total\_update $\;
             Pick best move by taking the argmax of minimax values of child nodes \;
             Execute move \;
             \eIf{either player wins}{
-                Break out of inner loop\;
+                Continue to next game\;
             }{
                 Carry on with next state as the other player \;  
             }
@@ -213,7 +217,7 @@ Let the state value given by the linear approximator be given by V\_approx.(Stat
     \caption{Algorithm for TreeStrap}
 \end{algorithm}
 
-Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was fairly close to that of the manually tuned weights, showing evidence that these algorithms were indeed able to learn from automatically generated experience. \par
+Having implemented and tested the algorithms, it was found that they were fairly effective in learning a set of weights despite being trained only by self-play and starting from random initial weights. After 100 games, the performance of both TreeStrap and Rootstrap’s trained weights was about evenly matched to that of the manually tuned weights, showing evidence that these algorithms were indeed able to learn from automatically generated experience. \par
 
 That said, since the linear function approximator trained through Reinforcement Learning does not yet manage to surpass the one tuned manually, it is clear that further optimizations will have to be made to improve the strength of the linear approximator and learning algorithms. \par
 
@@ -221,7 +225,7 @@ That said, since the linear function approximator trained through Reinforcement 
 
 As the basic minimax search, as well as reinforcement learning techniques used are effective despite the very limited linear value approximator, it would then be prudent to extend the number of linear approximation features to allow for a more informative state value approximation. (Currently In-Progress) \par
 
-Additionally, there are also additional optimizations that may be made to further increase the speed of the minimax search, such as transposition tables for repeated moves, and a heuristic for enhancing alpha-beta pruning known as the killer heuristic. The variant of TreeStrap used in our testing also only used the regular minimax search tree without alpha-beta pruning, which is slower to train, as the variant described in the research paper which used alpha-beta pruning required an implementation of transposition tables which we had not implemented. \par
+Additionally, there are also additional optimizations that may be made to further increase the speed of the minimax search, such as transposition tables for repeated moves, and a heuristic for enhancing alpha-beta pruning known as the killer heuristic. The variant of TreeStrap used in our testing also only used the regular minimax search tree without alpha-beta pruning, which is slower to train, as the variant described in the research paper which used alpha-beta pruning required transposition tables which we had not implemented. \par
 
 
 Finally, to create an AI that truly learns on its own without requiring prior experience for feature creation, the possibility of an algorithm that generates and evaluates its own linear features based on commonly encountered patterns in the game state could be explored, although such a problem may be more easily solved through non-linear value function approximation methods, such as ANNs and CNNs. \par
