@@ -1,6 +1,7 @@
 from linear_rl_agents import LinearRlAgentV2
 from Game import Board
 from random import uniform
+from tqdm import tqdm
 
 def run_santorini(agent1,agent2):
     '''
@@ -48,15 +49,15 @@ def run_santorini(agent1,agent2):
 
 weights = [0,2,4,0,-2,-4,-1,1]
 depth = 3
-num_games = 10
+num_games = 50
 
 a = LinearRlAgentV2("A",depth,trained_weights=weights)
 b = LinearRlAgentV2("B",depth,trained_weights=weights)
 win = 0
-generations = 3
+generations = 10
 
 
-for g in range(generations):
+for g in tqdm(range(generations)):
     win = 0
     for i in range(num_games):
         if "A" == run_santorini(agent1=a,agent2=b):
@@ -71,7 +72,7 @@ for g in range(generations):
 print(win)
 
 if win > 5:
-    print(f"At the end of {generations} the best weights is {a.trained_weights}")
+    print(f"At the end of {generations} generations the best weights is {a.trained_weights}")
 
 else:
     print(f"At the end of {generations} the best weights is {b.trained_weights}")
