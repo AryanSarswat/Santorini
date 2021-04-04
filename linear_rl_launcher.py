@@ -97,6 +97,6 @@ Test Results: (at Depth 3, 100 games per side)
 #mention how trained weighst are optimized for their specific search depth
 
 if __name__=='__main__':
-    run_santorini(LinearRlAgentV2("A", 2, treestrap_depth3_self_play_50_games), RandomAgent("B"))
+    run_santorini(LinearRlAgentV2("A", 5, treestrap_depth3_self_play_50_games), HumanPlayer("B"))
     #training_loop(rootstrap, treestrap, agent_a, agent_b, 1)
 
