@@ -47,32 +47,45 @@ def run_santorini(agent1,agent2):
     return win
 
 
-weights = [0,2,4,0,-2,-4,-1,1]
-depth = 3
-num_games = 50
 
-a = LinearRlAgentV2("A",depth,trained_weights=weights)
-b = LinearRlAgentV2("B",depth,trained_weights=weights)
-win = 0
-generations = 10
+gen_ten = [-1.6162390013843457, 1.4527027530786214, 5.11124453363852, -0.715460223488791, -2.3597310318553246, -5.803808251218707, -0.4867320040465062, 2.42182556689626]
+rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
+
+if __name__ == "__main__":
+    new = train(gen_ten)
+    test(new)
 
 
-for g in tqdm(range(generations)):
+def train(init_weights):
+    a = LinearRlAgentV2("A",3,trained_weights=init_weights)
+    b = LinearRlAgentV2("B",3,trained_weights=init_weights)
     win = 0
-    for i in range(num_games):
-        if "A" == run_santorini(agent1=a,agent2=b):
-            win+=1
-    if win > 5:
-        temp_w = [k + uniform(-1,1) for k in a.trained_weights]
-        b = LinearRlAgentV2("B",depth,trained_weights=temp_w)
+    generations = 100
+    num_games = 50
+
+    for g in tqdm(range(generations)):
+        win = 0
+        for i in range(num_games):
+            if "A" == run_santorini(agent1=a,agent2=b):
+                win+=1
+        if win > 0.5*num_games:
+            temp_w = [k + uniform(-1,1) for k in a.trained_weights]
+            b = LinearRlAgentV2("B",3,trained_weights=temp_w)
+        else:
+            temp_w = [k + uniform(-1,1) for k in b.trained_weights]
+            a = LinearRlAgentV2("A",3,trained_weights=temp_w)
+
+    if win > 0.5*num_games:
+        print(f"At the end of {generations} generations the best weights is {a.trained_weights}")
+        return a.trained_weights
+
     else:
-        temp_w = [k + uniform(-1,1) for k in b.trained_weights]
-        a = LinearRlAgentV2("A",depth,trained_weights=temp_w)
+        print(f"At the end of {generations} the best weights is {b.trained_weights}")
+        return b.trained_weights
 
-print(win)
-
-if win > 5:
-    print(f"At the end of {generations} generations the best weights is {a.trained_weights}")
-
-else:
-    print(f"At the end of {generations} the best weights is {b.trained_weights}")
+def test(test_weight):
+    win = 0
+    for i in range(100):
+        if run_santorini(LinearRlAgentV2("A",3,trained_weights=test_weight),LinearRlAgentV2("B",3,trained_weights=rootstrap_depth3_self_play_100_games)) == "A":
+            win+=1
+    print(f"Win rate with new weights {win%}")
