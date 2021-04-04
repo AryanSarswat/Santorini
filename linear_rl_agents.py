@@ -3,7 +3,6 @@ import numpy as np
 import random
 from linear_rl_core_v2 import Minimax, MinimaxWithPruning, LinearFnApproximator
 from fast_board import FastBoard
-from linear_rl_launcher import run_santorini
 
 class SearchBootstrapper():
     def __init__(self, weights = None, learning_rate = 10**-5):
@@ -16,7 +15,7 @@ class SearchBootstrapper():
             self.weights = np.array(weights)
 
     def __repr__(self):
-        return f'Current weights are {self.weights}'
+        return f'{self.__class__.__name__} weights are {self.weights}'
 
     def update_weights(self, minimax_tree):
         pass
@@ -137,40 +136,3 @@ class LinearRlAgentV2(RandomAgent):
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
-
-def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
-    a_wins = 0
-    b_wins = 0
-    for i in range(n_iterations):
-        win = run_santorini(agent_a, agent_b, False, trainer_a, trainer_b)
-        if win == 'A':
-            a_wins += 1
-        elif win == 'B':
-            b_wins += 1
-        print(trainer_a) #, trainer_b)
-        print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
-
-#trained weights
-rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
-treestrap_depth3_self_play_50_games = [-111.10484802, -105.02739914,  126.04215728,  128.71120153,   93.56648036, -133.40318024,  -52.95466135,   19.59279387]
-
-#trainer objects
-rootstrap = RootStrapAB()
-treestrap = TreeStrapMinimax([-57.1350499,  -24.43606518, 87.43759999,  70.55689126,  61.53952637, -48.80110254, -13.22514194,  29.42421974])
-
-#initialize agents
-agent_a = LinearRlAgentV2('A', 3)
-agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
-
-if __name__ == "__main__":
-    training_loop(None, None, agent_a, agent_b, 100)
-
-'''
-Test Results: (at Depth 3, 100 games per side)
-- Treestrap as Player A vs Manual as Player B (53 vs 47)
-- Manual as Player A vs Treestrap as Player B (52 vs 48)
-- Rootstrap as Player A vs Manual as Player B (62 vs 38)
-- Manual as Player A vs Rootstrap as Player B (54 vs 46)
-'''
-
-#mention how trained weighst are optimized for their specific search depth
