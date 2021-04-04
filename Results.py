@@ -1,6 +1,6 @@
 from Combined import LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
 from MCTS_Trainer import MCTS_Agent
-from Game import Board
+from Game import Board,HumanPlayer
 import torch
 from tqdm import tqdm
 
@@ -35,15 +35,15 @@ def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
             end = time.time()
             print(f'tree with ab pruning took {end-start}')
             '''
-            #print(f'Current Player is {current_player}')
-            #board.print_board()
-            #print("----------------------------------------------------------------\n")
+            print(f'Current Player is {current_player}')
+            board.print_board()
+            print("----------------------------------------------------------------\n")
             board = board_player.action(board)
             #because the board has been replaced, need to retrieve player obj again
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
             if win != None:
-                #board.print_board()
+                board.print_board()
                 break
         
         if current_player == 'A':
@@ -86,7 +86,7 @@ MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
 #except :
     #print("CNN not loaded")
 
-Linear_A = LinearRlAgentV2("A")
+Linear_A = LinearRlAgentV2("A",depth =4)
 Linear_B = LinearRlAgentV2("B")
 
 Random_A = RandomAgent("A")
@@ -95,12 +95,8 @@ Random_B = RandomAgent("B")
 MCTS_O_Agent_A = MCTS_Only_Agent("A",args)
 MCTS_O_Agent_B = MCTS_Only_Agent("B",args)
 
-
-Possible_Games = [(MCTS_ANN_Agent_A,MCTS_CNN_Agent_B),(MCTS_ANN_Agent_A,Linear_B),(MCTS_ANN_Agent_A,Random_B),(MCTS_ANN_Agent_A,MCTS_O_Agent_B),
-                    (MCTS_CNN_Agent_A,MCTS_ANN_Agent_B),(Linear_A,MCTS_ANN_Agent_B),(Random_A,MCTS_ANN_Agent_B),(MCTS_O_Agent_A,MCTS_ANN_Agent_B),
-                    (MCTS_CNN_Agent_A,Linear_B),(MCTS_CNN_Agent_A,Random_B),(MCTS_CNN_Agent_A,MCTS_O_Agent_B),
-                    (Linear_A,MCTS_CNN_Agent_B),(Random_A,MCTS_CNN_Agent_B),(MCTS_O_Agent_A,MCTS_CNN_Agent_B),
-                    (Linear_A,MCTS_O_Agent_A),(MCTS_O_Agent_A,Linear_B),
+"""
+Possible_Games = [(Linear_A,MCTS_O_Agent_A),(MCTS_O_Agent_A,Linear_B),
                     (Random_A,MCTS_O_Agent_B),(MCTS_O_Agent_A,Random_B)]
 
 num_games = 50
@@ -118,3 +114,6 @@ for i in Possible_Games:
 
 for i in dat.items():
     print(i)
+"""
+
+run_santorini(agent1=Linear_A,agent2=HumanPlayer("B"))

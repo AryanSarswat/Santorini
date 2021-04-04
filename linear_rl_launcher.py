@@ -5,6 +5,7 @@ from Game import *
 #from linear_rl_core_v2 import RandomAgent, LinaerRlAgentV2
 #from linear_rl_core_v1 import LinearRlAgentV1
 #from fast_board import FastBoard
+from linear_rl_agents import LinearRlAgentV2
 
 def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = None):
     '''
@@ -50,6 +51,7 @@ def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = 
             current_player = 'A'
         
     return win
-    
-#run_santorini(LinearRlAgentV2("A", 4), LinearRlAgentV2("B", 4), True)
+
+if __name__=='__main__':
+    run_santorini(LinearRlAgentV2("A", 4), HumanPlayer("B"))
 
