@@ -48,12 +48,8 @@ def run_santorini(agent1,agent2):
 
 
 
-gen_ten = [-1.6162390013843457, 1.4527027530786214, 5.11124453363852, -0.715460223488791, -2.3597310318553246, -5.803808251218707, -0.4867320040465062, 2.42182556689626]
+gen_100 = [0.14523219819780642, 1.6508246981208878, 4.641928472770049, 1.9166268804564177, -3.1362176308492065, -5.320305977518895, -4.195440163754433, 7.5790694380355905]
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
-
-if __name__ == "__main__":
-    new = train(gen_ten)
-    test(new)
 
 
 def train(init_weights):
@@ -88,4 +84,10 @@ def test(test_weight):
     for i in range(100):
         if run_santorini(LinearRlAgentV2("A",3,trained_weights=test_weight),LinearRlAgentV2("B",3,trained_weights=rootstrap_depth3_self_play_100_games)) == "A":
             win+=1
-    print(f"Win rate with new weights {win%}")
+    print(f"Win rate with new weights {win}%")
+
+if __name__ == "__main__":
+    new = train(gen_ten)
+    test(new)
+
+
