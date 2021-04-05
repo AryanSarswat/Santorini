@@ -61,7 +61,7 @@ class FastBoard():
         - board_levels, coords of all workers, and worker_coords of specific worker in tuple format (x,y)
 
         Outputs:
-        - list of all valid worker moves from current state (sorted by heuristic prioritizing better moves??)
+        - list of all valid worker moves from current state
         '''
         valid_squares = self.valid_coord_dict[worker_coords]
         current_building_level = board_levels[worker_coords[0]][worker_coords[1]]

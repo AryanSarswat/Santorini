@@ -101,7 +101,7 @@ class LinearFnApproximator():
         return output
 
 class LinearFnApproximatorV2():
-    def __init__(self, board_levels, all_worker_coords, weights):
+    def __init__(self, board_levels, all_worker_coords, weights, fast_board):
         self.weights = weights
         self.BOARD_LEVELS = board_levels
         self.ALL_WORKER_COORDS = all_worker_coords
@@ -111,6 +111,8 @@ class LinearFnApproximatorV2():
         self.CENTER_ROW, self.CENTER_COL = 2,2 #center coords
         self.BOARD_SIZE = 5
         self.MAX_POSSIBLE_MOVES = 100 #not proven, but close enough
+        self.fast_board = fast_board
+        self.features = None
         self.state_value = self.calculate_state_value()
 
     def __repr__(self):
@@ -118,12 +120,15 @@ class LinearFnApproximatorV2():
         prints values of calculated features for debugging purposes
         '''
         position_features = self.calculate_position_features()
-        return f'\These are the position features: {position_features}\
-        \n the value of this state is {self.state_value}'
+        mobility_features = self.calculate_mobility_features()
+        return f'{self.features}'
+        # return f'\These are the position features: {position_features}\
+        # These are the mobility features {mobility_features}\
+        # \n the value of this state is {self.state_value}'
 
     def get_features(self):
         #this is for the RL training
-        return np.array(self.calculate_position_features())
+        return self.features
 
     def calculate_state_value(self):
         '''
@@ -131,8 +136,12 @@ class LinearFnApproximatorV2():
         output: numerical value of given game state
         utilizes weights + board state to calculate the state value
         '''
-        position_features = np.array(self.calculate_position_features())
-        state_value = np.sum(position_features*self.weights)
+        position_features = self.calculate_position_features()
+        mobility_features = self.calculate_mobility_features()
+        feature_vector = np.array(position_features + mobility_features)
+        feature_vector = np.outer(feature_vector, feature_vector).flatten() #square it
+        self.features = feature_vector
+        state_value = np.sum(feature_vector*self.weights)
 
         #ensures approximated value is within -9999 and 9999.
         state_value = min(state_value, 9990)
@@ -195,23 +204,63 @@ class LinearFnApproximatorV2():
         4. neighbouring level 1s for A1
         5. neighbouring level 2s for A1
         6. neighbouring level 3s for A1
-        7-12. repeat for A2
-        13-24. repeat for B1, B2
-        25. overlapping level 0s
-        26. overlapping level 1s
-        27. overlapping level 2s
-        28. overlapping level 3s
+        7. neighbouring level 4s for A1
+        8-14. repeat for A2
+        15-28. repeat for B1, B2
+        # 29. overlapping level 0s for Player A
+        # 30. overlapping level 1s for Player A
+        # 31. overlapping level 2s for Player A
+        # 32. overlapping level 3s for Player A
+        # 33. overlapping level 4s for Player A
+        # 34-38. repeat for player B
         features are normalized from 0 to 1
         '''
         features = []
-        
+        #features 1 to 28
+        max_valid_neighbours = 8
+        valid_neighbours_for_all_workers = []
+        for worker_coords in self.ALL_WORKER_COORDS:
+            valid_neighbours = self.fast_board.retrieve_valid_worker_moves(self.BOARD_LEVELS, self.ALL_WORKER_COORDS, worker_coords)
+            #valid_neighbours_for_all_workers.append(valid_neighbours)
 
+            num_valid_neighbours = len(valid_neighbours)
+            #feature 1
+            features.append(num_valid_neighbours/max_valid_neighbours) 
+            #feature 2
+            if num_valid_neighbours == 0: 
+                features.append(1)
+            else:
+                features.append(0)
+            
+            #features 3-7
+            neighbour_levels = [0 for i in range(5)]
+            all_neighbours = self.fast_board.valid_coord_dict[worker_coords]
+            for neighbour_row, neighbour_col in all_neighbours:
+                neighbour_coord_level = self.BOARD_LEVELS[neighbour_row][neighbour_col]
+                neighbour_levels[neighbour_coord_level] += 1
+            neighbour_levels = [num/max_valid_neighbours for num in neighbour_levels] #normalize    
+            features.extend(neighbour_levels)
+        
+        #features 29-38
+        max_overlapping_neighbours = 4
+        for player_workers in (self.A_WORKER_COORDS, self.B_WORKER_COORDS):
+            overlap_counter = [0 for i in range(5)]
+            worker_1_neighbours = self.fast_board.valid_coord_dict[player_workers[0]]
+            worker_2_neighbours = self.fast_board.valid_coord_dict[player_workers[1]]
+            overlapping_coords = set(worker_1_neighbours).intersection(worker_2_neighbours)
+            for row,col in overlapping_coords:
+                overlapping_coord_level = self.BOARD_LEVELS[row][col]
+                overlap_counter[overlapping_coord_level] += 1
+            overlap_counter = [num/max_overlapping_neighbours for num in overlap_counter] #normalize
+            features.extend(overlap_counter)
+        return features
+            
 class Minimax():
     '''
     Constructs entire Minimax Tree
-    Inputs: Board object, current_player ('A' or 'B'), depth to search to
+    Inputs: Board object, current_player ('A' or 'B'), depth to search to, approximator_type('V1' or 'V2')
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights, approximator_type):
         #initialize attributes
         self.depth = depth
         self.board_levels = board_levels
@@ -219,6 +268,7 @@ class Minimax():
         self.current_player = current_player
         self.weights = weights
         self.fast_board = fast_board
+        self.approximator_type = approximator_type
         if current_player == 'A':
             self.next_player = 'B'
             self.maximizing_player = True
@@ -237,7 +287,10 @@ class Minimax():
         if self.winner != None:
             self.set_win_node_value()
         elif depth == 0:
-            self.value = LinearFnApproximator(board_levels, all_worker_coords, self.weights).state_value
+            if self.approximator_type == 'V1':
+                self.value = LinearFnApproximator(board_levels, all_worker_coords, self.weights).state_value
+            elif self.approximator_type == 'V2':
+                self.value = LinearFnApproximatorV2(board_levels, all_worker_coords, self.weights, self.fast_board).state_value
         else:
             self.possible_states = fast_board.all_possible_next_states(board_levels, all_worker_coords, current_player)
             if len(self.possible_states) == 0: #if no possible moves, then other player already wins.
@@ -281,7 +334,7 @@ class Minimax():
         if self.maximizing_player:
             maxValue = -math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights)
+                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.approximator_type)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 maxValue = max(maxValue, value)
@@ -289,7 +342,7 @@ class Minimax():
         else:
             minValue = math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights)
+                child_node = Minimax(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.approximator_type)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 minValue = min(minValue, value)
@@ -306,10 +359,10 @@ class MinimaxWithPruning(Minimax):
     Constructs Minimax Tree with Alpha-Beta pruning
     Inputs: Board object, current_player ('A' or 'B'), depth to search to
     '''
-    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights, alpha = -math.inf, beta = math.inf):
+    def __init__(self, board_levels, all_worker_coords, current_player, depth, fast_board, weights, approximator_type, alpha = -math.inf, beta = math.inf):
         self.alpha = alpha
         self.beta = beta
-        super().__init__(board_levels, all_worker_coords, current_player, depth, fast_board, weights)
+        super().__init__(board_levels, all_worker_coords, current_player, depth, fast_board, weights, approximator_type)
 
     def __repr__(self):
         total_2nd_order_nodes = 0
@@ -327,7 +380,7 @@ class MinimaxWithPruning(Minimax):
         if self.maximizing_player:
             maxValue = -math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.alpha, self.beta)
+                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.approximator_type, self.alpha, self.beta)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 maxValue = max(maxValue, value)
@@ -338,7 +391,7 @@ class MinimaxWithPruning(Minimax):
         else:
             minValue = math.inf
             for altered_board_levels, altered_worker_coords in self.possible_states:
-                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.alpha, self.beta)
+                child_node = MinimaxWithPruning(altered_board_levels, altered_worker_coords, self.next_player, self.depth-1, self.fast_board, self.weights, self.approximator_type, self.alpha, self.beta)
                 self.child_nodes.append(child_node)
                 value = child_node.value
                 minValue = min(minValue, value)

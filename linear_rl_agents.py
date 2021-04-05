@@ -1,13 +1,14 @@
 from Game import *
 import numpy as np
 import random
-from linear_rl_core_v2 import Minimax, MinimaxWithPruning, LinearFnApproximator
+from linear_rl_core_v2 import Minimax, MinimaxWithPruning, LinearFnApproximatorV2
 from fast_board import FastBoard
 
 class SearchBootstrapper():
     def __init__(self, weights = None, learning_rate = 10**-5):
-        self.NUM_WEIGHTS = 8
+        self.NUM_WEIGHTS = 3600
         self.learning_rate = learning_rate
+        self.fast_board = FastBoard()
         if weights == None:
             #randomly initialize weights btwn -1 and 1
             self.weights = np.array([random.uniform(-1,1) for i in range(self.NUM_WEIGHTS)])
@@ -31,7 +32,7 @@ class RootStrapAB(SearchBootstrapper):
 
     def update_weights(self, minimax_tree):
         #update weights of approximator towards minimax search value
-        linear_approximator = LinearFnApproximator(minimax_tree.board_levels, minimax_tree.all_worker_coords, self.weights)
+        linear_approximator = LinearFnApproximatorV2(minimax_tree.board_levels, minimax_tree.all_worker_coords, self.weights, self.fast_board)
         approximated_value = linear_approximator.state_value
         feature_vector = linear_approximator.get_features()
         error = minimax_tree.value - approximated_value
@@ -61,7 +62,7 @@ class TreeStrapMinimax(SearchBootstrapper):
             self.weights += total_weight_update
 
     def calculate_weight_update(self, node):
-        linear_approximator = LinearFnApproximator(node.board_levels, node.all_worker_coords, self.weights)
+        linear_approximator = LinearFnApproximatorV2(node.board_levels, node.all_worker_coords, self.weights, self.fast_board)
         approximated_value = linear_approximator.state_value
         feature_vector = linear_approximator.get_features()
         error = node.value - approximated_value
@@ -123,16 +124,52 @@ class LinearRlAgentV2(RandomAgent):
         fast_board = FastBoard()
         if trainer != None:
             if isinstance(trainer, RootStrapAB):
-                minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
+                minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights, 'V1')
             elif isinstance(trainer, TreeStrapMinimax):
-                minimax_tree = Minimax(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights)
+                minimax_tree = Minimax(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights, 'V1')
 
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
             #update weights if in training mode.
             trainer.update_weights(minimax_tree)
         else:
-            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights)
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights, 'V1')
+            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
+            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
+        return new_board
+
+class LinearRlAgentV3(RandomAgent):
+    '''
+    basic RL agent using a linear function approximator and TD learning
+    epsilon greedy policy too?
+
+    Inputs: name: either 'A' or 'B', search depth, and trained_weights (when not in training mode)
+    '''
+    def __init__(self, name, search_depth, trained_weights):
+        super().__init__(name)
+        self.search_depth = search_depth
+        self.trained_weights = trained_weights
+
+    def action(self, board, trainer = None):
+        """
+        Method to select and place a worker, afterwards, place a building/
+        If trainer is specified, will call corresponding search tree and update weights
+        Otherwise, uses the specified weights and searches with a minimax tree with alpha beta pruning.
+        """
+        board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
+        fast_board = FastBoard()
+        if trainer != None:
+            if isinstance(trainer, RootStrapAB):
+                minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights, 'V2')
+            elif isinstance(trainer, TreeStrapMinimax):
+                minimax_tree = Minimax(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, trainer.weights, 'V2')
+
+            new_board_levels, new_worker_coords = minimax_tree.get_best_node()
+            new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
+            #update weights if in training mode.
+            trainer.update_weights(minimax_tree)
+        else:
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights, 'V2')
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board
