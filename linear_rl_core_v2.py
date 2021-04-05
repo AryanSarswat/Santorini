@@ -100,8 +100,111 @@ class LinearFnApproximator():
                 output += 1
         return output
 
-#finally, need another class for the RL algorithm itself (TD lambda? to train, 
-#does the RL algorthim need some kind of regularization to prevent the rewards getting too ridiculous?
+class LinearFnApproximatorV2():
+    def __init__(self, board_levels, all_worker_coords, weights):
+        self.weights = weights
+        self.BOARD_LEVELS = board_levels
+        self.ALL_WORKER_COORDS = all_worker_coords
+        self.A_WORKER_COORDS = all_worker_coords[:2]
+        self.B_WORKER_COORDS = all_worker_coords[2:]
+        self.NUM_WORKERS = 2
+        self.CENTER_ROW, self.CENTER_COL = 2,2 #center coords
+        self.BOARD_SIZE = 5
+        self.MAX_POSSIBLE_MOVES = 100 #not proven, but close enough
+        self.state_value = self.calculate_state_value()
+
+    def __repr__(self):
+        '''
+        prints values of calculated features for debugging purposes
+        '''
+        position_features = self.calculate_position_features()
+        return f'\These are the position features: {position_features}\
+        \n the value of this state is {self.state_value}'
+
+    def get_features(self):
+        #this is for the RL training
+        return np.array(self.calculate_position_features())
+
+    def calculate_state_value(self):
+        '''
+        input: game board object, weights
+        output: numerical value of given game state
+        utilizes weights + board state to calculate the state value
+        '''
+        position_features = np.array(self.calculate_position_features())
+        state_value = np.sum(position_features*self.weights)
+
+        #ensures approximated value is within -9999 and 9999.
+        state_value = min(state_value, 9990)
+        state_value = max(-9990, state_value)
+        return state_value
+
+    def calculate_position_features(self):
+        '''
+        input: self
+        output: python list with value of each position-related feature
+        Feature List:
+        1. Worker Height of A1: Level 0
+        2. Worker height of A1: Level 1
+        3. Worker Height of A1: Level 2
+        4. Worker A1 Distance from Centre
+        5-8. Repeat for A2
+        9-16. Repeat for B1, B2
+        features are normalized from 0 to 1
+        17. Distance A1, A2
+        18. Distance A1, B1
+        19. Distance A1, B2
+        20. Distance A2, B1
+        21. Distance A2, B2
+        22. Distance B1, B2
+        '''
+        features = []
+
+        def distance(x1, x2, y1, y2):
+            return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+
+        #calculate features 1 - 16:
+        centre_dist_normalization_factor = distance(self.BOARD_SIZE-1, self.CENTER_ROW, self.BOARD_SIZE-1, self.CENTER_COL)
+        for worker_row, worker_col in self.ALL_WORKER_COORDS:
+            worker_height = self.BOARD_LEVELS[worker_row][worker_col]
+            for level in [0,1,2]:
+                if worker_height == level:
+                    features.append(1)
+                else:
+                    features.append(0)
+            worker_centre_dist = distance(worker_row, self.CENTER_ROW, worker_col, self.CENTER_COL)
+            features.append(worker_centre_dist/centre_dist_normalization_factor)
+
+        #calculate features 17-22:
+        max_dist_normalization_factor = distance(self.BOARD_SIZE-1, 0, self.BOARD_SIZE-1, 0)
+        for worker_1, worker_2 in ((0,1),(0,2),(0,3),(1,2),(1,3),(2,3)):
+            worker_1_x, worker_1_y = self.ALL_WORKER_COORDS[worker_1]
+            worker_2_x, worker_2_y = self.ALL_WORKER_COORDS[worker_2]
+            relative_dist = distance(worker_1_x, worker_2_x, worker_1_y, worker_2_y)
+            features.append(relative_dist/max_dist_normalization_factor)
+        return features
+
+    def calculate_mobility_features(self):
+        '''
+        input: self
+        output: python list with value of each mobility-related feature
+        Feature List:
+        1. number of valid neighbouring squares for A1
+        2. 1 if no squares for A1 to move to, 0 otherwise (binary)
+        3. neighbouring level 0s for A1
+        4. neighbouring level 1s for A1
+        5. neighbouring level 2s for A1
+        6. neighbouring level 3s for A1
+        7-12. repeat for A2
+        13-24. repeat for B1, B2
+        25. overlapping level 0s
+        26. overlapping level 1s
+        27. overlapping level 2s
+        28. overlapping level 3s
+        features are normalized from 0 to 1
+        '''
+        features = []
+        
 
 class Minimax():
     '''

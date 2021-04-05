@@ -1,6 +1,8 @@
 ###Code for Running Game
 from Game import *
 from linear_rl_agents import TreeStrapMinimax, RootStrapAB, LinearRlAgentV2, RandomAgent
+from linear_rl_core_v2 import LinearFnApproximatorV2
+from fast_board import FastBoard
 
 def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = None):
     '''
@@ -29,6 +31,8 @@ def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = 
                 print(f'Current Player is {current_player}')
                 board.print_board()
                 print("----------------------------------------------------------------\n")
+                board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)                
+                print(LinearFnApproximatorV2(board_levels, all_worker_coords, [1 for i in range(22)]))
             if trainer_a == None and trainer_b == None: #i.e. not in training mode
                 if current_player == 'A':
                     board = board_player.action(board)
@@ -94,9 +98,11 @@ Test Results: (at Depth 3, 100 games per side)
 - Manual as Player A vs Rootstrap as Player B (54 vs 46)
 '''
 
-#mention how trained weighst are optimized for their specific search depth
 
 if __name__=='__main__':
-    run_santorini(LinearRlAgentV2("A", 5, treestrap_depth3_self_play_50_games), HumanPlayer("B"))
+    run_santorini(RandomAgent('A'), RandomAgent("B"))
     #training_loop(rootstrap, treestrap, agent_a, agent_b, 1)
 
+#mention how trained weighst are optimized for their specific search depth
+#adaptive search depth
+#for report, find a reference to cite for minimax/alpha beta pruning
