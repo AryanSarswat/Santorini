@@ -1,7 +1,9 @@
-from linear_rl_agents import LinearRlAgentV2
+from linear_rl_agents import LinearRlAgentV2,LinearRlAgentV3
 from Game import Board
 from random import uniform
 from tqdm import tqdm
+from tempfile import TemporaryFile
+import numpy as np
 
 def run_santorini(agent1,agent2):
     '''
@@ -50,14 +52,15 @@ def run_santorini(agent1,agent2):
 
 gen_100 = [0.14523219819780642, 1.6508246981208878, 4.641928472770049, 1.9166268804564177, -3.1362176308492065, -5.320305977518895, -4.195440163754433, 7.5790694380355905]
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
+v_3_weights = [uniform(-1,1) for i in range(3600)]
 
 
 def train(init_weights):
-    a = LinearRlAgentV2("A",3,trained_weights=init_weights)
-    b = LinearRlAgentV2("B",3,trained_weights=init_weights)
+    a = LinearRlAgentV3("A",3,trained_weights=init_weights)
+    b = LinearRlAgentV3("B",3,trained_weights=init_weights)
     win = 0
-    generations = 100
-    num_games = 50
+    generations = 50
+    num_games = 10
 
     for g in tqdm(range(generations)):
         win = 0
@@ -66,10 +69,10 @@ def train(init_weights):
                 win+=1
         if win > 0.5*num_games:
             temp_w = [k + uniform(-1,1) for k in a.trained_weights]
-            b = LinearRlAgentV2("B",3,trained_weights=temp_w)
+            b = LinearRlAgentV3("B",3,trained_weights=temp_w)
         else:
             temp_w = [k + uniform(-1,1) for k in b.trained_weights]
-            a = LinearRlAgentV2("A",3,trained_weights=temp_w)
+            a = LinearRlAgentV3("A",3,trained_weights=temp_w)
 
     if win > 0.5*num_games:
         print(f"At the end of {generations} generations the best weights is {a.trained_weights}")
@@ -82,12 +85,12 @@ def train(init_weights):
 def test(test_weight):
     win = 0
     for i in range(100):
-        if run_santorini(LinearRlAgentV2("A",3,trained_weights=test_weight),LinearRlAgentV2("B",3,trained_weights=rootstrap_depth3_self_play_100_games)) == "A":
+        if run_santorini(LinearRlAgentV3("A",3,trained_weights=test_weight),LinearRlAgentV2("B",3,trained_weights=rootstrap_depth3_self_play_100_games)) == "A":
             win+=1
     print(f"Win rate with new weights {win}%")
 
 if __name__ == "__main__":
-    new = train(gen_ten)
+    new = train(v_3_weights)
     test(new)
-
-
+    outfile = TemporaryFile()
+    np.save(outfile,np.array(new))
