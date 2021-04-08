@@ -28,9 +28,9 @@ def run_santorini(agent1, agent2, verbose = True, trainer_a = None, trainer_b = 
             break
         else:
             if verbose:
-                board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
-                fast_board = FastBoard()                
-                print(LinearFnApproximatorV2(board_levels, all_worker_coords, [1 for i in range(900)], fast_board))
+                # board_levels, all_worker_coords = FastBoard.convert_board_to_array(board)
+                # fast_board = FastBoard()                
+                # print(LinearFnApproximatorV2(board_levels, all_worker_coords, [1 for i in range(22)], fast_board))
                 print(f'Current Player is {current_player}')
                 board.print_board()
                 print("----------------------------------------------------------------\n")
@@ -76,22 +76,22 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
             a_wins += 1
         elif win == 'B':
             b_wins += 1
-        #print(f'Trainer A: {trainer_a}, Trainer B: {trainer_b}')
+        print(f'Trainer A: {trainer_a}, Trainer B: {trainer_b}')
         print(f'{i+1}/{n_iterations} games completed. A has won {a_wins}/{i+1} games while B has won {b_wins}/{i+1} games.')
-    #np.savetxt("treestrap_weights.csv", trainer_a.weights, delimiter=",")
+    #np.savetxt("rootstrap_weights.csv", trainer_a.weights, delimiter=",")
 
 #trained weights
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
 treestrap_depth3_self_play_50_games = [-111.10484802, -105.02739914,  126.04215728,  128.71120153,   93.56648036, -133.40318024,  -52.95466135,   19.59279387]
-treestrap_test = np.loadtxt('treestrap_weights.csv', delimiter = ',')
+rootstrap_test = np.loadtxt('rootstrap_weights.csv', delimiter = ',')
 
 #trainer objects
 rootstrap = RootStrapAB()
 treestrap = TreeStrapMinimax()
 
 #initialize agents
-agent_a = LinearRlAgentV3('A', 2, treestrap_test)
-agent_b = LinearRlAgentV2('B', 2)
+agent_a = LinearRlAgentV2('A', 3, rootstrap_depth3_self_play_100_games)
+agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
 
 '''
 Test Results: (at Depth 3, 100 games per side)
@@ -103,8 +103,8 @@ Test Results: (at Depth 3, 100 games per side)
 
 
 if __name__=='__main__':
-    #run_santorini(RandomAgent('A'), RandomAgent("B"))
-    training_loop(None, None, agent_a, agent_b, 100)
+    run_santorini(agent_a, agent_b)
+    #training_loop(None, None, agent_a, agent_b, 100)
     #a = np.loadtxt('trained_weights.csv', delimiter = ',')
     #print(a)    
 
