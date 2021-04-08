@@ -1,10 +1,12 @@
-from Combined import LinearRlAgentV2,MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
+from Combined import MCTS_Only_Agent,Trainer_CNN,RandomAgent,Neural_Network,ValueFunc
 from MCTS_Trainer import MCTS_Agent
 from Game import Board,HumanPlayer
 import torch
 from tqdm import tqdm
+from GA import rootstrap_depth3_self_play_100_games
+from linear_rl_agents import LinearRlAgentV3,LinearRlAgentV2
 
-def run_santorini(agent1 = LinearRlAgentV2("A"), agent2 = LinearRlAgentV2("B")):
+def run_santorini(agent1 = LinearRlAgentV2("A",4), agent2 = LinearRlAgentV2("B",4)):
     '''
     should run a game of Santorini, allow choice of AI/human players
     '''
@@ -86,8 +88,8 @@ MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
 #except :
     #print("CNN not loaded")
 
-Linear_A = LinearRlAgentV2("A",depth =4)
-Linear_B = LinearRlAgentV2("B")
+Linear_A = LinearRlAgentV2("A",4,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_B = LinearRlAgentV2("B",4,trained_weights = rootstrap_depth3_self_play_100_games)
 
 Random_A = RandomAgent("A")
 Random_B = RandomAgent("B")
