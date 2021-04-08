@@ -6,10 +6,10 @@ from fast_board import FastBoard
 
 class SearchBootstrapper():
     def __init__(self, weights = None, learning_rate = 10**-5):
-        self.NUM_WEIGHTS = 3600
+        self.NUM_WEIGHTS = 22
         self.learning_rate = learning_rate
         self.fast_board = FastBoard()
-        if weights == None:
+        if type(weights) == type(None):
             #randomly initialize weights btwn -1 and 1
             self.weights = np.array([random.uniform(-1,1) for i in range(self.NUM_WEIGHTS)])
         else:
@@ -53,7 +53,8 @@ class TreeStrapMinimax(SearchBootstrapper):
         total_weight_update += self.calculate_weight_update(minimax_tree)
         if minimax_tree.depth > 1:
             for child_node in minimax_tree.child_nodes:
-                total_weight_update += self.update_weights(child_node, False)
+                if child_node.winner == None:
+                    total_weight_update += self.update_weights(child_node, False)
         if not root:
             return total_weight_update
         else:
@@ -133,7 +134,29 @@ class LinearRlAgentV2(RandomAgent):
             #update weights if in training mode.
             trainer.update_weights(minimax_tree)
         else:
-            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, self.search_depth, fast_board, self.trained_weights, 'V1')
+            #adaptive depth when not in training mode
+            my_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, self.name))
+            if self.name == 'A':
+                opponent = 'B'
+            else: 
+                opponent = 'A'
+            opp_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, opponent))
+            if self.search_depth % 2 == 0:
+                next_search = self.name
+            else:
+                next_search = opponent
+            search_depth = self.search_depth
+            if my_num_moves + opp_num_moves < 20:
+                search_depth = self.search_depth + 3
+            elif my_num_moves + opp_num_moves < 30:
+                search_depth = self.search_depth + 2
+            elif my_num_moves + opp_num_moves < 40:
+                search_depth = self.search_depth + 1
+            elif (my_num_moves < 20 and next_search == self.name) or (opp_num_moves < 20 and next_search == opponent):
+                search_depth = self.search_depth + 1
+            print(f'Search Depth is {search_depth}, my moves = {my_num_moves}, opp moves = {opp_num_moves}')
+
+            minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, search_depth, fast_board, self.trained_weights, 'V1')
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
         return new_board

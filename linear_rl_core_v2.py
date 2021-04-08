@@ -139,7 +139,7 @@ class LinearFnApproximatorV2():
         position_features = self.calculate_position_features()
         mobility_features = self.calculate_mobility_features()
         feature_vector = np.array(position_features + mobility_features)
-        feature_vector = np.outer(feature_vector, feature_vector).flatten() #square it
+        #feature_vector = np.outer(feature_vector, feature_vector).flatten() #square it
         self.features = feature_vector
         state_value = np.sum(feature_vector*self.weights)
 
@@ -150,47 +150,42 @@ class LinearFnApproximatorV2():
 
     def calculate_position_features(self):
         '''
-        input: self
+        input:self
         output: python list with value of each position-related feature
         Feature List:
-        1. Worker Height of A1: Level 0
-        2. Worker height of A1: Level 1
-        3. Worker Height of A1: Level 2
-        4. Worker A1 Distance from Centre
-        5-8. Repeat for A2
-        9-16. Repeat for B1, B2
-        features are normalized from 0 to 1
-        17. Distance A1, A2
-        18. Distance A1, B1
-        19. Distance A1, B2
-        20. Distance A2, B1
-        21. Distance A2, B2
-        22. Distance B1, B2
+        1. Worker Heights: 0-0
+        2. 0-1
+        3. 0-2
+        4. 1-1
+        5. 1-2
+        6. 2-2
+        7-12. Repeat 1-6 for opponent
+        13. Piece distance from centre
+        14. Repeat 13. for opponent
         '''
         features = []
+        #calculate features 1 - 12: #known bugs: sometimes winning states get passed in
+        height_feature_mapping = {(0,0):0, (0,1):1,(0,2):2, (1,1):3,(1,2):4, (2,2):5} #(0,3):5, (1,3):5, (2,3):5, (3,3):5}
 
+        for worker_coords in [self.A_WORKER_COORDS, self.B_WORKER_COORDS]:
+            height_features = [0 for i in range(6)]
+            worker_1_coords, worker_2_coords = worker_coords[0], worker_coords[1]
+            worker_1_height = self.BOARD_LEVELS[worker_1_coords[0]][worker_1_coords[1]]
+            worker_2_height = self.BOARD_LEVELS[worker_2_coords[0]][worker_2_coords[1]]
+            worker_heights = tuple(sorted([worker_1_height, worker_2_height]))
+            height_features[height_feature_mapping[worker_heights]] += 1
+            features.extend(height_features)
+        
+        #calculate features 13,14      
         def distance(x1, x2, y1, y2):
             return math.sqrt((x1-x2)**2 + (y1-y2)**2)
 
-        #calculate features 1 - 16:
-        centre_dist_normalization_factor = distance(self.BOARD_SIZE-1, self.CENTER_ROW, self.BOARD_SIZE-1, self.CENTER_COL)
-        for worker_row, worker_col in self.ALL_WORKER_COORDS:
-            worker_height = self.BOARD_LEVELS[worker_row][worker_col]
-            for level in [0,1,2]:
-                if worker_height == level:
-                    features.append(1)
-                else:
-                    features.append(0)
-            worker_centre_dist = distance(worker_row, self.CENTER_ROW, worker_col, self.CENTER_COL)
-            features.append(worker_centre_dist/centre_dist_normalization_factor)
-
-        #calculate features 17-22:
-        max_dist_normalization_factor = distance(self.BOARD_SIZE-1, 0, self.BOARD_SIZE-1, 0)
-        for worker_1, worker_2 in ((0,1),(0,2),(0,3),(1,2),(1,3),(2,3)):
-            worker_1_x, worker_1_y = self.ALL_WORKER_COORDS[worker_1]
-            worker_2_x, worker_2_y = self.ALL_WORKER_COORDS[worker_2]
-            relative_dist = distance(worker_1_x, worker_2_x, worker_1_y, worker_2_y)
-            features.append(relative_dist/max_dist_normalization_factor)
+        for player_workers in [self.A_WORKER_COORDS, self.B_WORKER_COORDS]:
+            total_dist = 0
+            for worker_row, worker_col in player_workers:
+                total_dist += distance(worker_row, self.CENTER_ROW, worker_col, self.CENTER_COL)
+            distance_normalization_factor = self.NUM_WORKERS*distance(self.BOARD_SIZE-1, self.CENTER_ROW, self.BOARD_SIZE-1, self.CENTER_COL)
+            features.append(total_dist/distance_normalization_factor)
         return features
 
     def calculate_mobility_features(self):
@@ -198,62 +193,148 @@ class LinearFnApproximatorV2():
         input: self
         output: python list with value of each mobility-related feature
         Feature List:
-        1. number of valid neighbouring squares for A1
-        2. 1 if no squares for A1 to move to, 0 otherwise (binary)
-        3. neighbouring level 0s for A1
-        4. neighbouring level 1s for A1
-        5. neighbouring level 2s for A1
-        6. neighbouring level 3s for A1
-        7. neighbouring level 4s for A1
-        8-14. repeat for A2
-        15-28. repeat for B1, B2
-        # 29. overlapping level 0s for Player A
-        # 30. overlapping level 1s for Player A
-        # 31. overlapping level 2s for Player A
-        # 32. overlapping level 3s for Player A
-        # 33. overlapping level 4s for Player A
-        # 34-38. repeat for player B
-        features are normalized from 0 to 1
+        1. total number of valid neighbouring squares
+        2. number of squares that allow going from 0->1
+        3. number of squares that allow going from 1->2
+        4. number of squares that allow going from 2->3
+        5-8. repeat 1-4 for opponent
+
         '''
         features = []
-        #features 1 to 28
-        max_valid_neighbours = 8
-        valid_neighbours_for_all_workers = []
-        for worker_coords in self.ALL_WORKER_COORDS:
-            valid_neighbours = self.fast_board.retrieve_valid_worker_moves(self.BOARD_LEVELS, self.ALL_WORKER_COORDS, worker_coords)
-            #valid_neighbours_for_all_workers.append(valid_neighbours)
+        #features 1 to 8
+        max_valid_neighbours = 15
+        for worker_coords in [self.A_WORKER_COORDS, self.B_WORKER_COORDS]:
+            worker_1_coords, worker_2_coords = worker_coords[0], worker_coords[1]
+            valid_neighbours_w1 = self.fast_board.retrieve_valid_worker_moves(self.BOARD_LEVELS, self.ALL_WORKER_COORDS, worker_1_coords)
+            valid_neighbours_w2 = self.fast_board.retrieve_valid_worker_moves(self.BOARD_LEVELS, self.ALL_WORKER_COORDS, worker_2_coords)
+            all_valid_neighbours = set(valid_neighbours_w1+valid_neighbours_w2)
+            num_all_valid_neighbours = len(all_valid_neighbours)
+            features.append(num_all_valid_neighbours/max_valid_neighbours)
 
-            num_valid_neighbours = len(valid_neighbours)
-            #feature 1
-            features.append(num_valid_neighbours/max_valid_neighbours) 
-            #feature 2
-            if num_valid_neighbours == 0: 
-                features.append(1)
+            worker_1_height = self.BOARD_LEVELS[worker_1_coords[0]][worker_1_coords[1]]
+            worker_2_height = self.BOARD_LEVELS[worker_2_coords[0]][worker_2_coords[1]]
+
+            upward_features = [0 for i in range(3)]
+
+
+            if worker_1_height == worker_2_height:
+                all_valid_neighbours_heights = [self.BOARD_LEVELS[coords[0]][coords[1]] for coords in all_valid_neighbours]
+                upward_features[worker_1_height] += all_valid_neighbours_heights.count(worker_1_height)/max_valid_neighbours
             else:
-                features.append(0)
+                valid_neighbours_w1_heights = [self.BOARD_LEVELS[coords[0]][coords[1]] for coords in valid_neighbours_w1]
+                valid_neighbours_w2_heights = [self.BOARD_LEVELS[coords[0]][coords[1]] for coords in valid_neighbours_w2]
+                upward_features[worker_1_height] += valid_neighbours_w1_heights.count(worker_1_height+1)/max_valid_neighbours
+                upward_features[worker_2_height] += valid_neighbours_w2_heights.count(worker_2_height+1)/max_valid_neighbours
             
-            #features 3-7
-            neighbour_levels = [0 for i in range(5)]
-            all_neighbours = self.fast_board.valid_coord_dict[worker_coords]
-            for neighbour_row, neighbour_col in all_neighbours:
-                neighbour_coord_level = self.BOARD_LEVELS[neighbour_row][neighbour_col]
-                neighbour_levels[neighbour_coord_level] += 1
-            neighbour_levels = [num/max_valid_neighbours for num in neighbour_levels] #normalize    
-            features.extend(neighbour_levels)
-        
-        #features 29-38
-        max_overlapping_neighbours = 4
-        for player_workers in (self.A_WORKER_COORDS, self.B_WORKER_COORDS):
-            overlap_counter = [0 for i in range(5)]
-            worker_1_neighbours = self.fast_board.valid_coord_dict[player_workers[0]]
-            worker_2_neighbours = self.fast_board.valid_coord_dict[player_workers[1]]
-            overlapping_coords = set(worker_1_neighbours).intersection(worker_2_neighbours)
-            for row,col in overlapping_coords:
-                overlapping_coord_level = self.BOARD_LEVELS[row][col]
-                overlap_counter[overlapping_coord_level] += 1
-            overlap_counter = [num/max_overlapping_neighbours for num in overlap_counter] #normalize
-            features.extend(overlap_counter)
+            features.extend(upward_features)
         return features
+
+    # def calculate_position_features(self):
+    #     '''
+    #     input: self
+    #     output: python list with value of each position-related feature
+    #     Feature List:
+    #     1. Worker Height of A1: Level 0
+    #     2. Worker height of A1: Level 1
+    #     3. Worker Height of A1: Level 2
+    #     4. Worker A1 Distance from Centre
+    #     5-8. Repeat for A2
+    #     9-16. Repeat for B1, B2
+    #     features are normalized from 0 to 1
+    #     17. Distance A1, A2
+    #     18. Distance A1, B1
+    #     19. Distance A1, B2
+    #     20. Distance A2, B1
+    #     21. Distance A2, B2
+    #     22. Distance B1, B2
+    #     '''
+    #     features = []
+
+    #     def distance(x1, x2, y1, y2):
+    #         return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+
+    #     #calculate features 1 - 16:
+    #     centre_dist_normalization_factor = distance(self.BOARD_SIZE-1, self.CENTER_ROW, self.BOARD_SIZE-1, self.CENTER_COL)
+    #     for worker_row, worker_col in self.ALL_WORKER_COORDS:
+    #         worker_height = self.BOARD_LEVELS[worker_row][worker_col]
+    #         for level in [0,1,2]:
+    #             if worker_height == level:
+    #                 features.append(1)
+    #             else:
+    #                 features.append(0)
+    #         worker_centre_dist = distance(worker_row, self.CENTER_ROW, worker_col, self.CENTER_COL)
+    #         features.append(worker_centre_dist/centre_dist_normalization_factor)
+
+    #     #calculate features 17-22:
+    #     max_dist_normalization_factor = distance(self.BOARD_SIZE-1, 0, self.BOARD_SIZE-1, 0)
+    #     for worker_1, worker_2 in ((0,1),(0,2),(0,3),(1,2),(1,3),(2,3)):
+    #         worker_1_x, worker_1_y = self.ALL_WORKER_COORDS[worker_1]
+    #         worker_2_x, worker_2_y = self.ALL_WORKER_COORDS[worker_2]
+    #         relative_dist = distance(worker_1_x, worker_2_x, worker_1_y, worker_2_y)
+    #         features.append(relative_dist/max_dist_normalization_factor)
+    #     return features
+
+    # def calculate_mobility_features(self):
+    #     '''
+    #     input: self
+    #     output: python list with value of each mobility-related feature
+    #     Feature List:
+    #     1. number of valid neighbouring squares for A1
+    #     2. 1 if no squares for A1 to move to, 0 otherwise (binary)
+    #     3. neighbouring level 0s for A1
+    #     4. neighbouring level 1s for A1
+    #     5. neighbouring level 2s for A1
+    #     6. neighbouring level 3s for A1
+    #     7. neighbouring level 4s for A1
+    #     8-14. repeat for A2
+    #     15-28. repeat for B1, B2
+    #     # 29. overlapping level 0s for Player A
+    #     # 30. overlapping level 1s for Player A
+    #     # 31. overlapping level 2s for Player A
+    #     # 32. overlapping level 3s for Player A
+    #     # 33. overlapping level 4s for Player A
+    #     # 34-38. repeat for player B
+    #     features are normalized from 0 to 1
+    #     '''
+    #     features = []
+    #     #features 1 to 28
+    #     max_valid_neighbours = 8
+    #     valid_neighbours_for_all_workers = []
+    #     for worker_coords in self.ALL_WORKER_COORDS:
+    #         valid_neighbours = self.fast_board.retrieve_valid_worker_moves(self.BOARD_LEVELS, self.ALL_WORKER_COORDS, worker_coords)
+    #         #valid_neighbours_for_all_workers.append(valid_neighbours)
+
+    #         num_valid_neighbours = len(valid_neighbours)
+    #         #feature 1
+    #         features.append(num_valid_neighbours/max_valid_neighbours) 
+    #         #feature 2
+    #         if num_valid_neighbours == 0: 
+    #             features.append(1)
+    #         else:
+    #             features.append(0)
+            
+    #         #features 3-7
+    #         neighbour_levels = [0 for i in range(5)]
+    #         all_neighbours = self.fast_board.valid_coord_dict[worker_coords]
+    #         for neighbour_row, neighbour_col in all_neighbours:
+    #             neighbour_coord_level = self.BOARD_LEVELS[neighbour_row][neighbour_col]
+    #             neighbour_levels[neighbour_coord_level] += 1
+    #         neighbour_levels = [num/max_valid_neighbours for num in neighbour_levels] #normalize    
+    #         features.extend(neighbour_levels)
+        
+    #     #features 29-38
+    #     max_overlapping_neighbours = 4
+    #     for player_workers in (self.A_WORKER_COORDS, self.B_WORKER_COORDS):
+    #         overlap_counter = [0 for i in range(5)]
+    #         worker_1_neighbours = self.fast_board.valid_coord_dict[player_workers[0]]
+    #         worker_2_neighbours = self.fast_board.valid_coord_dict[player_workers[1]]
+    #         overlapping_coords = set(worker_1_neighbours).intersection(worker_2_neighbours)
+    #         for row,col in overlapping_coords:
+    #             overlapping_coord_level = self.BOARD_LEVELS[row][col]
+    #             overlap_counter[overlapping_coord_level] += 1
+    #         overlap_counter = [num/max_overlapping_neighbours for num in overlap_counter] #normalize
+    #         features.extend(overlap_counter)
+    #     return features
             
 class Minimax():
     '''
