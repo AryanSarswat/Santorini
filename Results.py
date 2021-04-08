@@ -88,7 +88,7 @@ MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
 #except :
     #print("CNN not loaded")
 
-Linear_A = LinearRlAgentV2("A",4,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_A = LinearRlAgentV2("A",5,trained_weights = rootstrap_depth3_self_play_100_games)
 Linear_B = LinearRlAgentV2("B",4,trained_weights = rootstrap_depth3_self_play_100_games)
 
 Random_A = RandomAgent("A")
@@ -113,7 +113,6 @@ for i in Possible_Games:
     one = str(i).split()[0]
     two = str(i).split()[4]
     dat[(one,two)] = wins
-
 for i in dat.items():
     print(i)
 """
