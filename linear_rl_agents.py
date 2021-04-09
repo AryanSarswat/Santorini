@@ -110,10 +110,11 @@ class LinearRlAgentV2(RandomAgent):
 
     Inputs: name: either 'A' or 'B', search depth, and trained_weights (when not in training mode)
     '''
-    def __init__(self, name, search_depth, trained_weights = [0,2,4,0,-2,-4,-1,1]):
+    def __init__(self, name, search_depth, trained_weights = [0,2,4,0,-2,-4,-1,1], adaptive_search = False):
         super().__init__(name)
         self.search_depth = search_depth
         self.trained_weights = trained_weights
+        self.adaptive_search = adaptive_search
 
     def action(self, board, trainer = None):
         """
@@ -134,28 +135,28 @@ class LinearRlAgentV2(RandomAgent):
             #update weights if in training mode.
             trainer.update_weights(minimax_tree)
         else:
-            #adaptive depth when not in training mode
-            my_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, self.name))
-            if self.name == 'A':
-                opponent = 'B'
-            else: 
-                opponent = 'A'
-            opp_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, opponent))
-            if self.search_depth % 2 == 0:
-                next_search = self.name
-            else:
-                next_search = opponent
             search_depth = self.search_depth
-            if my_num_moves + opp_num_moves < 20:
-                search_depth = self.search_depth + 3
-            elif my_num_moves + opp_num_moves < 30:
-                search_depth = self.search_depth + 2
-            elif my_num_moves + opp_num_moves < 40:
-                search_depth = self.search_depth + 1
-            elif (my_num_moves < 20 and next_search == self.name) or (opp_num_moves < 20 and next_search == opponent):
-                search_depth = self.search_depth + 1
-            print(f'Search Depth is {search_depth}, my moves = {my_num_moves}, opp moves = {opp_num_moves}')
-
+            #adaptive depth when not in training mode
+            if self.adaptive_search:
+                my_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, self.name))
+                if self.name == 'A':
+                    opponent = 'B'
+                else: 
+                    opponent = 'A'
+                opp_num_moves = len(fast_board.all_possible_next_states(board_levels, all_worker_coords, opponent))
+                if self.search_depth % 2 == 0:
+                    next_search = self.name
+                else:
+                    next_search = opponent
+                if my_num_moves + opp_num_moves < 20:
+                    search_depth = self.search_depth + 3
+                elif my_num_moves + opp_num_moves < 30:
+                    search_depth = self.search_depth + 2
+                elif my_num_moves + opp_num_moves < 40:
+                    search_depth = self.search_depth + 1
+                elif (my_num_moves < 20 and next_search == self.name) or (opp_num_moves < 20 and next_search == opponent):
+                    search_depth = self.search_depth + 1
+                print(f'Search Depth is {search_depth}, my moves = {my_num_moves}, opp moves = {opp_num_moves}')
             minimax_tree = MinimaxWithPruning(board_levels, all_worker_coords, self.name, search_depth, fast_board, self.trained_weights, 'V1')
             new_board_levels, new_worker_coords = minimax_tree.get_best_node()
             new_board = FastBoard.convert_array_to_board(board, new_board_levels, new_worker_coords)
