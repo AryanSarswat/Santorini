@@ -83,15 +83,16 @@ def training_loop(trainer_a, trainer_b, agent_a, agent_b, n_iterations):
 #trained weights
 rootstrap_depth3_self_play_100_games = [-1.70041383, -1.40308437,  3.81622973,  0.98649831,  0.18495751, -4.61974509, -1.57060762,  1.29561011]
 treestrap_depth3_self_play_50_games = [-111.10484802, -105.02739914,  126.04215728,  128.71120153,   93.56648036, -133.40318024,  -52.95466135,   19.59279387]
-rootstrap_test = np.loadtxt('rootstrap_weights.csv', delimiter = ',')
+#rootstrap_test = np.loadtxt('rootstrap_weights.csv', delimiter = ',')
+treestrap_test = [-141.89040637, -114.82240201,  355.79161609,  -37.17284442,   87.02059488, 27.31294783,  211.34971125,  170.23468898, -165.93052754,   36.91466959,-64.8510126,   -11.38154015 ,  56.84910486,  125.10571383,  134.26773231,-30.56365529,   -5.11376878,   45.41138929 ,  52.24639551,   68.9481104, 10.16104757,  -29.2034215]
 
 #trainer objects
 rootstrap = RootStrapAB()
 treestrap = TreeStrapMinimax()
 
 #initialize agents
-agent_a = LinearRlAgentV2('A', 3, rootstrap_depth3_self_play_100_games)
-agent_b = LinearRlAgentV2('B', 3, rootstrap_depth3_self_play_100_games)
+agent_a = LinearRlAgentV2('A', 3, adaptive_search=True)
+agent_b = LinearRlAgentV2('B', 3)
 
 '''
 Test Results: (at Depth 3, 100 games per side)
@@ -103,11 +104,16 @@ Test Results: (at Depth 3, 100 games per side)
 
 
 if __name__=='__main__':
-    run_santorini(agent_a, agent_b)
-    #training_loop(None, None, agent_a, agent_b, 100)
+    #run_santorini(agent_a, agent_b)
+    training_loop(None, None, agent_a, agent_b, 100)
     #a = np.loadtxt('trained_weights.csv', delimiter = ',')
     #print(a)    
 
 #mention how trained weighst are optimized for their specific search depth
 #adaptive search depth
 #for report, find a reference to cite for minimax/alpha beta pruning
+
+#training times for new v2approximator
+#3 hours - 25 games of treestrap at depth 3
+#2.5 hours - 200 games of rootstrap at depth 3
+#performance still poor after this though, possibly due to increased complexity of approximator
