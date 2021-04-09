@@ -88,7 +88,7 @@ MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
 #except :
     #print("CNN not loaded")
 
-Linear_A = LinearRlAgentV2("A",5,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_A = LinearRlAgentV2("A",4,trained_weights = rootstrap_depth3_self_play_100_games)
 Linear_B = LinearRlAgentV2("B",4,trained_weights = rootstrap_depth3_self_play_100_games)
 
 Random_A = RandomAgent("A")

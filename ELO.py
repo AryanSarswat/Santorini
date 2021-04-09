@@ -44,28 +44,34 @@ class Bot():
 
 Linear = Bot("Linear")
 Random = Bot("Random")
+MCTS_ANN = Bot("MCTS_ANN")
+MCTS_CNN = Bot("MCTS_CNN")
+MCTS = Bot("MCTS")
 ANN = Bot("ANN")
 CNN = Bot("CNN")
-MCTS = Bot("MCTS")
 
 games = {
     (Linear,Random) : 100,
-    (ANN,Random) : 99,
-    (Random,ANN) : 1,
-    (CNN,Random) : 100,
+    (MCTS_ANN,Random) : 99,
+    (Random,MCTS_ANN) : 1,
+    (MCTS_CNN,Random) : 100,
     (MCTS,Random) : 100,
-    (Linear,ANN) : 98,
-    (ANN,Linear) : 2,
-    (Linear,CNN) : 89,
-    (CNN,Linear) : 11,
-    (MCTS,ANN) : 98,
-    (ANN,MCTS) : 2,
-    (MCTS,CNN) : 89,
-    (CNN,MCTS) : 11,
-    (CNN,ANN) : 84,
-    (ANN,CNN) : 16,
+    (Linear,MCTS_ANN) : 98,
+    (MCTS_ANN,Linear) : 2,
+    (Linear,MCTS_CNN) : 89,
+    (MCTS_CNN,Linear) : 11,
+    (MCTS,MCTS_ANN) : 98,
+    (MCTS_ANN,MCTS) : 2,
+    (MCTS,MCTS_CNN) : 89,
+    (MCTS_CNN,MCTS) : 11,
+    (MCTS_CNN,MCTS_ANN) : 84,
+    (MCTS_ANN,MCTS_CNN) : 16,
     (Linear,MCTS) : 79,
-    (MCTS,Linear) : 21
+    (MCTS,Linear) : 21,
+    (CNN,Random) : 98,
+    (Random,CNN) : 2,
+    (Linear,CNN) : 84,
+    (CNN,Linear) : 16
 }
 
 all_games = []
@@ -108,13 +114,15 @@ def sim_time(all_games):
 if __name__=='__main__':
     sim_time(all_games)
 
-    fig,ax = plt.subplots()
-
+    fig,ax = plt.subplots(figsize=(14,12))
+    ax.set_xlabel("Time")
+    ax.set_ylabel("ELO")
     ax.plot(Linear.past,label="Linear")
     ax.plot(Random.past,label="Random")
-    ax.plot(ANN.past,label="ANN")
-    ax.plot(CNN.past,label="CNN")
+    ax.plot(MCTS_ANN.past,label="MCTS_ANN")
+    ax.plot(MCTS_CNN.past,label="MCTS_CNN")
     ax.plot(MCTS.past,label="MCTS")
+    ax.plot(CNN.past,label = "CNN")
     ax.legend()
     plt.show()
-    print(f" Linear Final ELO is : {Linear.elo}\n Random Final ELO is : {Random.elo}\n MCTS_ANN Final ELO is : {ANN.elo}\n MCTS_CNN Final ELO is : {CNN.elo}\n MCTS Final ELO is : {MCTS.elo}\n")
+    print(f"\nLinear Final ELO is : {Linear.elo}\nRandom Final ELO is : {Random.elo}\nMCTS_ANN Final ELO is : {MCTS_ANN.elo}\nMCTS_CNN Final ELO is : {MCTS_CNN.elo}\nMCTS Final ELO is : {MCTS.elo}\nCNN Final ELO is : {MCTS.elo}\n")
