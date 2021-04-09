@@ -1,6 +1,7 @@
 from elo import rate_1vs1   
 from random import choice,shuffle
 import matplotlib.pyplot as plt
+import time
 """
 all_games format
 
@@ -83,20 +84,37 @@ def sim(all_games):
         #Rating Update for winner
         A,B = game[0],game[1]
         rat_a,rat_b = rate_1vs1(A.elo,B.elo)
+        if rat_b < 0:
+            rat_b = 0
         A.update_elo(rat_a)
         B.update_elo(rat_b)
     
 
-sim(all_games)
+def sim_time(all_games):
+    time_end = time.time() + 60
+    while time.time() < time_end:
+        #Remove one random game
+        game = choice(all_games)
+        
+        #Rating Update for winner
+        A,B = game[0],game[1]
+        rat_a,rat_b = rate_1vs1(A.elo,B.elo)
+        if rat_b < 0:
+            rat_b = 0
+        A.update_elo(rat_a)
+        B.update_elo(rat_b)
 
 
-fig,ax = plt.subplots()
+if __name__=='__main__':
+    sim_time(all_games)
 
-ax.plot(Linear.past,label="Linear")
-ax.plot(Random.past,label="Random")
-ax.plot(ANN.past,label="ANN")
-ax.plot(CNN.past,label="CNN")
-ax.plot(MCTS.past,label="MCTS")
-ax.legend()
-plt.show()
+    fig,ax = plt.subplots()
 
+    ax.plot(Linear.past,label="Linear")
+    ax.plot(Random.past,label="Random")
+    ax.plot(ANN.past,label="ANN")
+    ax.plot(CNN.past,label="CNN")
+    ax.plot(MCTS.past,label="MCTS")
+    ax.legend()
+    plt.show()
+    print(f" Linear Final ELO is : {Linear.elo}\n Random Final ELO is : {Random.elo}\n MCTS_ANN Final ELO is : {ANN.elo}\n MCTS_CNN Final ELO is : {CNN.elo}\n MCTS Final ELO is : {MCTS.elo}\n")
