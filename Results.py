@@ -3,8 +3,8 @@ from MCTS_Trainer import MCTS_Agent
 from Game import Board,HumanPlayer
 import torch
 from tqdm import tqdm
-from GA import rootstrap_depth3_self_play_100_games
-from linear_rl_agents import LinearRlAgentV3,LinearRlAgentV2
+from linear_rl_agents import LinearRlAgentV2
+from linear_rl_launcher import treestrap_depth3_self_play_50_games, rootstrap_depth3_self_play_100_games
 
 def run_santorini(agent1 = LinearRlAgentV2("A",4), agent2 = LinearRlAgentV2("B",4)):
     '''
@@ -88,8 +88,14 @@ MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
 #except :
     #print("CNN not loaded")
 
-Linear_A = LinearRlAgentV2("A",4,trained_weights = rootstrap_depth3_self_play_100_games)
-Linear_B = LinearRlAgentV2("B",4,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_A_Manual = LinearRlAgentV2("A", 3)
+Linear_B_Manual = LinearRlAgentV2("B", 3)
+
+Linear_A_Rootstrap = LinearRlAgentV2("A",3,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_B_Rootstrap = LinearRlAgentV2("B",3,trained_weights = rootstrap_depth3_self_play_100_games)
+
+Linear_A_Treestrap = LinearRlAgentV2("A", 3, treestrap_depth3_self_play_50_games)
+Linear_B_Treestrap = LinearRlAgentV2("B", 3, treestrap_depth3_self_play_50_games)
 
 Random_A = RandomAgent("A")
 Random_B = RandomAgent("B")
@@ -117,4 +123,4 @@ for i in dat.items():
     print(i)
 """
 
-run_santorini(agent1=Linear_A,agent2=HumanPlayer("B"))
+run_santorini(agent1=Linear_A_Rootstrap,agent2=HumanPlayer("B"))
