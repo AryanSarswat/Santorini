@@ -12,8 +12,8 @@ from RandomAgent import *
 from runner import run_santorini
 from linear_rl_agents import LinearRlAgentV2
 
-PATH = "Value_Func_State_Dict_CNN_random2.pt"
-PATH2 = "Value_Func_State_Dict_CNN_B.pt"
+PATH = "Value_Func_State_Dict_ANN_random_10000.pt"
+#PATH2 = "Value_Func_State_Dict_CNN_B.pt"
 
 
 
@@ -35,12 +35,12 @@ class ValueFuncTrainer():
                 iter_loss = 0
                 winner = self.training_loop(self.agent1, self.agent2)
                 #print(f"\n{winner}") 
-                #print(f"\n{self.state_values}")
+                #print(f"\n{self.state_values1}")
                 reward = self.agent1.reward(winner)
                 with T.autograd.set_detect_anomaly(True):
                     while self.state_values1 != []:
                         self.nn.optimizer.zero_grad()
-                        loss = self.nn.loss(self.state_values1.pop(-1), T.cuda.FloatTensor([[reward]])).to(self.nn.device)
+                        loss = self.nn.loss(self.state_values1.pop(-1), T.cuda.FloatTensor([reward])).to(self.nn.device)
                         loss.backward()
                         item = loss.item()
                         iter_loss += item
@@ -68,17 +68,23 @@ class ValueFuncTrainer():
                 values = []
                 rand = np.random.uniform()
                 for state in states:
-                    converted_state = self.agent1.convertTo2D(state)
-                    values.append(self.nn.forward(converted_state).to(self.nn.device))
-                if (self.agent1.explore == False) and (rand > self.nn.epsilon):
+                    converted_state = self.agent1.convert_nodes_to_input(state)
+                    values.append(self.nn.forward(converted_state.float()).to(self.nn.device))
+                if (self.agent1.explore == False):
                     highest_value = T.argmax(T.cat(values)).item()
-                    self.state_values1.append(values[highest_value])
+                    self.state_values1.append(T.max(T.cat(values))) 
                     board = states[highest_value]
                 else:
-                    choice = random.choice(values)
-                    index = values.index(choice)
-                    self.state_values1.append(choice)
-                    board = states[index] 
+                    if (rand > self.nn.epsilon):
+                        highest_value = T.argmax(T.cat(values)).item()
+                        self.state_values1.append(T.max(T.cat(values)))
+                        board = states[highest_value]
+                    else:
+                        choice = random.choice(values)
+                        self.state_values1.append(choice)
+                        index = values.index(choice)
+                        board = states[index]
+
             else:
                 board = currentPlayer.action(board)
                 '''states = board.all_possible_next_states(self.agent2.name)
@@ -155,9 +161,9 @@ if os.path.isfile(PATH):
 
 else:
     print("\n Training..........")
-    brain = Agent("A", False)
+    brain = Agent("A", True)
     loaded_nn = ValueFunc()
-    loaded_nn.load_state_dict(T.load(PATH2))
+    #loaded_nn.load_state_dict(T.load(PATH))
     trainer = ValueFuncTrainer(100, 100, loaded_nn, brain, RandomAgent("B"))
     trainer.train()
     T.save(trainer.nn.state_dict(),PATH)
