@@ -91,8 +91,14 @@ rootstrap = RootStrapAB()
 treestrap = TreeStrapMinimax()
 
 #initialize agents
-agent_a = LinearRlAgentV2('A', 3, adaptive_search=True)
-agent_b = LinearRlAgentV2('B', 3)
+Linear_A_Manual = LinearRlAgentV2("A", 3)
+Linear_B_Manual = LinearRlAgentV2("B", 3)
+
+Linear_A_Rootstrap = LinearRlAgentV2("A",3,trained_weights = rootstrap_depth3_self_play_100_games)
+Linear_B_Rootstrap = LinearRlAgentV2("B",3,trained_weights = rootstrap_depth3_self_play_100_games)
+
+Linear_A_Treestrap = LinearRlAgentV2("A", 3, treestrap_depth3_self_play_50_games)
+Linear_B_Treestrap = LinearRlAgentV2("B", 3, treestrap_depth3_self_play_50_games)
 
 '''
 Test Results: (at Depth 3, 100 games per side)
@@ -100,12 +106,15 @@ Test Results: (at Depth 3, 100 games per side)
 - Manual as Player A vs Treestrap as Player B (52 vs 48)
 - Rootstrap as Player A vs Manual as Player B (62 vs 38)
 - Manual as Player A vs Rootstrap as Player B (54 vs 46)
+- Treestrap Player A vs Rootstrap Player B (56 vs 44)
+- Rootstrap Player A vs Treestrap Player B (61 vs 39)
 '''
 
 
 if __name__=='__main__':
     #run_santorini(agent_a, agent_b)
-    training_loop(None, None, agent_a, agent_b, 100)
+    training_loop(None, None, Linear_A_Rootstrap, Linear_B_Treestrap, 100)
+    training_loop(None, None, Linear_A_Treestrap, Linear_B_Rootstrap, 100)
     #a = np.loadtxt('trained_weights.csv', delimiter = ',')
     #print(a)    
 
