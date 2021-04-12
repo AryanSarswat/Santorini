@@ -69,17 +69,31 @@ args = {
 }
 
 model_ANN = Neural_Network()
-model_ANN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_ANN_random_10000.pt"))
+model_ANN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_ANN"))
 model_ANN.eval()
 
+model_ANN_2 = Neural_Network()
+model_ANN_2.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_ANN_random_10000.pt"))
+model_ANN_2.eval()
+
 model_CNN = ValueFunc()
-model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_CNN_random2.pt"))
+model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_CNN"))
 model_CNN.eval()
+
+model_CNN_2 = ValueFunc()
+model_CNN_2.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_CNN_random2.pt"))
+model_CNN_2.eval()
 
 
 """
 All the agents
 """
+
+ANN_A = 0
+ANN_B = 0
+
+CNN_A = 0
+CNN_B = 0
 
 
 MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)
