@@ -423,7 +423,14 @@ The hope was to be able to be able to use the MCTS tree to be able to simulate p
 
 \section{Results and Discussion}
 
-\subsection{Loss against iteration for CNN Model}
+\subsection{Loss against iteration for ANN and CNN Models}
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[scale=0.75]{Pure_ANN.png}
+        \caption{Loss against iteration for ANN model, trained against a random agent}
+        \label{fig:}
+    \end{center}
+\end{figure}
 
 \begin{figure}[h!]
     \begin{center}
@@ -433,7 +440,7 @@ The hope was to be able to be able to use the MCTS tree to be able to simulate p
     \end{center}
 \end{figure}
 
-The CNN value function was trained against a random agent for 10,000 iterations, with 1 iteration being a complete Santorini game. The algorithm used to generate the reward for each state, as well as to backpropagate the loss, is as explained in Section 3.3. The loss displayed in the graph is the cumulative loss for each iteration. From the graph, there is a general decreasing trend, plateauing at a value close to 0.  \par
+The ANN and CNN value functions were trained against a random agent for 10,000 iterations, with 1 iteration being a complete Santorini game. The algorithm used to generate the reward for each state, as well as to backpropagate the loss, is mentioned in Algorithm 3. The loss displayed in the graph is the cumulative loss for each iteration. From the graph, there is a slight decreasing trend at the initial part of the graph for both ANN and CNN models, plateauing at a value close to 0.  \par
 
 There are also many “spikes” that can be seen protruding from the general trendline. The model, in these iterations, has not explored these states before, and this results in a state-value that is extremely different from the true state-value, thus contributing to the high loss value for each evaluated state per iteration. The cumulative sum of these losses for that iteration resulted in the spike for 1 iteration. \par
 
