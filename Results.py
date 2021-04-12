@@ -76,17 +76,17 @@ model_CNN = ValueFunc()
 model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_CNN_random2.pt"))
 model_CNN.eval()
 
-#try:
+
+"""
+All the agents
+"""
+
+
 MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)
 MCTS_ANN_Agent_B = MCTS_Agent("B",NN=model_ANN)
-#except :
-    #print("ANN not Loaded")
 
-#try:
 MCTS_CNN_Agent_A = Trainer_CNN("A",args,NN=model_CNN)
 MCTS_CNN_Agent_B = Trainer_CNN("B",args,NN=model_CNN)
-#except :
-    #print("CNN not loaded")
 
 Linear_A_Manual = LinearRlAgentV2("A", 3)
 Linear_B_Manual = LinearRlAgentV2("B", 3)
@@ -103,8 +103,8 @@ Random_B = RandomAgent("B")
 MCTS_O_Agent_A = MCTS_Only_Agent("A",args)
 MCTS_O_Agent_B = MCTS_Only_Agent("B",args)
 
-"""
-Possible_Games = [(Linear_A,MCTS_O_Agent_A),(MCTS_O_Agent_A,Linear_B),
+
+Possible_Games = [(Linear_A_Manual,MCTS_O_Agent_A),(MCTS_O_Agent_A,Linear_B_Manual),
                     (Random_A,MCTS_O_Agent_B),(MCTS_O_Agent_A,Random_B)]
 
 num_games = 50
@@ -121,6 +121,5 @@ for i in Possible_Games:
     dat[(one,two)] = wins
 for i in dat.items():
     print(i)
-"""
 
-run_santorini(agent1=Linear_A_Rootstrap,agent2=HumanPlayer("B"))
+#run_santorini(agent1=Linear_A_Rootstrap,agent2=HumanPlayer("B"))

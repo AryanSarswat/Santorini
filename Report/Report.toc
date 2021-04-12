@@ -15,4 +15,5 @@
 \contentsline {subsection}{\numberline {4.1}Loss against iteration for CNN Model}{17}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{18}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Limitations of above methods}{20}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Conclusion}{22}{section.5}%
+\contentsline {section}{\numberline {5}Other Methods Explored}{22}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{22}{section.6}%
