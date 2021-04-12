@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  8 APR 2021 17:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  12 APR 2021 09:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -617,7 +617,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-<ANN_Architecture.jpg, id=160, 638.385pt x 446.41782pt>
+<ANN_Architecture.jpg, id=165, 638.385pt x 446.41782pt>
 File: ANN_Architecture.jpg Graphic file (type jpg)
 <use ANN_Architecture.jpg>
 Package pdftex.def Info: ANN_Architecture.jpg  used on input line 266.
@@ -631,7 +631,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ANN_Architecture.jpg>]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=170, 1160.335pt x 752.8125pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=175, 1160.335pt x 752.8125pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>
 Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 285.
@@ -661,7 +661,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=197, 683.55376pt x 449.68pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=202, 683.55376pt x 449.68pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>
 Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 378.
@@ -686,7 +686,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [15 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>]
-<Pure_CNN.png, id=215, 642.4pt x 481.8pt>
+<Pure_CNN.png, id=220, 642.4pt x 481.8pt>
 File: Pure_CNN.png Graphic file (type png)
 <use Pure_CNN.png>
 Package pdftex.def Info: Pure_CNN.png  used on input line 430.
@@ -704,7 +704,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16]
-<MCTS_ANN.png, id=220, 513.92pt x 385.44pt>
+<MCTS_ANN.png, id=225, 513.92pt x 385.44pt>
 File: MCTS_ANN.png Graphic file (type png)
 <use MCTS_ANN.png>
 Package pdftex.def Info: MCTS_ANN.png  used on input line 443.
@@ -718,7 +718,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_CNN.png>]
-<MCTS_CNN.png, id=226, 513.92pt x 385.44pt>
+<MCTS_CNN.png, id=231, 513.92pt x 385.44pt>
 File: MCTS_CNN.png Graphic file (type png)
 <use MCTS_CNN.png>
 Package pdftex.def Info: MCTS_CNN.png  used on input line 455.
@@ -801,21 +801,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: A3FAF87D9148204F3299BB71595067B0;3304.
+(rerunfilecheck)             Checksum: 0CE994E0A03938FEA2C8133F0718A1D0;3464.
  ) 
 Here is how much of TeX's memory you used:
- 13288 strings out of 479302
- 197643 string characters out of 5868234
- 569960 words of memory out of 5000000
- 30062 multiletter control sequences out of 15000+600000
+ 13290 strings out of 479302
+ 197663 string characters out of 5868234
+ 569970 words of memory out of 5000000
+ 30063 multiletter control sequences out of 15000+600000
  415192 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,20n,74p,1484b,477s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/LaTeX/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (23 pages, 440697 bytes).
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (23 pages, 440865 bytes).
 PDF statistics:
- 320 PDF objects out of 1000 (max. 8388607)
- 275 compressed objects within 3 object streams
- 93 named destinations out of 1000 (max. 500000)
- 26791 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 325 PDF objects out of 1000 (max. 8388607)
+ 280 compressed objects within 3 object streams
+ 94 named destinations out of 1000 (max. 500000)
+ 26799 words of extra memory for PDF output out of 29859 (max. 10000000)
 
