@@ -5,6 +5,7 @@ import torch
 from tqdm import tqdm
 from linear_rl_agents import LinearRlAgentV2
 from linear_rl_launcher import treestrap_depth3_self_play_50_games, rootstrap_depth3_self_play_100_games
+from ValueFuncAI import Agent_ANN, Agent_CNN, ValueFuncCNN, ValueFuncANN
 
 def run_santorini(agent1 = LinearRlAgentV2("A",4), agent2 = LinearRlAgentV2("B",4)):
     '''
@@ -72,7 +73,7 @@ model_ANN = Neural_Network()
 model_ANN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_ANN"))
 model_ANN.eval()
 
-model_ANN_2 = Neural_Network()
+model_ANN_2 = ValueFuncANN()
 model_ANN_2.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_ANN_random_10000.pt"))
 model_ANN_2.eval()
 
@@ -80,7 +81,7 @@ model_CNN = ValueFunc()
 model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_CNN"))
 model_CNN.eval()
 
-model_CNN_2 = ValueFunc()
+model_CNN_2 = ValueFuncCNN()
 model_CNN_2.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_CNN_random2.pt"))
 model_CNN_2.eval()
 
@@ -89,11 +90,11 @@ model_CNN_2.eval()
 All the agents
 """
 
-ANN_A = 0
-ANN_B = 0
+ANN_A = Agent_ANN("A", False)
+ANN_B = Agent_ANN("B", False)
 
-CNN_A = 0
-CNN_B = 0
+CNN_A = Agent_CNN("A", False)
+CNN_B = Agent_CNN("B", False)
 
 
 MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)

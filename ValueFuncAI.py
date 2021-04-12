@@ -38,71 +38,79 @@ def state_mappings():
     }
     return mappings
 
-class Logger():
-    def __init__(self):
-        self.values = []
             
 
-class ValueFunc(nn.Module):
+class ValueFuncANN(nn.Module):
+    def __init__(self):
+        super(ValueFunc, self).__init__()        
+        self.fc1 = nn.Linear(in_features=325, out_features=256)
+        self.fc2 = nn.Linear(in_features=256, out_features=64)
+        self.value_head = nn.Linear(in_features=64, out_features=1)
+        self.loss = nn.MSELoss()
+        self.device = T.device('cuda' if T.cuda.is_available() else 'cpu')
+        self.to(self.device)
+        self.epsilon = 0.999
+        self.epsilon_min = 0.01
+        self.optimizer = optim.Adam(self.parameters(),lr=0.01)
+
+
+    def forward(self,x):
+        with T.autograd.set_detect_anomaly(True):
+            x = F.relu(self.fc1(x))
+            x = F.relu(self.fc2(x))
+            value_logit = self.value_head(x)
+        return T.tanh(value_logit) 
+
+class ValueFuncCNN(nn.Module):
     def __init__(self):
         super(ValueFunc, self).__init__()
-        #self.conv1 = nn.Conv2d(2, 16, (3,3), stride=1, padding=1)
-        #self.batch1 = nn.BatchNorm2d(16)
-        #self.conv2 = nn.Conv2d(16, 16, (3,3), stride=1, padding=1)
-        #self.batch2 = nn.BatchNorm2d(16)
-        #self.flat = nn.Flatten()
+        self.conv1 = nn.Conv2d(2, 16, (3,3), stride=1, padding=1)
+        self.batch1 = nn.BatchNorm2d(16)
+        self.conv2 = nn.Conv2d(16, 16, (3,3), stride=1, padding=1)
+        self.batch2 = nn.BatchNorm2d(16)
+        self.flat = nn.Flatten()
 
-        #x = T.randn(1,2,5,5)
-        #self._to_linear = None
-        #self.convs(x)
+        x = T.randn(1,2,5,5)
+        self._to_linear = None
+        self.convs(x)
 
-        #self.fc1 = nn.Linear(self._to_linear, 32)
-        #self.fc2 = nn.Linear(32, 1)
+        self.fc1 = nn.Linear(self._to_linear, 32)
+        self.fc2 = nn.Linear(32, 1)
         
         self.loss = nn.MSELoss()
         self.device = T.device('cuda' if T.cuda.is_available() else 'cpu')
         self.to(self.device)
         self.epsilon = 0.999
         self.epsilon_min = 0.01
-        self.fc1 = nn.Linear(in_features=325, out_features=256)
-        self.fc2 = nn.Linear(in_features=256, out_features=64)
-        self.value_head = nn.Linear(in_features=64, out_features=1)
         self.optimizer = optim.Adam(self.parameters(),lr=0.01)
 
 
-    #def convs(self, x):
-     #   x = F.relu(self.conv1(x))
-      #  x = self.batch1(x)
-       # x = F.relu(self.conv2(x))
-        #x = self.batch2(x)
-        #x = self.flat(x)
+    def convs(self, x):
+        x = F.relu(self.conv1(x))
+        x = self.batch1(x)
+        x = F.relu(self.conv2(x))
+        x = self.batch2(x)
+        x = self.flat(x)
 
-       # if self._to_linear == None:
-       #    self._to_linear = x.shape[1]
-       # return x
+        if self._to_linear == None:
+           self._to_linear = x.shape[1]
+        return x
 
     def forward(self,x):
         with T.autograd.set_detect_anomaly(True):
-            '''x = x.reshape(1,2,5,5).float().to(self.device)
-            #print(type(x))
-            #if x != T.cuda.FloatTensor or T.cuda.float32:
-                #x = T.cuda.DoubleTensor(x).float().to(self.device)
+            x = x.reshape(1,2,5,5).float().to(self.device)
             x = self.convs(x)
             x = F.relu(self.fc1(x))
-            x = self.fc2(x)'''
-            x = F.relu(self.fc1(x))
-            x = F.relu(self.fc2(x))
-            value_logit = self.value_head(x)
-        return T.tanh(value_logit) #x
+            x = self.fc2(x)
+        return x
 
-class Agent():
+class Agent_ANN():
     def __init__(self, name, explore):
-        self.nn = ValueFunc()
+        self.nn = ValueFuncANN()
         self.name = name
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.explore = explore
         self.loss_array = []
-        self.all_values = []
         self.mappings = {
                         (0,None) : 0,
                         (1,None) : 1,
@@ -124,7 +132,6 @@ class Agent():
         values = []
         rand = np.random.uniform()
         for state in states:
-            #converted_state = self.convertTo2D(state)
             converted_state = self.convert_nodes_to_input(state)
             values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
         if (self.explore == False):
@@ -159,6 +166,65 @@ class Agent():
             in_nn.append(one_hot)
         in_nn = np.array(in_nn).flatten()
         return T.as_tensor(in_nn).float()
+        
+    
+    def place_workers(self, board):
+        """
+        Method to randomly place agent's workers on the board
+        """
+        place_count = 0
+        while place_count < 2:
+            try:
+                coords = [np.random.randint(0, 5), np.random.randint(0, 5)]
+                # Updates worker and square
+                self.workers[place_count].update_location(coords)
+                board.board[coords[0]][coords[1]].update_worker(self.workers[place_count])
+                place_count += 1
+            except Exception:
+                continue
+        return board
+
+    def reward(self, win):
+        if win == self.name:
+            r = 1
+        else:
+            r = -1
+        return r
+
+    def plot_loss(self):
+        plt.plot(self.loss_array)
+        plt.title("Loss versus iteration")
+        plt.xlabel("Iteration")
+        plt.ylabel("Loss")
+        plt.show()
+
+class Agent_CNN():
+    def __init__(self, name, explore):
+        self.nn = ValueFuncCNN()
+        self.name = name
+        self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
+        self.explore = explore
+        self.loss_array = []
+     
+    def action(self, board):
+        states = board.all_possible_next_states(self.name)
+        values = []
+        rand = np.random.uniform()
+        for state in states:
+            converted_state = self.convertTo2D(state)
+            values.append(T.flatten(self.nn.forward(converted_state).to(self.nn.device)))
+        if (self.explore == False):
+            highest_value = T.argmax(T.cat(values)).item()
+            return states[highest_value]
+        else:
+            if (rand > self.nn.epsilon):
+                highest_value = T.argmax(T.cat(values)).item()
+                return states[highest_value]
+            else:
+                choice = random.choice(values)
+                index = values.index(choice)
+                return states[index]
+
 
     def convertTo2D(self, board):
         """
