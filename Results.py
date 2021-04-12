@@ -69,11 +69,11 @@ args = {
 }
 
 model_ANN = Neural_Network()
-model_ANN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_ANN"))
+model_ANN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_ANN_random_10000.pt"))
 model_ANN.eval()
 
 model_CNN = ValueFunc()
-model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\MCTS_AI_CNN"))
+model_CNN.load_state_dict(torch.load(r"C:\Users\sarya\Documents\GitHub\Master-Procrastinator\Value_Func_State_Dict_CNN_random2.pt"))
 model_CNN.eval()
 
 
