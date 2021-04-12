@@ -42,13 +42,16 @@ class Bot():
         self.past.append(self.elo)
         self.elo = new_elo
 
-Linear = Bot("Linear")
+Linear_Manual= Bot("Linear_Manual")
 Random = Bot("Random")
 MCTS_ANN = Bot("MCTS_ANN")
 MCTS_CNN = Bot("MCTS_CNN")
 MCTS = Bot("MCTS")
 ANN = Bot("ANN")
 CNN = Bot("CNN")
+Combined = Bot("Combined")
+Linear_Rootstrap = Bot("Linear_Rootstrap")
+Linear_Treestrap = Bot("Linear_Treestrap")
 
 games = {
     (Linear,Random) : 100,
@@ -97,7 +100,7 @@ def sim(all_games):
     
 
 def sim_time(all_games):
-    time_end = time.time() + 60
+    time_end = time.time() + 30
     while time.time() < time_end:
         #Remove one random game
         game = choice(all_games)

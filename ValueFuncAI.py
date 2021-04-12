@@ -42,7 +42,7 @@ def state_mappings():
 
 class ValueFuncANN(nn.Module):
     def __init__(self):
-        super(ValueFunc, self).__init__()        
+        super(ValueFuncANN, self).__init__()        
         self.fc1 = nn.Linear(in_features=325, out_features=256)
         self.fc2 = nn.Linear(in_features=256, out_features=64)
         self.value_head = nn.Linear(in_features=64, out_features=1)
@@ -56,6 +56,7 @@ class ValueFuncANN(nn.Module):
 
     def forward(self,x):
         with T.autograd.set_detect_anomaly(True):
+            x = x.to(self.device)
             x = F.relu(self.fc1(x))
             x = F.relu(self.fc2(x))
             value_logit = self.value_head(x)
@@ -63,12 +64,13 @@ class ValueFuncANN(nn.Module):
 
 class ValueFuncCNN(nn.Module):
     def __init__(self):
-        super(ValueFunc, self).__init__()
+        super(ValueFuncCNN, self).__init__()
         self.conv1 = nn.Conv2d(2, 16, (3,3), stride=1, padding=1)
         self.batch1 = nn.BatchNorm2d(16)
         self.conv2 = nn.Conv2d(16, 16, (3,3), stride=1, padding=1)
         self.batch2 = nn.BatchNorm2d(16)
         self.flat = nn.Flatten()
+        self.device = T.device('cuda' if T.cuda.is_available() else 'cpu')
 
         x = T.randn(1,2,5,5)
         self._to_linear = None
@@ -78,7 +80,6 @@ class ValueFuncCNN(nn.Module):
         self.fc2 = nn.Linear(32, 1)
         
         self.loss = nn.MSELoss()
-        self.device = T.device('cuda' if T.cuda.is_available() else 'cpu')
         self.to(self.device)
         self.epsilon = 0.999
         self.epsilon_min = 0.01
@@ -97,6 +98,7 @@ class ValueFuncCNN(nn.Module):
         return x
 
     def forward(self,x):
+
         with T.autograd.set_detect_anomaly(True):
             x = x.reshape(1,2,5,5).float().to(self.device)
             x = self.convs(x)
@@ -105,8 +107,8 @@ class ValueFuncCNN(nn.Module):
         return x
 
 class Agent_ANN():
-    def __init__(self, name, explore):
-        self.nn = ValueFuncANN()
+    def __init__(self, name, explore,model=None):
+        self.nn = model if model != None else ValueFuncANN()
         self.name = name
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.explore = explore
@@ -199,8 +201,8 @@ class Agent_ANN():
         plt.show()
 
 class Agent_CNN():
-    def __init__(self, name, explore):
-        self.nn = ValueFuncCNN()
+    def __init__(self, name, explore,model=None):
+        self.nn = model if model != None else ValueFuncANN()
         self.name = name
         self.workers = [Worker([], str(self.name)+"1"), Worker([], str(self.name)+"2")]
         self.explore = explore

@@ -38,15 +38,17 @@ def run_santorini(agent1 = LinearRlAgentV2("A",4), agent2 = LinearRlAgentV2("B",
             end = time.time()
             print(f'tree with ab pruning took {end-start}')
             '''
+            """
             print(f'Current Player is {current_player}')
             board.print_board()
             print("----------------------------------------------------------------\n")
+            """
             board = board_player.action(board)
             #because the board has been replaced, need to retrieve player obj again
             board_player = get_current_board_player(current_player)
             win = board.end_turn_check_win(board_player)
             if win != None:
-                board.print_board()
+                #board.print_board()
                 break
         
         if current_player == 'A':
@@ -90,11 +92,11 @@ model_CNN_2.eval()
 All the agents
 """
 
-ANN_A = Agent_ANN("A", False)
-ANN_B = Agent_ANN("B", False)
+ANN_A = Agent_ANN("A", False, model = model_ANN_2)
+ANN_B = Agent_ANN("B", False, model = model_ANN_2)
 
-CNN_A = Agent_CNN("A", False)
-CNN_B = Agent_CNN("B", False)
+CNN_A = Agent_CNN("A", False, model = model_CNN_2)
+CNN_B = Agent_CNN("B", False, model = model_CNN_2)
 
 
 MCTS_ANN_Agent_A = MCTS_Agent("A",NN=model_ANN)
@@ -119,21 +121,39 @@ MCTS_O_Agent_A = MCTS_Only_Agent("A",args)
 MCTS_O_Agent_B = MCTS_Only_Agent("B",args)
 
 
-Possible_Games = [(Linear_A_Manual,MCTS_O_Agent_A),(MCTS_O_Agent_A,Linear_B_Manual),
-                    (Random_A,MCTS_O_Agent_B),(MCTS_O_Agent_A,Random_B)]
+Possible_Games = [  (MCTS_O_Agent_A,ANN_B) , (ANN_A,MCTS_O_Agent_B),
+(MCTS_O_Agent_A,CNN_B) , (CNN_A,MCTS_O_Agent_B),
+(MCTS_O_Agent_A,MCTS_ANN_Agent_B) , (MCTS_ANN_Agent_A,MCTS_O_Agent_B),
+(MCTS_O_Agent_A,MCTS_CNN_Agent_B) , (MCTS_CNN_Agent_A,MCTS_O_Agent_B)                    
+]
 
-num_games = 50
+
+"""
+
+
+
+(MCTS_O_Agent_A,Linear_B_Manual) , (Linear_A_Manual,MCTS_O_Agent_B)
+
+(MCTS_O_Agent_A,Linear_B_Rootstrap) , (Linear_A_Rootstrap,MCTS_O_Agent_B)
+
+(MCTS_O_Agent_A,Linear_B_Treestrap) , (Linear_A_Treestrap,MCTS_O_Agent_B)
+
+"""
+
+num_games = 25
 
 dat = dict() 
 
 for i in Possible_Games:
     wins = 0
+    print(f"{i[0]} vs {i[1]}\n")
     for j in tqdm(range(num_games)):
         if run_santorini(agent1=i[0],agent2=i[1]) == "A":
             wins+=1
     one = str(i).split()[0]
     two = str(i).split()[4]
     dat[(one,two)] = wins
+
 for i in dat.items():
     print(i)
 

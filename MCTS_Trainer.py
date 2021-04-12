@@ -4,6 +4,8 @@ from random import shuffle
 import matplotlib.pyplot as plt
 import torch
 import torch.optim as optim
+import torch.nn as nn
+import torch.nn.functional as F
 from sklearn.preprocessing import OneHotEncoder
 from Game import HumanPlayer,Board
 from MCTS_NN import Neural_Network
@@ -11,7 +13,28 @@ from MCTS import MCTS,Node
 from RandomAgent import RandomAgent
 from tqdm import tqdm
 from linear_rl_agents import LinearRlAgentV2
-from ValueFuncAI import ValueFunc
+
+class ValueFunc(nn.Module):
+    def __init__(self):
+        super(ValueFunc, self).__init__()        
+        self.fc1 = nn.Linear(in_features=325, out_features=256)
+        self.fc2 = nn.Linear(in_features=256, out_features=64)
+        self.value_head = nn.Linear(in_features=64, out_features=1)
+        self.loss = nn.MSELoss()
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.to(self.device)
+        self.epsilon = 0.999
+        self.epsilon_min = 0.01
+        self.optimizer = optim.Adam(self.parameters(),lr=0.01)
+
+
+    def forward(self,x):
+        x = x.to(self.device)
+        with torch.autograd.set_detect_anomaly(True):
+            x = F.relu(self.fc1(x))
+            x = F.relu(self.fc2(x))
+            value_logit = self.value_head(x)
+        return torch.tanh(value_logit) 
 
 class MCTS_Agent(HumanPlayer):
     def __init__(self,player,NN=None):
