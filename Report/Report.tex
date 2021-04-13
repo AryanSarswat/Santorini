@@ -544,6 +544,18 @@ This study had a few limitations that were common across all methods employed. T
 \end{enumerate}
 
 \section{Other Methods Explored}
+\begin{enumerate}
+    \item \textbf{Actor-Critic and Q-learning methods}
+    \newline
+    For the pure ANN and CNN models, one huge limiting factor, as mentioned in Section 5.3, is the lack of lookahead during gameplay, essentially only performing a 1 step lookahead. This severely impacted the performance of these models, compared to those with higher depths, such as the MCTS and linear models, where they looked ahead up to depth 4. \par
+
+    As such, for the pure value function approximators, an actor-critic method can be applied, in which there is an “actor” (a policy network) to guide the agent to make optimal actions, instead of purely relying on value function approximation. \par
+
+    A Deep-Q network could have also been applied to train the agent on the best possible action, instead of evaluating the state-value. \par
+
+\end{enumerate}
+    
+    
 
 \section{Conclusion}
 
