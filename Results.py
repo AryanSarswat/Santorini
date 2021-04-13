@@ -121,10 +121,7 @@ MCTS_O_Agent_A = MCTS_Only_Agent("A",args)
 MCTS_O_Agent_B = MCTS_Only_Agent("B",args)
 
 
-Possible_Games = [  (MCTS_O_Agent_A,ANN_B) , (ANN_A,MCTS_O_Agent_B),
-(MCTS_O_Agent_A,CNN_B) , (CNN_A,MCTS_O_Agent_B),
-(MCTS_O_Agent_A,MCTS_ANN_Agent_B) , (MCTS_ANN_Agent_A,MCTS_O_Agent_B),
-(MCTS_O_Agent_A,MCTS_CNN_Agent_B) , (MCTS_CNN_Agent_A,MCTS_O_Agent_B)                    
+Possible_Games = [   (MCTS_O_Agent_A,Linear_B_Treestrap) , (Linear_A_Treestrap,MCTS_O_Agent_B)              
 ]
 
 
@@ -140,7 +137,7 @@ Possible_Games = [  (MCTS_O_Agent_A,ANN_B) , (ANN_A,MCTS_O_Agent_B),
 
 """
 
-num_games = 25
+num_games = 5
 
 dat = dict() 
 
