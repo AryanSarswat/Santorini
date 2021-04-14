@@ -364,8 +364,8 @@ The Monte Carlo Tree Search algorithm is a variant of the standard Monte Carlo m
 
 \begin{enumerate}
     \item \textbf{Selection:} \\
-    Beginning at the root node, select a child node based on a heuristics which involve the visit count and value of the child state. For our experiment the Upper Confidence Bound (UCB1) was utilised. More specifically the UCB1 algorithm was used where along with the value of the state the number of visit of the child node and the parent node are also used to determine the criteria for selecting a child node. This algorithm allows for the selection of nodes which have not been visited and thus promotes exploration. This algorithm also contains a hyperparameter $c$ which is known as the exploration parameter and it is usually determined empirically, however we have used the accepted theoretical value of $\sqrt{2}$.
-    \[v_i + c\sqrt{\frac{\ln{N_p}}{n_i}}  \]
+    Beginning at the root node, select a child node based on a heuristics which involve the visit count and value of the child state. For our experiment the Upper Confidence Bound (UCB1) was utilised. More specifically the UCB1 algorithm was used where along with the value of the state the number of visit of the child node and the parent node are also used to determine the criteria for selecting a child node. This algorithm allows for the selection of nodes which have not been visited and thus promotes exploration. This algorithm also contains a hyperparameter $c$ which is known as the exploration parameter and it is usually determined empirically, however we have used the accepted theoretical value of $\sqrt{2}$ \cite{Reinforcement learning: An introduction}.
+    \[v_i + c\sqrt{\frac{\ln{N_p}}{n_i}}  \] 
     
     \item \textbf{Expansion} \\
     Once a leaf node is reached, the tree is expanded by adding children to the leaf node, these children are all the possible next states which may follow. This allows for the growth of the search tree. However if the leaf node is terminal it will not be expanded and in some cases one may choose not expand a leaf node completely.
@@ -621,7 +621,7 @@ This study had a few limitations that were common across all methods employed. T
     Russell, S. J., \& Norvig, P. (2010). \textit{Artificial Intelligence: A Modern Approach} (3rd ed.). Upper Saddle River, New Jersey: Prentice-Hall.
     
     \bibitem{Deep Blue}
-    Campbell, M., Hoane Jr, A. J., & Hsu, F. H. (2002). \textit{Deep Blue}. Artificial intelligence, 134(1-2), 57-83.
+    Campbell, M., Hoane Jr, A. J., \& Hsu, F. H. (2002). \textit{Deep Blue}. Artificial intelligence, 134(1-2), 57-83.
 
 \end{thebibliography}
 
