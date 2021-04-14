@@ -15,6 +15,6 @@
 \contentsline {subsection}{\numberline {4.1}Loss against iteration for ANN and CNN Models}{17}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{18}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Relative Performance of Trained Agents}{20}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Limitations of the above methods}{22}{subsection.4.4}%
-\contentsline {section}{\numberline {5}Other Methods Explored}{24}{section.5}%
-\contentsline {section}{\numberline {6}Conclusion}{25}{section.6}%
+\contentsline {subsection}{\numberline {4.4}Limitations of the above methods}{23}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Other Methods Explored}{25}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{26}{section.6}%

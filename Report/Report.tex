@@ -502,12 +502,18 @@ In order to assess the relative performance of the various trained agents, 200 g
 
 \begin{figure}[H]
     \centering
-    \subfloat[\centering ELO Game Simulation]{{\includegraphics[width=8.25cm]{ELO_Game_Sim.png}}}
-    \qquad
-    \subfloat[\centering ELO Probabilistic Simulation]{{\includegraphics[width=8.25cm]{ELO_Time_SIM.png}}}
-    \caption{Graphical Results}
+    \includegraphics[width=\textwidth]{ELO_Game_Sim.png}
+    \caption{ELO Game Results}
     \label{fig:}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{ELO_Time_Sim.png}
+    \caption{ELO Time Simulation Results}
+    \label{fig:}
+\end{figure}
+
 
 The above figures illustrate the performance of the agents trained using different techniques against each other. An ELO rating system of established where each agent had a base ELO rating of 1000. The first graph shows the results of the win rate table in a graphical form, each of the games the agent played against each other were used as the basis for the final ELO rating of each agent. The second graph uses each agent's probability of winning against other agents to simulate a random tournament which last for certain time $t$. This particular graph has $t$ being $30$ seconds, and this was employed in the attempt to find the ELO at which each agent converges at given the win-rates in table 1. \par
 
