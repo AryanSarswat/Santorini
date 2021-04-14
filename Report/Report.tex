@@ -566,6 +566,9 @@ This study had a few limitations that were common across all methods employed. T
 
     \item \textbf{Genetic Algorithm}
     \newline
+    Another popular technique used in optimization problems involve the use of a genetic algorithms to find an optimal set of weights for any model. This is one alternative to using the Reinforcement Learning techniques. Genetic Algorithms (GA) function based the on the principles of natural selection, by emulating the biological process we can "create" an agent which is stronger than its latter forms. \cite{Genetic algorithms: Concepts and Applications} \par
+
+    More specfically the implementation of GA in Santorini require us to create a set of $N$ agents, all intiialized with random weights, these agents can then participate in tournament where they go against each other for a certain number of games $G$. At the end of $G$ games the winner of the tournament is selected and its weights are used to create a new generation with $N$ agents with random changes to those weights, afterwhich the tournament between the agent is carried again, this process repeats until a certain end condition like time or generation is met. These random changes to the winner weights resemble mutations in the natural selction process
 
 
 \end{enumerate}
@@ -574,6 +577,7 @@ This study had a few limitations that were common across all methods employed. T
 
 \section{Conclusion}
 
+\newpage
 \begin{thebibliography}{9}
     \bibitem{Reinforcement learning: An introduction} 
     Sutton, R.S., \& Barto, A.G. 
@@ -594,6 +598,11 @@ This study had a few limitations that were common across all methods employed. T
     Veness, J., Silver, D., Uther, W. T., \& Blair, A.
     \textit{Bootstrapping from Game Tree Search}
     In NIPS (Vol. 19, pp. 1937-1945) (2009, December).
+
+    \bibitem{Genetic algorithms: Concepts and Applications}
+    K. F. Man, K. S. Tang and S. Kwong
+    \textit{Genetic algorithms: Concepts and Applications}
+    In IEEE Transactions on Industrial Electronics, vol. 43, no. 5, pp. 519-534, Oct. 1996, doi: 10.1109/41.538609.
 
 \end{thebibliography}
 
