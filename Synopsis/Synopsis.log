@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 14:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 14:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.tex
-(c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.tex
+**c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.tex
+(c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-06> (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
@@ -373,67 +373,12 @@ Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
 \SOUL@ttwidth=\dimen171
 \SOUL@uldp=\dimen172
 \SOUL@ulht=\dimen173
-) (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/subfig/subfig.sty
-Package: subfig 2005/06/28 ver: 1.3 subfig package
- (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2020/10/26 v3.5g Customizing captions (AR)
- (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
-\captionmargin=\dimen174
-\captionmargin@=\dimen175
-\captionwidth=\dimen176
-\caption@tempdima=\dimen177
-\caption@indent=\dimen178
-\caption@parindent=\dimen179
-\caption@hangindent=\dimen180
-Package caption Info: Standard document class detected.
-)
-\c@caption@flags=\count303
-\c@continuedfloat=\count304
-Package caption Info: float package is loaded.
-Package caption Info: hyperref package is loaded.
-)
-\c@KVtest=\count305
-\sf@farskip=\skip86
-\sf@captopadj=\dimen181
-\sf@capskip=\skip87
-\sf@nearskip=\skip88
-\c@subfigure=\count306
-\c@subfigure@save=\count307
-\c@lofdepth=\count308
-\c@subtable=\count309
-\c@subtable@save=\count310
-\c@lotdepth=\count311
-\sf@top=\skip89
-\sf@bottom=\skip90
 ) (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2021-02-06 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count312
+\l__color_backend_stack_int=\count303
 \l__pdf_internal_box=\box61
-) (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-
-LaTeX Warning: Label `fig:' multiply defined.
-
-)
-\openout1 = `Report.aux'.
+) (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.aux)
+\openout1 = `Synopsis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
@@ -490,16 +435,16 @@ LaTeX Font Info:    ... okay on input line 29.
 
 (e:/LaTeX/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count313
-\scratchdimen=\dimen182
+\scratchcounter=\count304
+\scratchdimen=\dimen174
 \scratchbox=\box62
-\nofMPsegments=\count314
-\nofMParguments=\count315
+\nofMPsegments=\count305
+\nofMParguments=\count306
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count316
-\MPscratchDim=\dimen183
-\MPnumerator=\count317
-\makeMPintoPDFobject=\count318
+\MPscratchCnt=\count307
+\MPscratchDim=\dimen175
+\MPnumerator=\count308
+\makeMPintoPDFobject=\count309
 \everyMPtoPDFconversion=\toks33
 ) (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -529,37 +474,18 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (e:/LaTeX/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count319
+\c@section@level=\count310
 )
 LaTeX Info: Redefining \ref on input line 29.
 LaTeX Info: Redefining \pageref on input line 29.
 LaTeX Info: Redefining \nameref on input line 29.
- (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.out) (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.out)
+ (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.out) (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.out)
 \@outlinefile=\write3
-\openout3 = `Report.out'.
+\openout3 = `Synopsis.out'.
 
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: subfig package v1.3 is loaded.
-Package caption Info: End \AtBeginDocument code.
  [1
 
-{e:/LaTeX/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.toc
-LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
- (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-) (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/microtype/mt-msa.cfg
-File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
- (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (e:/LaTeX/texlive/2020/texmf-dist/tex/latex/microtype/mt-msb.cfg
-File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
-\tf@toc=\write4
-\openout4 = `Report.toc'.
-
-
+{e:/LaTeX/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -570,333 +496,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.64 \newpage
-              [1]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[2]
-<game.jpg, id=110, 501.875pt x 364.36125pt>
-File: game.jpg Graphic file (type jpg)
-<use game.jpg>
-Package pdftex.def Info: game.jpg  used on input line 93.
-(pdftex.def)             Requested size: 199.16928pt x 144.59662pt.
-<Towers.png, id=111, 604.1772pt x 604.1772pt>
-File: Towers.png Graphic file (type png)
-<use Towers.png>
-Package pdftex.def Info: Towers.png  used on input line 95.
-(pdftex.def)             Requested size: 156.49014pt x 156.48312pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[3 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/game.jpg> <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Towers.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 142--144
-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 168--170
-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[6]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[7]
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
-
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
-
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
-
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
-
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[8]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[9]
-<ANN_Architecture.jpg, id=170, 638.385pt x 446.41782pt>
-File: ANN_Architecture.jpg Graphic file (type jpg)
-<use ANN_Architecture.jpg>
-Package pdftex.def Info: ANN_Architecture.jpg  used on input line 276.
-(pdftex.def)             Requested size: 414.94533pt x 290.16814pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[10]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[11 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ANN_Architecture.jpg>]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=187, 1160.335pt x 752.8125pt>
-File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png Graphic file (type png)
-<use C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 295.
-(pdftex.def)             Requested size: 406.12334pt x 263.48831pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[12 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[13]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[14]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=215, 683.55376pt x 449.68pt>
-File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png Graphic file (type png)
-<use C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 388.
-(pdftex.def)             Requested size: 444.30469pt x 292.28853pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[15]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[16 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>]
-<Pure_ANN.png, id=233, 462.528pt x 346.896pt>
-File: Pure_ANN.png Graphic file (type png)
-<use Pure_ANN.png>
-Package pdftex.def Info: Pure_ANN.png  used on input line 439.
-(pdftex.def)             Requested size: 346.89514pt x 260.17136pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[17]
-<Pure_CNN.png, id=238, 642.4pt x 481.8pt>
-File: Pure_CNN.png Graphic file (type png)
-<use Pure_CNN.png>
-Package pdftex.def Info: Pure_CNN.png  used on input line 447.
-(pdftex.def)             Requested size: 481.79883pt x 361.3491pt.
-
-Overfull \hbox (28.83093pt too wide) in paragraph at lines 447--448
- [] 
- []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<MCTS_ANN.png, id=239, 513.92pt x 385.44pt>
-File: MCTS_ANN.png Graphic file (type png)
-<use MCTS_ANN.png>
-Package pdftex.def Info: MCTS_ANN.png  used on input line 460.
-(pdftex.def)             Requested size: 411.13655pt x 308.35242pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[18 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_ANN.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[19 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_CNN.png>]
-<MCTS_CNN.png, id=252, 513.92pt x 385.44pt>
-File: MCTS_CNN.png Graphic file (type png)
-<use MCTS_CNN.png>
-Package pdftex.def Info: MCTS_CNN.png  used on input line 472.
-(pdftex.def)             Requested size: 334.04404pt x 250.53302pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[20 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_ANN.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[21 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_CNN.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 518--521
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 522--523
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 524--525
-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[22]
-Underfull \hbox (badness 10000) in paragraph at lines 537--540
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 541--544
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 541--544
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 541--544
-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[23]
-Underfull \hbox (badness 10000) in paragraph at lines 567--569
-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[24] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: D7258A4F582BAA3977D74E9725F7E7F1;3515.
+l.70 \end{document}
+                    [1] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.aux)
+Package rerunfilecheck Info: File `Synopsis.out' has not changed.
+(rerunfilecheck)             Checksum: 51922A8C33F7A2EA00283B92D01FCC97;83.
  ) 
 Here is how much of TeX's memory you used:
- 14673 strings out of 479302
- 224049 string characters out of 5868234
- 595936 words of memory out of 5000000
- 31421 multiletter control sequences out of 15000+600000
- 415294 words of font info for 122 fonts, out of 8000000 for 9000
+ 12919 strings out of 479302
+ 192339 string characters out of 5868234
+ 542361 words of memory out of 5000000
+ 29932 multiletter control sequences out of 15000+600000
+ 405913 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,20n,79p,1484b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
-{e:/LaTeX/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (25 pages, 1479955 bytes).
+ 71i,11n,74p,427b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
+<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.pdf (2 pages, 42115 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 298 compressed objects within 3 object streams
- 102 named destinations out of 1000 (max. 500000)
- 28862 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 33 PDF objects out of 1000 (max. 8388607)
+ 25 compressed objects within 1 object stream
+ 3 named destinations out of 1000 (max. 500000)
+ 10249 words of extra memory for PDF output out of 12000 (max. 10000000)
 

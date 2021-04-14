@@ -114,8 +114,23 @@ games = {
 
     (Combined,ANN) : 94,
     (ANN,Combined) : 6,
-    (Combined,CNN):
-    (CNN,Combined):
+    (Combined,CNN): 90,
+    (CNN,Combined): 10,
+    (Combined,MCTS_ANN) : 89,
+    (MCTS_ANN,Combined) : 11,
+    (Combined,MCTS_CNN): 85,
+    (MCTS_CNN,Combined): 15,
+
+    (Combined,Linear_Treestrap) : 53,
+    (Linear_Treestrap,Combined) : 47,
+
+    (Combined,Linear_Rootstrap) : 54,
+    (Linear_Rootstrap,Combined) : 46,
+
+    (Combined,Linear_Manual) : 42,
+    (Linear_Manual,Combined) : 58,
+
+
 
 }
 
@@ -157,7 +172,7 @@ def sim_time(all_games):
 
 
 if __name__=='__main__':
-    sim_time(all_games)
+    sim(all_games)
 
     fig,ax = plt.subplots(figsize=(14,12))
     ax.set_xlabel("Time")

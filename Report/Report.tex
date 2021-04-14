@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{color,soul}
+\usepackage{subfig}
 
 
 \renewcommand{\arraystretch}{2.5}
@@ -86,6 +87,15 @@ Evaluation of the implemented models was undertaken by pitting them against each
 Santorini is a 2-player board game on a 5x5 grid, with 3 distinct pieces: building blocks, the worker and the dome. Each player has two workers they can control, although only one can be moved in every turn. \par
 
 Before the game begins, players will first select the coordinates for their initial worker placement. Then, on each turn, a player will select a worker to move, move their worker to an adjacent tile, (diagonal movement is acceptable) then place a building block on a tile adjacent to the moved worker. The building blocks can be stacked up to 3 levels, and at the beginning all tiles have no building blocks on them (i.e. level 0) The objective of the game is to move a worker to a level 3 tile. The player also wins if the opponent runs out of valid moves. \par
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering Board]{{\includegraphics[width=7cm]{game.jpg}}}
+    \qquad
+    \subfloat[\centering Towers]{{\includegraphics[width=5.5cm]{Towers.png}}}
+    \caption{Santorini}
+    \label{fig:}
+\end{figure}
 
 Workers can only traverse to an adjacent tile that is within 1 level above that of the worker’s current tile (i.e. if the worker is on level 1, he can only move to an adjacent tile of level 0, 1 or 2). Particularly, workers can go down any number of levels. (i.e. level 2 to level 0) When there are 3 building blocks on a tile, a dome can be placed on top of those blocks to prevent an opponent from winning; this tile becomes impassable for the remainder of the game. \par
 
@@ -484,7 +494,7 @@ The CNN model was trained using training data produced from a MCTS search tree. 
     Linear RootStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{92\%}                       & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{91\%}                       & \multicolumn{1}{c|}{90\%}                       & \multicolumn{1}{c|}{46\%}                           & \multicolumn{1}{c|}{52.5\%}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-9}
     Linear Manual & \multicolumn{1}{c|}{100\%}                       & \multicolumn{1}{c|}{86\%}                        & \multicolumn{1}{c|}{84\%}                      & \multicolumn{1}{c|}{88\%}                       & \multicolumn{1}{c|}{87\%}                       & \multicolumn{1}{c|}{42\%}                           & \multicolumn{1}{c|}{49.5\%}                     & \multicolumn{1}{c|}{46\%}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
     Human          & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                           & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
-    \end{tabular}%
+    \end{tabular}
     }
     \caption{Win Rate of Each Agent}
     \label{table:}
@@ -544,6 +554,7 @@ This study had a few limitations that were common across all methods employed. T
 \end{enumerate}
 
 \section{Other Methods Explored}
+
 \begin{enumerate}
     \item \textbf{Actor-Critic and Q-learning methods}
     \newline
@@ -552,6 +563,10 @@ This study had a few limitations that were common across all methods employed. T
     As such, for the pure value function approximators, an actor-critic method can be applied, in which there is an “actor” (a policy network) to guide the agent to make optimal actions, instead of purely relying on value function approximation. \par
 
     A Deep-Q network could have also been applied to train the agent on the best possible action, instead of evaluating the state-value. \par
+
+    \item \textbf{Genetic Algorithm}
+    \newline
+
 
 \end{enumerate}
     
