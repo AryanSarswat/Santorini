@@ -490,9 +490,9 @@ The CNN model was trained using training data produced from a MCTS search tree. 
     MCTS\_ANN      & \multicolumn{1}{c|}{99\%}                       & \multicolumn{1}{c|}{54\%}                       & \multicolumn{1}{c|}{52\%}                       & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } & \cellcolor[HTML]{000000}{\color[HTML]{000000} } \\ \cline{1-5}
     MCTS\_CNN      & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{72\%}                       & \multicolumn{1}{c|}{67\%}                       & \multicolumn{1}{c|}{84\%}                       & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-6}
     Combined        & \multicolumn{1}{c|}{100\%}                     & \multicolumn{1}{c|}{94\%}                       & \multicolumn{1}{c|}{90\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{85\%}                       & \cellcolor[HTML]{000000}                     & \cellcolor[HTML]{000000}                       & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-7}
-    Linear TreeStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{88\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{47\%}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-8}
-    Linear RootStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{92\%}                       & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{91\%}                       & \multicolumn{1}{c|}{90\%}                       & \multicolumn{1}{c|}{46\%}                           & \multicolumn{1}{c|}{52.5\%}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-9}
-    Linear Manual & \multicolumn{1}{c|}{100\%}                       & \multicolumn{1}{c|}{86\%}                        & \multicolumn{1}{c|}{84\%}                      & \multicolumn{1}{c|}{88\%}                       & \multicolumn{1}{c|}{87\%}                       & \multicolumn{1}{c|}{42\%}                           & \multicolumn{1}{c|}{49.5\%}                     & \multicolumn{1}{c|}{46\%}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
+    Linear TreeStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{88\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{89\%}                       & \multicolumn{1}{c|}{67\%}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-8}
+    Linear RootStrap & \multicolumn{1}{c|}{100\%}                    & \multicolumn{1}{c|}{92\%}                       & \multicolumn{1}{c|}{100\%}                      & \multicolumn{1}{c|}{91\%}                       & \multicolumn{1}{c|}{90\%}                       & \multicolumn{1}{c|}{61\%}                           & \multicolumn{1}{c|}{52.5\%}                           & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-9}
+    Linear Manual & \multicolumn{1}{c|}{100\%}                       & \multicolumn{1}{c|}{86\%}                        & \multicolumn{1}{c|}{84\%}                      & \multicolumn{1}{c|}{88\%}                       & \multicolumn{1}{c|}{87\%}                       & \multicolumn{1}{c|}{56\%}                           & \multicolumn{1}{c|}{49.5\%}                     & \multicolumn{1}{c|}{46\%}                        & \cellcolor[HTML]{000000}                        & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
     Human          & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                           & \multicolumn{1}{c|}{Yes}                      & \multicolumn{1}{c|}{Yes}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \multicolumn{1}{c|}{No}                           & \cellcolor[HTML]{000000}                        \\ \cline{1-10}
     \end{tabular}
     }
@@ -502,14 +502,30 @@ The CNN model was trained using training data produced from a MCTS search tree. 
 
 \begin{figure}[H]
     \centering
-    \subfloat[\centering ELO Game Simulation]{{\includegraphics[width=7.5cm]{ELO_Game_Sim.png}}}
+    \subfloat[\centering ELO Game Simulation]{{\includegraphics[width=10cm]{ELO_Game_Sim.png}}}
     \qquad
-    \subfloat[\centering ELO Probabilistic Simulation]{{\includegraphics[width=7.5cm]{ELO_Time_SIM.png}}}
+    \subfloat[\centering ELO Probabilistic Simulation]{{\includegraphics[width=10cm]{ELO_Time_SIM.png}}}
     \caption{Santorini}
     \label{fig:}
 \end{figure}
 
+The above figures illustrate the performance of the agents trained using different techniques against eachother. An ELO rating system of established where each agent had a base ELO rating of 1000. The first graph shows the results of the win rate table in a graphical form, each of the games the agent played against eachother were used as the basis for the final ELO rating of each agent. The second graph uses the each agent's probability of winning against eachother and simulates a random tournament which last for time $t$. This particular graph has $t$ being $30$ seconds, this was employed in the attempt to find the ELO at which each agent converges at given the win-rates in table 1. \par
 
+The Final ELO rating from the win-rate simulation are as follows
+
+\begin{enumerate}
+    \item Linear Rootstrap Final ELO : 1348
+    \item Linear Treestrap Final ELO : 1291
+    \item Linear Manual Final ELO : 1282
+    \item Combined Final ELO : 1211
+    \item MCTS CNN Final ELO : 990
+    \item CNN Final ELO : 873
+    \item MCTS ANN Final ELO : 871
+    \item ANN Final ELO : 844
+    \item Random Final ELO : 292
+\end{enumerate}
+
+As we can see the from the ranking of the agents, the Linear agents did significantly better as compared to the other agents using Neural Networks due to the fact that Neural Networks need to be trained on very large amount of data. Although we could produce alot of data, most the data produced was using random games which does not emulate expert play and thus the Neural Networks needed to go through multiple iterations by learning from a previous versions of itself which improved upon random play, this required immense computing power which we did not have; the best we could do was use the policy created by the linear agents and apply that policy to the Monte Carlo Tree Search and consequentely train a Convolutional Neural Network. This approach is what we have called the combined approach, and as you can see from the results although the combined approach could not outperform the linear agents the fact that it has performed better than its other counter-parts shows us that it had learnt the policy created from the features of the linear model (there is evidence of learning). \par
 
 \subsection{Limitations of above methods}
 

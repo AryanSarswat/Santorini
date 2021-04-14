@@ -14,6 +14,6 @@
 \contentsline {section}{\numberline {4}Results and Discussion}{18}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Loss against iteration for ANN and CNN Models}{18}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{20}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Limitations of above methods}{22}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Other Methods Explored}{24}{section.5}%
-\contentsline {section}{\numberline {6}Conclusion}{24}{section.6}%
+\contentsline {subsection}{\numberline {4.3}Limitations of above methods}{23}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Other Methods Explored}{25}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{26}{section.6}%

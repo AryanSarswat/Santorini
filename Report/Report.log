@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 16:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 19:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -816,12 +816,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ELO_Game_Sim.png Graphic file (type png)
 <use ELO_Game_Sim.png>
 Package pdftex.def Info: ELO_Game_Sim.png  used on input line 505.
-(pdftex.def)             Requested size: 213.39566pt x 155.62296pt.
-<ELO_Time_SIM.png, id=259, 1011.78pt x 728.4816pt>
+(pdftex.def)             Requested size: 284.52756pt x 207.50479pt.
+<ELO_Time_SIM.png, id=259, 1011.78pt x 737.8767pt>
 File: ELO_Time_SIM.png Graphic file (type png)
 <use ELO_Time_SIM.png>
 Package pdftex.def Info: ELO_Time_SIM.png  used on input line 507.
-(pdftex.def)             Requested size: 213.39566pt x 153.64148pt.
+(pdftex.def)             Requested size: 284.52756pt x 207.50479pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -831,20 +831,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_CNN.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 528--531
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 532--533
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 534--535
-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -853,22 +839,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Game_Sim.png> <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Time_SIM.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 547--550
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 551--554
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 551--554
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 551--554
+Underfull \hbox (badness 10000) in paragraph at lines 544--547
 
  []
 
@@ -880,6 +851,35 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23]
+Underfull \hbox (badness 10000) in paragraph at lines 548--549
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 550--551
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--566
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 567--570
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 567--570
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 567--570
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -888,17 +888,33 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [24]
-Underfull \hbox (badness 10000) in paragraph at lines 605--607
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[25]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 621--623
 []\OT1/cmr/m/n/12 (+20) Mallawaarachchi, V. (2020, March 01). \OT1/cmr/m/it/12 (+20) In-tro-duc-tion to ge-netic al-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 605--607
+Underfull \hbox (badness 10000) in paragraph at lines 621--623
 \OT1/cmr/m/it/12 (+20) go-rithms - in-clud-ing ex-am-ple code. \OT1/cmr/m/n/12 (+20) Re-trieved April 14, 2021, from
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 605--607
+Underfull \hbox (badness 10000) in paragraph at lines 621--623
 []\OT1/cmr/m/n/12 (+20) https://towardsdatascience.com/introduction-to-genetic-algorithms-including-
  []
 
@@ -909,7 +925,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[25] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux)
+[27] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -917,18 +933,18 @@ Package rerunfilecheck Info: File `Report.out' has not changed.
 (rerunfilecheck)             Checksum: D7258A4F582BAA3977D74E9725F7E7F1;3515.
  ) 
 Here is how much of TeX's memory you used:
- 14695 strings out of 479302
- 224472 string characters out of 5868234
+ 14706 strings out of 479302
+ 224549 string characters out of 5868234
  596939 words of memory out of 5000000
  31432 multiletter control sequences out of 15000+600000
  415512 words of font info for 124 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,20n,79p,1484b,495s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,20n,79p,1484b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/LaTeX/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (26 pages, 1808886 bytes).
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (28 pages, 1824563 bytes).
 PDF statistics:
- 370 PDF objects out of 1000 (max. 8388607)
- 310 compressed objects within 4 object streams
- 107 named destinations out of 1000 (max. 500000)
+ 390 PDF objects out of 1000 (max. 8388607)
+ 328 compressed objects within 4 object streams
+ 118 named destinations out of 1000 (max. 500000)
  28872 words of extra memory for PDF output out of 29859 (max. 10000000)
 
