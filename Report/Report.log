@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 19:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 21:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -643,19 +643,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [7]
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 225.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 225.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 225.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 225.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 227.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 225.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -673,10 +673,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-<ANN_Architecture.jpg, id=170, 638.385pt x 446.41782pt>
+<ANN_Architecture.jpg, id=177, 638.385pt x 446.41782pt>
 File: ANN_Architecture.jpg Graphic file (type jpg)
 <use ANN_Architecture.jpg>
-Package pdftex.def Info: ANN_Architecture.jpg  used on input line 276.
+Package pdftex.def Info: ANN_Architecture.jpg  used on input line 272.
 (pdftex.def)             Requested size: 414.94533pt x 290.16814pt.
 
 
@@ -695,10 +695,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [11 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ANN_Architecture.jpg>]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=187, 1160.335pt x 752.8125pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png, id=194, 1160.335pt x 752.8125pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 295.
+Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/CNN_Archi.png  used on input line 291.
 (pdftex.def)             Requested size: 406.12334pt x 263.48831pt.
 
 
@@ -725,62 +725,54 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14]
-<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=215, 683.55376pt x 449.68pt>
+<C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png, id=223, 683.55376pt x 449.68pt>
 File: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png Graphic file (type png)
 <use C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>
-Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 388.
-(pdftex.def)             Requested size: 444.30469pt x 292.28853pt.
+Package pdftex.def Info: C:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png  used on input line 384.
+(pdftex.def)             Requested size: 341.77605pt x 224.83945pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[15 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[16]
+<Pure_ANN.png, id=240, 462.528pt x 346.896pt>
+File: Pure_ANN.png Graphic file (type png)
+<use Pure_ANN.png>
+Package pdftex.def Info: Pure_ANN.png  used on input line 435.
+(pdftex.def)             Requested size: 346.89514pt x 260.17136pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[15]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[16 <c:/Users/sarya/Desktop/Semester 4/ISM/Report/MCTS.png>]
-<Pure_ANN.png, id=233, 462.528pt x 346.896pt>
-File: Pure_ANN.png Graphic file (type png)
-<use Pure_ANN.png>
-Package pdftex.def Info: Pure_ANN.png  used on input line 439.
-(pdftex.def)             Requested size: 346.89514pt x 260.17136pt.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[17]
-<Pure_CNN.png, id=238, 642.4pt x 481.8pt>
+<Pure_CNN.png, id=241, 642.4pt x 481.8pt>
 File: Pure_CNN.png Graphic file (type png)
 <use Pure_CNN.png>
-Package pdftex.def Info: Pure_CNN.png  used on input line 447.
+Package pdftex.def Info: Pure_CNN.png  used on input line 443.
 (pdftex.def)             Requested size: 481.79883pt x 361.3491pt.
 
-Overfull \hbox (28.83093pt too wide) in paragraph at lines 447--448
+Overfull \hbox (28.83093pt too wide) in paragraph at lines 443--444
  [] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<MCTS_ANN.png, id=239, 513.92pt x 385.44pt>
+<MCTS_ANN.png, id=242, 513.92pt x 385.44pt>
 File: MCTS_ANN.png Graphic file (type png)
 <use MCTS_ANN.png>
-Package pdftex.def Info: MCTS_ANN.png  used on input line 460.
+Package pdftex.def Info: MCTS_ANN.png  used on input line 456.
 (pdftex.def)             Requested size: 411.13655pt x 308.35242pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -789,7 +781,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[18 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_ANN.png>]
+[17]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -797,11 +789,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[19 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_CNN.png>]
-<MCTS_CNN.png, id=252, 513.92pt x 385.44pt>
+[18 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_ANN.png> <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_ANN.png>]
+<MCTS_CNN.png, id=255, 513.92pt x 385.44pt>
 File: MCTS_CNN.png Graphic file (type png)
 <use MCTS_CNN.png>
-Package pdftex.def Info: MCTS_CNN.png  used on input line 472.
+Package pdftex.def Info: MCTS_CNN.png  used on input line 468.
 (pdftex.def)             Requested size: 334.04404pt x 250.53302pt.
 
 
@@ -811,16 +803,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[20 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_ANN.png>]
-<ELO_Game_Sim.png, id=258, 1011.78pt x 737.8767pt>
+[19 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Pure_CNN.png>]
+<ELO_Game_Sim.png, id=261, 1011.78pt x 737.8767pt>
 File: ELO_Game_Sim.png Graphic file (type png)
 <use ELO_Game_Sim.png>
-Package pdftex.def Info: ELO_Game_Sim.png  used on input line 505.
+Package pdftex.def Info: ELO_Game_Sim.png  used on input line 501.
 (pdftex.def)             Requested size: 284.52756pt x 207.50479pt.
-<ELO_Time_SIM.png, id=259, 1011.78pt x 737.8767pt>
+<ELO_Time_SIM.png, id=262, 1011.78pt x 737.8767pt>
 File: ELO_Time_SIM.png Graphic file (type png)
 <use ELO_Time_SIM.png>
-Package pdftex.def Info: ELO_Time_SIM.png  used on input line 507.
+Package pdftex.def Info: ELO_Time_SIM.png  used on input line 503.
 (pdftex.def)             Requested size: 284.52756pt x 207.50479pt.
 
 
@@ -830,7 +822,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[21 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_CNN.png>]
+[20 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/MCTS_CNN.png>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -838,8 +830,45 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[22 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Game_Sim.png> <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Time_SIM.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 544--547
+[21 <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Game_Sim.png> <c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/ELO_Time_SIM.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 540--543
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 544--545
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 546--547
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--562
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--566
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--566
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--566
 
  []
 
@@ -851,35 +880,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23]
-Underfull \hbox (badness 10000) in paragraph at lines 548--549
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 550--551
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 563--566
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 567--570
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 567--570
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 567--570
-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -896,25 +896,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [25]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[26]
-Underfull \hbox (badness 10000) in paragraph at lines 621--623
+Underfull \hbox (badness 10000) in paragraph at lines 617--619
 []\OT1/cmr/m/n/12 (+20) Mallawaarachchi, V. (2020, March 01). \OT1/cmr/m/it/12 (+20) In-tro-duc-tion to ge-netic al-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 621--623
+Underfull \hbox (badness 10000) in paragraph at lines 617--619
 \OT1/cmr/m/it/12 (+20) go-rithms - in-clud-ing ex-am-ple code. \OT1/cmr/m/n/12 (+20) Re-trieved April 14, 2021, from
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 621--623
+Underfull \hbox (badness 10000) in paragraph at lines 617--619
 []\OT1/cmr/m/n/12 (+20) https://towardsdatascience.com/introduction-to-genetic-algorithms-including-
  []
 
@@ -925,7 +917,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[27] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux)
+[26] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -933,18 +925,18 @@ Package rerunfilecheck Info: File `Report.out' has not changed.
 (rerunfilecheck)             Checksum: D7258A4F582BAA3977D74E9725F7E7F1;3515.
  ) 
 Here is how much of TeX's memory you used:
- 14706 strings out of 479302
- 224549 string characters out of 5868234
- 596939 words of memory out of 5000000
- 31432 multiletter control sequences out of 15000+600000
- 415512 words of font info for 124 fonts, out of 8000000 for 9000
+ 14711 strings out of 479302
+ 224691 string characters out of 5868234
+ 597034 words of memory out of 5000000
+ 31434 multiletter control sequences out of 15000+600000
+ 415621 words of font info for 125 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,20n,79p,1484b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,20n,79p,1441b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/LaTeX/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (28 pages, 1824563 bytes).
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Report/Report.pdf (27 pages, 1825435 bytes).
 PDF statistics:
- 390 PDF objects out of 1000 (max. 8388607)
- 328 compressed objects within 4 object streams
- 118 named destinations out of 1000 (max. 500000)
+ 393 PDF objects out of 1000 (max. 8388607)
+ 332 compressed objects within 4 object streams
+ 119 named destinations out of 1000 (max. 500000)
  28872 words of extra memory for PDF output out of 29859 (max. 10000000)
 
