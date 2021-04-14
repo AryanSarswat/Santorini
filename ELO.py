@@ -157,7 +157,7 @@ def sim(all_games):
     
 
 def sim_time(all_games):
-    time_end = time.time() + 60
+    time_end = time.time() + 2
     while time.time() < time_end:
         #Remove one random game
         game = choice(all_games)
@@ -177,15 +177,15 @@ if __name__=='__main__':
     fig,ax = plt.subplots(figsize=(14,12))
     ax.set_xlabel("Time")
     ax.set_ylabel("ELO")
-    ax.plot(Linear_Manual.past,label=Linear_Manual.name)
-    ax.plot(Linear_Rootstrap.past,label=Linear_Rootstrap.name)
-    ax.plot(Linear_Treestrap.past,label=Linear_Treestrap.name)
-    ax.plot(Random.past,label="Random")
-    ax.plot(MCTS_ANN.past,label="MCTS_ANN")
-    ax.plot(MCTS_CNN.past,label="MCTS_CNN")
-    ax.plot(CNN.past,label = "CNN")
-    ax.plot(ANN.past,label=ANN.name)
-    ax.plot(Combined.past,label=Combined.name)
+    ax.plot(Linear_Manual.past,label=Linear_Manual.name,color='blue')
+    ax.plot(Linear_Rootstrap.past,label=Linear_Rootstrap.name,color='cyan')
+    ax.plot(Linear_Treestrap.past,label=Linear_Treestrap.name,color='red')
+    ax.plot(Random.past,label="Random",color='green')
+    ax.plot(MCTS_ANN.past,label="MCTS_ANN",color='black')
+    ax.plot(MCTS_CNN.past,label="MCTS_CNN",color='magenta')
+    ax.plot(CNN.past,label = "CNN",color='orange')
+    ax.plot(ANN.past,label=ANN.name,color='lime')
+    ax.plot(Combined.past,label=Combined.name,color='brown')
     ax.legend()
     plt.show()
     print(f"""

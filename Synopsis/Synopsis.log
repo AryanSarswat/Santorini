@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 14:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 15:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -485,35 +485,23 @@ LaTeX Info: Redefining \nameref on input line 29.
 
  [1
 
-{e:/LaTeX/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.70 \end{document}
-                    [1] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.aux)
+{e:/LaTeX/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.aux)
 Package rerunfilecheck Info: File `Synopsis.out' has not changed.
-(rerunfilecheck)             Checksum: 51922A8C33F7A2EA00283B92D01FCC97;83.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12919 strings out of 479302
- 192339 string characters out of 5868234
- 542361 words of memory out of 5000000
- 29932 multiletter control sequences out of 15000+600000
- 405913 words of font info for 45 fonts, out of 8000000 for 9000
+ 12914 strings out of 479302
+ 192307 string characters out of 5868234
+ 543349 words of memory out of 5000000
+ 29928 multiletter control sequences out of 15000+600000
+ 405925 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,11n,74p,427b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
-<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.pdf (2 pages, 42115 bytes).
+ 71i,5n,74p,576b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
+<e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.pdf (1 page, 30796 bytes).
 PDF statistics:
- 33 PDF objects out of 1000 (max. 8388607)
- 25 compressed objects within 1 object stream
- 3 named destinations out of 1000 (max. 500000)
- 10249 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 21 PDF objects out of 1000 (max. 8388607)
+ 15 compressed objects within 1 object stream
+ 2 named destinations out of 1000 (max. 500000)
+ 10241 words of extra memory for PDF output out of 12000 (max. 10000000)
 
