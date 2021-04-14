@@ -68,9 +68,9 @@
 
 \subsection{Outline}
 
-The advent of Artificial Intelligence has allowed mankind to transcend what we thought is humanly possible, and many different approaches have been developed to create machines which can perform intelligent tasks previously thought to be limited only to humans, such as driving a car. Furthermore these machines can do so at a speed and accuracy that transcend what the best humans can achieve. \par
+The advent of Artificial Intelligence has allowed mankind to transcend what we thought is humanly possible, and many different approaches have been developed to create machines that can perform intelligent tasks previously thought to be limited only to humans, such as driving a car. Furthermore, these machines can do so at a speed and accuracy that transcend what the best humans can achieve. \par
 
-One such method, known as Reinforcement Learning has seen increasing popularity recently, with one of its most recent successes being its use by Google DeepMind to develop AlphaGo, a computer programme which has defeated the Legendary Go player Mr Lee Sedol, the winner of 18 world titles. In essence, the technique of Reinforcement Learning works by training “agents" to take “actions" in an environment that maximise a predetermined “reward".
+An area of Artificial Intelligence, known as Reinforcement Learning has seen increasing popularity recently, with one of its most recent successes being its use by Google DeepMind to develop AlphaGo, a computer programme which has defeated the Legendary Go player Mr Lee Sedol, the winner of 18 world titles. In essence, the technique of Reinforcement Learning works by training “agents" to take “actions" in an environment that maximise a predetermined “reward".
 
 \subsection{Objective}
 
@@ -107,7 +107,7 @@ An Object-Oriented Programming (OOP) approach was employed to simulate the board
     
     \item \textbf{Worker Class}
     \newline
-    The Worker class is a base class, representing a Worker object on the Board. The worker has two pieces of information stored: the player it belongs to, and its position on the board (represented by a tuple of x-y coordinates). It allows us to immedientely determine the location of the workers to calculate possible future moves.
+    The Worker class is a base class, representing a Worker object on the Board. The worker has two pieces of information stored: the player it belongs to, and its position on the board (represented by a tuple of x-y coordinates). It allows us to immediately determine the location of the workers to calculate possible future moves.
     
     \item \textbf{Square Class}
     \newline
@@ -136,13 +136,13 @@ In the ideal case, each time it must make a decision the agent will construct a 
 
 Then, starting from the parent nodes of the terminal nodes in the search tree, the best possible move for each player at a branching node is determined by them selecting the move that would lead to either the maximum or minimum possible value amongst the child nodes, depending on which player they are. This represents each player playing perfectly and allows us to assign values to non-terminal nodes. Proceeding up the search tree step-wise, we eventually reach the root node where we can now determine the best possible move to make. Such a state of play is optimal and achieves the Nash equilibrium. \par
 
-Unfortunately, in most games (Santorini included), it is not possible to construct a search tree up to the winning nodes, given that the large number of possible moves at each state contribute to large branching factors in the search tree. Santorini specifically has a branching factor of about 30-100, and it is larger at the start of a game when more moves are possible. Estimating the average to be 50 possible moves at each state, a Minimax Search tree would have an exponential time complexity of $O(50^n)$, where $n$ is the search depth. Hence, it is only possible to search up to a fixed depth, and a means of approximating the state value is required at the terminal leaf nodes which do not represent a win.\par
+Unfortunately, in most games (Santorini included), it is not possible to construct a search tree up to the winning nodes, given that a large number of possible moves at each state contribute to large branching factors in the search tree. Santorini specifically has a branching factor of about 30-100, and it is larger at the start of a game when more moves are possible. Estimating the average to be 50 possible moves at each state, a Minimax Search tree would have an exponential time complexity of $O(50^n)$, where $n$ is the search depth. Hence, it is only possible to search up to a fixed depth, and a means of approximating the state value is required at the terminal leaf nodes which do not represent a win.\par
 
 \vspace{1.5cm}
 \textbf{Linear Value Function Approximation}
 \newline
 
-One simple and effective way of approximating the value of a given game state would be using a linear value function approximator. \cite{Reinforcement learning: An introduction} Linear approximators have a preset list of features used to evaluate a game state, as well as an array of weights, which represent the value of each feature. The state value will then be calculated by taking the dot product of the feature vector and weights vector. Such linear approximators have seen great success in other traditional board games, most notably in Chess, where IBM’s Deep Blue beat the reigning world champion Garry Kasparov. \cite{Deep Blue} \par
+One simple and effective way of approximating the value of a given game state would be using a linear value function approximator. \cite{Reinforcement learning: An introduction} Linear approximators have a preset list of features used to evaluate a game state, as well as an array of weights, which represent the value of each feature. The state value will then be calculated by taking the dot product of the feature vector and weights vector. Such linear approximators have seen great success in other traditional board games, most notably in Chess, where IBM’s Deep Blue beat the reigning world champion, Garry Kasparov. \cite{Deep Blue} \par
 
 As a preliminary investigation, a simple linear value function approximator for Santorini was constructed, comprising of the following 8 features that were normalized from 0 to 1:
 \begin{enumerate}
@@ -153,7 +153,7 @@ As a preliminary investigation, a simple linear value function approximator for 
     \item Repeat features 1 - 4 for the other player
 \end{enumerate}
 
-These simple features were constructed using some pre-existing knowledge and experience of the gameplay, being highly representative of the strength of a player’s position. Worker height was considered since after all the game is won by having workers gradually ascend to level 3, and centrality because a player tends to have more possible moves and opportunities when their workers are at the centre of the board rather than at the edges. Pre-existing knowledge was also used to come up with a set of weights for each feature that seem to make logical sense, which were [0,2,4,-1,0,-2,-4,1]. This essentially means that greater heights are prioritized more (i.e. getting to Level 2 $>$ Level 1 $>$ Level 0), as well as keeping workers closer to the centre. Playing against an AI using these weights, we observe that it behaves extremely logically, and is fairly competent especially with deeper search depths. However, our initial implementation was greatly hampered by our inability to perform deep searches at acceptable speeds - a search at depth 3 took nearly 60 seconds just to come up with a move. \par
+These simple features were constructed using some pre-existing knowledge and experience of the gameplay, being highly representative of the strength of a player’s position. Worker height was considered since after all the game is won by having workers gradually ascend to level 3, and centrality because a player tends to have more possible moves and opportunities when their workers are at the centre of the board rather than at the edges. Pre-existing knowledge was also used to come up with a set of weights for each feature that seem to make logical sense, these weights were [0,2,4,-1,0,-2,-4,1]. This essentially means that greater heights are prioritized more (i.e. getting to Level 2 $>$ Level 1 $>$ Level 0), as well as keeping workers closer to the centre. Playing against an AI using these weights, we observe that it behaves extremely logically, and is fairly competent especially with deeper search depths. However, our initial implementation was greatly hampered by our inability to perform deep searches at acceptable speeds - a search at depth 3 took nearly 60 seconds just to come up with a move. \par
 
 \textbf{Optimizations in Minimax Search}
 \newline
@@ -170,7 +170,7 @@ Collectively, these optimizations allowed for an optimized minimax search tree o
 
 After the linear value function approximator was created and the search algorithm optimized, the possibility of the agent learning the weights through existing reinforcement learning techniques was investigated. In the paper ‘Bootstrapping from Game Tree Search’ \cite{Bootstrapping from Game Tree Search}, Veness et al., introduced new and improved algorithms for performing minimax search bootstrapping, which is the idea that a value function approximator can approximate the minimax value resulting from a deep game tree search without actually using computational power to perform said search. Game playing performance would then be significantly improved due to the greater effective search depth resulting from both the search actually performed and the bootstrapped search from the approximator. The algorithms introduced, applied to a linear value function approximator of 1812 features, were demonstrated to be capable of learning from self-play and with randomly initialized weights in Chess, achieving master-level performance.  This approach combines both reinforcement learning as well as the idea of searching for good moves using minimax, which is important in ‘highly tactical domains’ Hence, we apply the same approaches for the purpose of playing Santorini, which is also a tactical 2-player game. \par
 
-The two main algorithms introduced in the paper \cite{Bootstrapping from Game Tree Search}, named RootStrap and TreeStrap, were thus implemented and used to train the weights for our linear function approximator. RootStrap and TreeStrap were used in 100 and 50 games of self-play respectively, starting from randomly initialized weights. The difference in the number of training games is a result of TreeStrap requiring significantly more time (about 10 times) for training per game as compared to RootStrap. This is due to the fact that our implementation of TreeStrap utilizes a regular minimax search tree without alpha-beta pruning, while RootStrap uses a pruned search tree, which contains less nodes and is thus much faster to create. A minimax search tree of depth 3 was used, as well as the same learning rates used in the research paper ($10^{-5}$ for RootStrap and $10^{-6}$ for TreeStrap) The sketch of these training algorithms are given below. (see Algorithm 1 and 2) \par
+The two main algorithms introduced in the paper \cite{Bootstrapping from Game Tree Search}, named RootStrap and TreeStrap, were thus implemented and used to train the weights for our linear function approximator. RootStrap and TreeStrap were used in 100 and 50 games of self-play respectively, starting from randomly initialized weights. The difference in the number of training games is a result of TreeStrap requiring significantly more time (about 10 times) for training per game as compared to RootStrap. This is due to the fact that our implementation of TreeStrap utilizes a regular minimax search tree without alpha-beta pruning, while RootStrap uses a pruned search tree, which contains fewer nodes and is thus much faster to create. A minimax search tree of depth 3 was used, as well as the same learning rates used in the research paper ($10^{-5}$ for RootStrap and $10^{-6}$ for TreeStrap) The sketch of these training algorithms are given below. (see Algorithm 1 and 2) \par
 
 Both algorithms update the linear value function approximator’s weights using ‘stochastic gradient descent on the squared error’ between the approximator’s predicted value, and the actual minimax search value. While RootStrap updates only the root node towards the calculated minimax value at that node, TreeStrap updates all nodes within the search tree towards their respective minimax search values. \par
 
@@ -240,9 +240,9 @@ Finally, to create an AI that truly learns on its own without requiring prior ex
 
 \subsection{Neural Networks (Value Function Approximation)}
 
-Using Linear Value Function Approximation with minimax is an extremely effective process. However only in games where the branching factor is not very large, minimax can lead to optimal gameplay with a resonable thinking time by the AI agent. However, due to the relatively large branching factor of Santorini (128 moves per turn), a reasonably fast AI agent can play by looking up to 4 states maximally. This severely handicaps the performance of the AI. This is one of the main reasons to attempt to use a Neural Network to predict the value of a state instead. \par
+Using Linear Value Function Approximation with minimax is an extremely effective process. However, only in games where the branching factor is not very large, minimax can lead to optimal gameplay with a reasonable thinking time by the AI agent. However, due to the relatively large branching factor of Santorini (128 moves per turn), a reasonably fast AI agent can play by looking up to 4 states maximally. This severely handicaps the performance of the AI. This is one of the main reasons to attempt to use a Neural Network to predict the value of a state instead. \par
 
-Neural Networks are essentially seen as universal function approximators, which can be used to mimic any function. Thus by using the minimax algorithm we can find the true value of a state and use that as our training data. This training data will be fed into the neural network which will adjust its weights and bias to be able to create a function which can accurately determine how strong a certain state is. This will increase the speed at which our agent can predict the value of a state and consequentely the optimal move. Since the minimax algorithm determines the value of the state by back propagating the value from a terminal state, there is no need to look ahead further states as they are already accounted for. This aspect of Neural Networks as function approximators significantly speed up the “thinking-time” of our agent. \par
+Neural Networks are essentially seen as universal function approximators, which can be used to mimic any function. Thus by using the minimax algorithm we can find the true value of a state and use that as our training data. This training data will be fed into the neural network which will adjust its weights and bias to be able to create a function which can accurately determine how strong a certain state is. This will increase the speed at which our agent can predict the value of a state and consequently the optimal move. Since the minimax algorithm determines the value of the state by back-propagating the value from a terminal state, there is no need to look ahead to further states as they are already accounted for. This aspect of Neural Networks as function approximators significantly speed up the “thinking-time” of our agent. \par
 
 One Hot Encoding was employed to turn the board state into a flattened array of size $[1,325]$ containing only ones and zeros. This was used to ensure that the height of the building is not given priority due to its large numbers (1-4). \par
 
@@ -265,7 +265,7 @@ One Hot Encoding was employed to turn the board state into a flattened array of 
     The Mean Squared Error loss was employed, this ensured that the state values did not explode as it heavily punishes large differences between the true value and the value predicted by the neural network.
     \item \textbf{Optimizer}
     \newline
-    For updating the weights of the Neural Network the Stochastic gradient descent (SGD) was employed. Due to the large number of Neurons in each layer and the weights associated with each of these neurons, SGD is an appropriate optimizer as it reduces the computational burden allowing us to achieve faster training for a trade off of lower convergence rate.
+    For updating the weights of the Neural Network the Stochastic gradient descent (SGD) was employed. Due to the large number of Neurons in each layer and the weights associated with each of these neurons, SGD is an appropriate optimizer as it reduces the computational burden allowing us to achieve faster training for a trade-off of lower convergence rate.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -281,7 +281,7 @@ One Hot Encoding was employed to turn the board state into a flattened array of 
 
 In order to make a value function approximator that is capable of converting board information to a state-value, a Convolutional Neural Network (CNN) was used to attempt to produce an accurate state-value given a board state. A CNN is capable of extracting relevant information from a multidimensional array.  It is a type of neural network that is commonly employed in fields of Computer Vision, such as feature detection of images. One common example is facial recognition technology, where a CNN is trained and employed to detect facial features.   \par
 
-The rationale of employing a CNN in the determination of the state-value of a board, is mainly due to the capability of a CNN in retaining the 2-dimensional structure of an “image” of a board, whilst generating and preserving 2D spatial features that a normal ANN is not capable of. This is because a board is fundamentally 2-dimensional in nature, and the player is traversing in a 2D-board space (3D if the buildings are included). Therefore, features of the Santorini board, like the grouping of high-level buildings, or the proximity of a player to a building, is better extracted by a CNN rather than a simple 1D neural network structure. The feature extraction capability of a CNN is pivotal in determining how much “value” the board is to a player. \par
+The rationale of employing a CNN in the determination of the state-value of a board is mainly due to the capability of a CNN in retaining the 2-dimensional structure of an “image” of a board, whilst generating and preserving 2D spatial features that a normal ANN is not capable of. This is because a board is fundamentally 2-dimensional in nature, and the player is traversing in a 2D-board space (3D if the buildings are included). Therefore, features of the Santorini board, like the grouping of high-level buildings, or the proximity of a player to a building, is better extracted by a CNN rather than a simple 1D neural network structure. The feature extraction capability of a CNN is pivotal in determining how much “value” the board is to a player. \par
 
 \textbf{CNN Architecture} 
 
@@ -323,7 +323,7 @@ The neural network was split into two distinct sections, the CNN layers (for fea
     
     \item \textbf{Padding}
     \newline
-    Padding with value of 1 was used to capture the information of the board corners more accurately.
+    Padding with a value of 1 was used to capture the information of the board corners more accurately.
     
     \item \textbf{Activation Function}
     \newline
@@ -331,12 +331,12 @@ The neural network was split into two distinct sections, the CNN layers (for fea
 
     \item \textbf{Loss Function}
     \newline
-    The Loss Function used was the MSE loss function, with the rationale similar to that of the ANN (as explained in Section 3.2).
+    The Loss Function used was the MSE loss function, with a rationale similar to that of the ANN (as explained in Section 3.2).
 \end{enumerate}
 
 \textbf{Training of the first CNN Model}
 \newline
-The first CNN model was trained on a random agent (who made random worker movements and worker placements) for 10,000 iterations. Each iteration represents a complete game of Santorini. For each state, the CNN agent will generate all possible next states, evaluate the states through the CNN, and output the state-value for each possible state. Based on an epsilon-greedy policy, it will then either make a random move, or make a move based on the state with the highest state-value. The state-value of the next state (either the random state or the state with the highest state-value) is saved in an array for backpropagation at the end of the iteration. As the reward given to the agent is only known at the end of the iteration, there is no update of weights to the CNN until the end of one iteration. \par
+The first CNN model was trained on a random agent (who made random worker movements and worker placements) for 10,000 iterations. Each iteration represents a complete game of Santorini. For each state, the CNN agent will generate all possible next states, evaluate the states through the CNN, and output the state-value for each possible state. Based on an epsilon-greedy policy, it will then either make a random move or make a move based on the state with the highest state-value. The state-value of the next state (either the random state or the state with the highest state-value) is saved in an array for backpropagation at the end of the iteration. As the reward given to the agent is only known at the end of the iteration, there is no update of weights to the CNN until the end of one iteration. \par
 
 \begin{algorithm}[H]
     \SetAlgoLined
@@ -361,21 +361,21 @@ The first CNN model was trained on a random agent (who made random worker moveme
 \end{algorithm}
 
 \subsection{Monte Carlo Tree Search}
-The Monte Carlo Tree Search algorithm is a variant of the standard Monte Carlo method where a search tree is constructed creating a sort of policy network for an agent to follow. It relies on rollouts to be able to successfully determine the value of a state. This is a very popular algorithm used in many board games; It was successfully implemented by researchers at Deep-Mind to develop AlphaGo an AI which was able to reach grandmaster level ELO at the game of GO. Monte Carlo Tree search is executed by 4 key steps; Selection, Expansion, Simulation and Backup. In one run of the algorithm, first Selection occurs and if the node is a leaf node (i.e has no children) it is expanded, after which a number of games are simulated from that leaf node, finally the values obtained from simulating these games are back propagated up to the root node. These four steps will be elaborated upon in detail below:
+The Monte Carlo Tree Search algorithm is a variant of the standard Monte Carlo method where a search tree is constructed creating a sort of policy network for an agent to follow. It relies on rollouts to be able to successfully determine the value of a state. This is a very popular algorithm used in many board games; It was successfully implemented by researchers at Deep-Mind to develop AlphaGo an AI which was able to reach grandmaster level ELO at the game of GO. Monte Carlo Tree search is executed by 4 key steps; Selection, Expansion, Simulation and Backup. In one run of the algorithm, first Selection occurs and if the node is a leaf node (i.e has no children) it is expanded, after which a number of games are simulated from that leaf node, finally the values obtained from simulating these games are backpropagated up to the root node. These four steps will be elaborated upon in detail below:
 
 \begin{enumerate}
     \item \textbf{Selection:} \\
-    Beginning at the root node, select a child node based on a heuristics which involve the visit count and value of the child state. For our experiment the Upper Confidence Bound (UCB1) was utilised. More specifically the UCB1 algorithm was used where along with the value of the state the number of visit of the child node and the parent node are also used to determine the criteria for selecting a child node. This algorithm allows for the selection of nodes which have not been visited and thus promotes exploration. This algorithm also contains a hyperparameter $c$ which is known as the exploration parameter and it is usually determined empirically, however we have used the accepted theoretical value of $\sqrt{2}$ \cite{Reinforcement learning: An introduction}.
-    \[v_i + c\sqrt{\frac{\ln{N_p}}{n_i}}  \] 
+    Beginning at the root node, select a child node based on heuristics which involve the visit count and value of the child state. For our experiment, the Upper Confidence Bound (UCB1) was utilised. More specifically the UCB1 algorithm was used where along with the value of the state the number of visits of the child node and the parent node are also used to determine the criteria for selecting a child node. This algorithm allows for the selection of nodes which have not been visited and thus promotes exploration. This algorithm also contains a hyperparameter $c$ which is known as the exploration parameter and it is usually determined empirically, however we have used the accepted theoretical value of $\sqrt{2}$ \cite{Reinforcement learning: An introduction}.
+    \[v_i + c\sqrt{\frac{\ln{N_p}}{n_i}}  \]
     
     \item \textbf{Expansion} \\
-    Once a leaf node is reached, the tree is expanded by adding children to the leaf node, these children are all the possible next states which may follow. This allows for the growth of the search tree. However if the leaf node is terminal it will not be expanded and in some cases one may choose not expand a leaf node completely.
+    Once a leaf node is reached, the tree is expanded by adding children to the leaf node, these children are all the possible next states which may follow. This allows for the growth of the search tree. However, if the leaf node is terminal it will not be expanded and in some cases, one may choose not to expand a leaf node completely.
     
     \item \textbf{Simulation} \\
     From the selected node or from a node which has been expanded, a complete episode starting from that node is simulated until the state is terminal. After which a reward is returned. This is also known as a rollout and the games are simulated with a certain policy; this policy could be a Linear Value Function, a random Policy or even a policy from a Neural Network which has been trained with expert games. Other than the node selected for the simulation, none of the other states in the simulation are stored, this significantly reduces the memory requirements compared to other methods such as Q-tables.
     
     \item \textbf{Backup} \\
-    The return obtained from the simulated episode is the backed up the path taken to reach the leaf node or if it is the first node in the tree it used to initialize the value for the node. These values are then added up for each simulation in each node in a value sum variable, this will provide an indication how good or bad the state is. This is one of the key steps of the MCTS algorithm as instead of using randomly generated episodes, where the goal is to explore as many states as possible, it enriches this data and even though lesser states are explored, the data contains more refined information than that of a randomly generated episode.
+    The return obtained from the simulated episode is then backed up the path taken to reach the leaf node or if it is the first node in the tree, it is used to initialize the value for the node. These values are then added up for each simulation in each node in a value sum variable, this will provide an indication of how good or bad the state is. This is one of the key steps of the MCTS algorithm as instead of using randomly generated episodes, where the goal is to explore as many states as possible, it enriches this data and even though lesser states are explored, the data contains more refined information than that of a randomly generated episode.
 \end{enumerate}
 
 The figure below visually depicts how the algorithm runs \par
@@ -415,11 +415,11 @@ The figure below visually depicts how the algorithm runs \par
     \caption{Monte Carlo Tree Search}
 \end{algorithm}
 
-This algorithm continues to run until either a time limit is reached or some other computational resource such as memory is depleted. After the algorithm stops running the tree can be used as policy to be able to play games. For each node, the child node with the highest value can be selected, this works because if the visit count and the value of the state is high it implies during the simulation the tree had often selected this node, which means that it often wins in this state. \par
+This algorithm continues to run until either a time limit is reached or some other computational resource such as memory is depleted. After the algorithm stops running the tree can be used as a policy to be able to play games. For each node, the child node with the highest value can be selected, this works because if the visit count and the value of the state are high it implies that, during the simulation the tree had often selected this node. This means that it often wins in this state. \par
 
-In addition to the above, the previous tree can be improved upon by selecting a leaf node which has not terminated and setting that node as the new root node to construct another MCTS tree. This will allow for greater exploration and better approximation of the value of states. However due to our computational constraints we were unable to run the MCTS algorithm for a significant upon of time, this is due to the fact that for the value of any node to converge we need a high number of simulation and this is not easily achievable on standard computers as they make take upto 4 to 5 days to complete the construction of one MCTS tree. Thus we developed a variation of the MCTS tree which considers the breadth of the tree instead of a depth. \par
+In addition to the above, the previous tree can be improved upon by selecting a leaf node which has not terminated and setting that node as the new root node to construct another MCTS tree. This will allow for greater exploration and better approximation of the value of states. However, due to our computational constraints we were unable to run the MCTS algorithm for a significant amount of time, this is due to the fact that for the value of any node to converge we need a high number of simulation and this is not easily achievable on standard computers as they make take up to 4 to 5 days to complete the construction of one MCTS tree. Thus we developed a variation of the MCTS tree which considers the breadth of the tree instead of the depth. \par
 
-The Algorithm is as follows: for each node, all the child nodes are selected one by one and for each of these node games are simulated to obtain a value of how good this state is, this value is normalized by the number of games simulated. After all the games have been simulated for all the child nodes, using the UCB1 algorithm a child node is selected which has the highest value, this child node then becomes the new root node. And for each iteration this repeatedly results in a higher depth explored. This algorithm significantly cuts down on the computational resources required, however this comes at a cost; since we are using the new child nodes as the new root nodes for another tree, we are essentially doing a one step look ahead, the values are not backed up all the way to the root node, this reduces the chances of the value of the state to converge. Furthermore it constricts the number of nodes which explores as it only searches down the path with the highest UCB1 value. \par
+The Algorithm is as follows: for each node, all the child nodes are selected one by one and for each of these node games are simulated to obtain a value of how good this state is, this value is normalized by the number of games simulated. After all the games have been simulated for all the child nodes, using the UCB1 algorithm a child node is selected which has the highest value, this child node then becomes the new root node. And for each iteration, this repeatedly results in a higher depth explored. This algorithm significantly cuts down on the computational resources required, however this comes at a cost; since we are using the new child nodes as the new root nodes for another tree, we are essentially doing a one step look ahead, the values are not backed up all the way to the root node, this reduces the chances of the value of the state to converge. Furthermore it constricts the number of nodes which explores as it only searches down the path with the highest UCB1 value. \par
 
 
 \subsection{Combining the Above}
@@ -502,10 +502,10 @@ In order to assess the relative performance of the various trained agents, 200 g
 
 \begin{figure}[H]
     \centering
-    \subfloat[\centering ELO Game Simulation]{{\includegraphics[width=10cm]{ELO_Game_Sim.png}}}
+    \subfloat[\centering ELO Game Simulation]{{\includegraphics[width=8.25cm]{ELO_Game_Sim.png}}}
     \qquad
-    \subfloat[\centering ELO Probabilistic Simulation]{{\includegraphics[width=10cm]{ELO_Time_SIM.png}}}
-    \caption{Santorini}
+    \subfloat[\centering ELO Probabilistic Simulation]{{\includegraphics[width=8.25cm]{ELO_Time_SIM.png}}}
+    \caption{Graphical Results}
     \label{fig:}
 \end{figure}
 
@@ -514,18 +514,18 @@ The above figures illustrate the performance of the agents trained using differe
 The Final ELO rating from the win-rate simulation are as follows
 
 \begin{enumerate}
-    \item Linear Rootstrap Final ELO : 1348
-    \item Linear Treestrap Final ELO : 1291
-    \item Linear Manual Final ELO : 1282
-    \item Combined Final ELO : 1211
-    \item MCTS CNN Final ELO : 990
-    \item CNN Final ELO : 873
-    \item MCTS ANN Final ELO : 871
-    \item ANN Final ELO : 844
-    \item Random Final ELO : 292
+    \item Linear Rootstrap (Cyan) Final ELO : 1348
+    \item Linear Treestrap (Red) Final ELO : 1291
+    \item Linear Manual (Blue) Final ELO : 1282
+    \item Combined (Brown) Final ELO : 1211
+    \item MCTS CNN (Magenta )Final ELO : 990
+    \item CNN (Orange) Final ELO : 873
+    \item MCTS ANN (Black) Final ELO : 871
+    \item ANN (Lime) Final ELO : 844
+    \item Random (Green) Final ELO : 292
 \end{enumerate}
 
-As can be seen from the ranking of the agents, the Linear agents did significantly better as compared to the other non-linear agents using Neural Networks due to the fact that Neural Networks need to be trained on very large amount of data. Although we could produce a significant amount of data, most of the data produced was using random games which does not emulate expert play and thus the Neural Networks needed to go through multiple iterations by learning from a previous versions of itself which improved upon random play, this required immense computing power which we did not have; the best we could do was use the policy created by the linear agents and apply that policy to the Monte Carlo Tree Search and consequentely train a Convolutional Neural Network. This approach is what we have called the combined approach, and as you can see from the results although the combined approach could not outperform the linear agents the fact that it has performed better than its other counter-parts shows us that it had learnt the policy created from the features of the linear model (there is evidence of learning). \par
+As can be seen from the ranking of the agents, the Linear agents did significantly better as compared to the other non-linear agents using Neural Networks due to the fact that Neural Networks need to be trained on very large amount of data. Although we could produce a significant amount of data, most of the data produced was using random games which does not emulate expert play and thus the Neural Networks needed to go through multiple iterations by learning from a previous versions of itself which improved upon random play. This required immense computing power which we did not have; to overcome this we used the policy created by the linear agents with the Monte Carlo Tree Search to train a Convolutional Neural Network. This approach is what we called the combined approach, and from the results we observe that although the combined approach could not outperform the linear agents the fact that it has performed better than its other counter-parts tells us that it had learnt the policy created by the features of the linear model (there is evidence of learning). \par
 
 \subsection{Limitations of above methods}
 
