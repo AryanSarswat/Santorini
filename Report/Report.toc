@@ -6,14 +6,14 @@
 \contentsline {subsection}{\numberline {2.2}Game Code}{3}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Methods employed to create AI Agent}{4}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Combining Linear Value Function Approximation with Minimax Search}{4}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Neural Networks (Value Function Approximation)}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Neural Networks (Value Function Approximation)}{9}{subsection.3.2}%
 \contentsline {paragraph}{ANN Architecture}{10}{section*.3}%
 \contentsline {subsection}{\numberline {3.3}Neural Networks with Convolutional Layers (Value Function Approximation)}{11}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Monte Carlo Tree Search}{14}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Combining the Above}{17}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Results and Discussion}{17}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Loss against iteration for ANN and CNN Models}{17}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{18}{subsection.4.2}%
+\contentsline {section}{\numberline {4}Results and Discussion}{18}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Loss against iteration for ANN and CNN Models}{18}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Loss against iteration for MCTS Models}{19}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Relative Performance of Trained Agents}{20}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Limitations of the above methods}{23}{subsection.4.4}%
 \contentsline {section}{\numberline {5}Other Methods Explored}{25}{section.5}%
