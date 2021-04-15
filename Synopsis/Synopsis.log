@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 15:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.19)  14 APR 2021 23:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -490,15 +490,15 @@ Package rerunfilecheck Info: File `Synopsis.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12914 strings out of 479302
- 192307 string characters out of 5868234
- 543349 words of memory out of 5000000
+ 12918 strings out of 479302
+ 192335 string characters out of 5868234
+ 544349 words of memory out of 5000000
  29928 multiletter control sequences out of 15000+600000
- 405925 words of font info for 45 fonts, out of 8000000 for 9000
+ 406027 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,5n,74p,576b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,5n,74p,753b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
 <e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><e:/LaTeX/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.pdf (1 page, 30796 bytes).
+Output written on c:/Users/sarya/Documents/GitHub/Master-Procrastinator/Synopsis/Synopsis.pdf (1 page, 31288 bytes).
 PDF statistics:
  21 PDF objects out of 1000 (max. 8388607)
  15 compressed objects within 1 object stream
