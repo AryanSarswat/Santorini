@@ -119,8 +119,8 @@ if __name__=='__main__':
     #print(a)    
 
 #mention how trained weighst are optimized for their specific search depth
+#how true is this - Additionally, as compared to the manually tuned weights, the linear approximators trained by reinforcement learning appear to be more optimized for play at the search depth at which training took place. With a search depth of 2, the RootStrap and TreeStrap trained approximator became noticeably weaker than the manually tuned approximator, with win rates against the latter dropping to about 40% compared to 50% when used at depth 3.  It is probable that the set of weights used by the manually tuned approximator are more generally applicable, having been created using very general ideas of what a good state is.
 #adaptive search depth
-#for report, find a reference to cite for minimax/alpha beta pruning
 
 #training times for new v2approximator
 #3 hours - 25 games of treestrap at depth 3
